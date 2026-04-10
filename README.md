@@ -29,7 +29,7 @@ This processes all merchant statement files and outputs:
 
 ### 2. View the Dashboard
 
-[**Open the Dashboard**](https://htmlpreview.github.io/?https://github.com/holgergevers-hub/Ten_Chargeback/blob/main/src/dashboard/index.html)
+[**Open the Dashboard**](https://holgergevers-hub.github.io/Ten_Chargeback/src/dashboard/index.html)
 
 Or serve locally (required if dashboard fetches external data):
 
