@@ -8,30 +8,28 @@ Zoho Creator application for managing chargebacks across multiple merchant platf
 
 **$303,247.67 USD** total exposure | **324** disputes | **3** platforms
 
-</div>
+[![Download App Definition (.ds)](https://img.shields.io/badge/Download_.ds_File-22c55e?style=for-the-badge&logo=zoho&logoColor=white&labelColor=166534)](ten_chargeback_management.ds)
 
 </div>
 
 ---
 
-## Zoho Creator Setup
+## Deploy to Zoho Creator
 
-### Step 1: Create the app and forms
+### Option A: Import the .ds file (recommended)
 
-Create a new Zoho Creator app, then add these 6 forms. See [FORM_SCHEMA.md](src/deluge/setup/FORM_SCHEMA.md) for all field names and types.
+1. Download [**ten_chargeback_management.ds**](ten_chargeback_management.ds) — contains all 9 forms, fields, workflows, and schedules in one file
+2. In Zoho Creator: **Settings > Import Application > Upload .ds file**
+3. Import the seed data:
 
-| # | Form | Purpose |
-|---|------|---------|
-| 1 | `regional_config` | Merchant account lookup (region, currency, LM assignment) |
-| 2 | `dispute_reason_codes` | Visa/MC/Amex reason code reference |
-| 3 | `chargeback_incidents` | Main chargeback records |
-| 4 | `dispute_submissions` | Evidence submissions linked to incidents |
-| 5 | `audit_trail` | System-wide activity log |
-| 6 | `file_uploads` | Merchant file import tracking |
+| Upload this file | Into this form | Records |
+|-----------------|---------------|---------|
+| [`regional_config.json`](config/seed-data/regional_config.json) | `regional_config` | 38 merchant accounts |
+| [`dispute_reason_codes.json`](config/seed-data/dispute_reason_codes.json) | `dispute_reason_codes` | 13 reason codes |
+| [`merchant_platforms.json`](config/seed-data/merchant_platforms.json) | `merchant_platforms` | 3 platforms |
+| [`currency_config.json`](config/seed-data/currency_config.json) | `currency_config` | 11 currencies |
 
-### Step 2: Upload data
-
-Run the ETL pipeline, then import the CSVs into your forms:
+4. Run the ETL pipeline and import chargebacks:
 
 ```bash
 python -m src.etl.pipeline \
@@ -40,40 +38,22 @@ python -m src.etl.pipeline \
   --output data/clean/
 ```
 
-| Upload this file | Into this form | Notes |
-|-----------------|---------------|-------|
-| `data/clean/chargeback_all.csv` | `chargeback_incidents` | Main records (324 rows) |
-| `config/seed-data/regional_config.json` | `regional_config` | 38 merchant accounts — update LM names/emails after import |
-| `config/seed-data/dispute_reason_codes.json` | `dispute_reason_codes` | 13 Visa/MC/Amex reason codes |
+5. Import `data/clean/chargeback_all.csv` into the `chargeback_incidents` form
 
-> **How to import:** Open the form in Zoho Creator > click **Import Data** (top-right) > upload the CSV/JSON > map columns > Import.
+> **How to import data:** Open the form > **Import Data** (top-right) > upload CSV/JSON > map columns > Import.
 
-### Step 3: Add workflows
+### Option B: Build manually
 
-Once the forms and data are in place, paste each Deluge script into its location. No edits needed.
+See [FORM_SCHEMA.md](src/deluge/setup/FORM_SCHEMA.md) for field definitions, then paste scripts from [`src/deluge/`](src/deluge/) into workflows.
 
-**Form Workflows**
+### What's in the .ds file
 
-| Script | Paste Location | Trigger |
-|--------|---------------|---------|
-| [chargeback_incident.on_success.dg](src/deluge/form-workflows/chargeback_incident.on_success.dg) | Chargeback_Incidents > Workflow > On Success | After form submit |
-| [dispute_submission.on_success.dg](src/deluge/form-workflows/dispute_submission.on_success.dg) | Dispute_Submissions > Workflow > On Success | After form submit |
-
-**Scheduled Tasks** — Create under Workflow > Schedules
-
-| Script | Schedule Name | Run At |
-|--------|--------------|--------|
-| [daily_file_processing.dg](src/deluge/scheduled/daily_file_processing.dg) | Daily_File_Processing | Daily 02:00 |
-| [currency_conversion_batch.dg](src/deluge/scheduled/currency_conversion_batch.dg) | Currency_Conversion_Batch | Daily 03:00 |
-| [data_cleansing_scheduled.dg](src/deluge/scheduled/data_cleansing_scheduled.dg) | Data_Cleansing | Daily 04:00 |
-| [auto_alert_25_days.dg](src/deluge/scheduled/auto_alert_25_days.dg) | Auto_Alert_25_Days | Daily 06:00 |
-
-**Custom APIs** — Create under Microservices > Custom API *(when ready)*
-
-| Script | API Name |
-|--------|----------|
-| [get_dashboard_summary.dg](src/deluge/custom-api/get_dashboard_summary.dg) | Get_Dashboard_Summary |
-| [get_aging_report.dg](src/deluge/custom-api/get_aging_report.dg) | Get_Aging_Report |
+| Component | Count | Details |
+|-----------|-------|---------|
+| Forms | 9 | chargeback_incidents, dispute_submissions, audit_trail, regional_config, dispute_reason_codes, merchant_platforms, currency_config, lm_followups, merchant_responses, file_uploads |
+| Reports | 8 | All Chargebacks, Open Chargebacks, Expiring Soon, All Disputes, Audit Log, + 3 config views |
+| Workflows | 2 | Auto-assign LM on chargeback, update status on dispute |
+| Schedules | 4 | 25-day alerts (06:00), file processing (02:00), currency conversion (03:00), data cleansing (04:00) |
 
 ---
 

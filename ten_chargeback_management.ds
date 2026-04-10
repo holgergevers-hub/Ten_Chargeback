@@ -1,0 +1,1212 @@
+application Ten_Chargeback_Management
+{
+	displayname = "Ten Chargeback Management"
+
+	// ============================================================
+	// FORMS
+	// ============================================================
+
+	forms
+	{
+		// --- Lookup Tables (create first) ---
+
+		form regional_config
+		{
+			displayname = "Regional Config"
+
+			must have Merchant_Account
+			(
+				type = SingleLine
+				displayname = "Merchant Account"
+				row = 1
+			)
+
+			Region
+			(
+				type = SingleLine
+				displayname = "Region"
+				row = 2
+			)
+
+			Default_Currency
+			(
+				type = SingleLine
+				displayname = "Default Currency"
+				row = 3
+			)
+
+			Default_LM_Name
+			(
+				type = SingleLine
+				displayname = "Default LM Name"
+				row = 4
+			)
+
+			Default_LM_Email
+			(
+				type = Email
+				displayname = "Default LM Email"
+				row = 5
+			)
+		}
+
+		form merchant_platforms
+		{
+			displayname = "Merchant Platforms"
+
+			must have Name
+			(
+				type = SingleLine
+				displayname = "Platform Name"
+				row = 1
+			)
+
+			Format
+			(
+				type = SingleLine
+				displayname = "File Format"
+				row = 2
+			)
+
+			Delimiter
+			(
+				type = SingleLine
+				displayname = "Delimiter"
+				row = 3
+			)
+
+			Region
+			(
+				type = SingleLine
+				displayname = "Region"
+				row = 4
+			)
+
+			Active
+			(
+				type = Checkbox
+				displayname = "Active"
+				row = 5
+			)
+		}
+
+		form currency_config
+		{
+			displayname = "Currency Config"
+
+			must have Currency_Code
+			(
+				type = SingleLine
+				displayname = "Currency Code"
+				row = 1
+			)
+
+			Currency_Name
+			(
+				type = SingleLine
+				displayname = "Currency Name"
+				row = 2
+			)
+
+			Exchange_Rate_Source
+			(
+				type = SingleLine
+				displayname = "Exchange Rate Source"
+				row = 3
+			)
+		}
+
+		form dispute_reason_codes
+		{
+			displayname = "Dispute Reason Codes"
+
+			Scheme
+			(
+				type = SingleLine
+				displayname = "Scheme"
+				row = 1
+			)
+
+			must have Code
+			(
+				type = SingleLine
+				displayname = "Reason Code"
+				row = 2
+			)
+
+			Description
+			(
+				type = SingleLine
+				displayname = "Description"
+				row = 3
+			)
+
+			Category
+			(
+				type = SingleLine
+				displayname = "Category"
+				row = 4
+			)
+		}
+
+		// --- Core Forms ---
+
+		form chargeback_incidents
+		{
+			displayname = "Chargeback Incidents"
+
+			PSP_Reference
+			(
+				type = SingleLine
+				displayname = "PSP Reference"
+				row = 1
+			)
+
+			must have Platform
+			(
+				type = Dropdown
+				displayname = "Platform"
+				choices = "Adyen,Ingenico,Stripe"
+				row = 2
+			)
+
+			Merchant_Account
+			(
+				type = SingleLine
+				displayname = "Merchant Account"
+				row = 3
+			)
+
+			Incident_Date
+			(
+				type = Date
+				displayname = "Incident Date"
+				row = 4
+			)
+
+			Dispute_Deadline
+			(
+				type = Date
+				displayname = "Dispute Deadline"
+				row = 5
+			)
+
+			Days_Remaining
+			(
+				type = Number
+				displayname = "Days Remaining"
+				row = 6
+			)
+
+			must have Status
+			(
+				type = Dropdown
+				displayname = "Status"
+				choices = "Open,Under Review,Disputed,Resolved,Expired,Won,Lost"
+				row = 7
+			)
+
+			Record_Type
+			(
+				type = SingleLine
+				displayname = "Record Type"
+				row = 8
+			)
+
+			Currency_Original
+			(
+				type = SingleLine
+				displayname = "Currency (Original)"
+				row = 9
+			)
+
+			Amount_Original
+			(
+				type = Decimal
+				displayname = "Amount (Original)"
+				row = 10
+			)
+
+			must have Amount_USD
+			(
+				type = Decimal
+				displayname = "Amount (USD)"
+				row = 11
+			)
+
+			Exchange_Rate
+			(
+				type = Decimal
+				displayname = "Exchange Rate"
+				row = 12
+			)
+
+			Dispute_Reason
+			(
+				type = SingleLine
+				displayname = "Dispute Reason"
+				row = 13
+			)
+
+			Assigned_LM
+			(
+				type = SingleLine
+				displayname = "Assigned LM"
+				row = 14
+			)
+
+			Payment_Method
+			(
+				type = SingleLine
+				displayname = "Payment Method"
+				row = 15
+			)
+
+			CB_Scheme_Code
+			(
+				type = SingleLine
+				displayname = "CB Scheme Code"
+				row = 16
+			)
+
+			CB_Reason_Code
+			(
+				type = SingleLine
+				displayname = "CB Reason Code"
+				row = 17
+			)
+
+			Shopper_Country
+			(
+				type = SingleLine
+				displayname = "Shopper Country"
+				row = 18
+			)
+
+			Issuer_Country
+			(
+				type = SingleLine
+				displayname = "Issuer Country"
+				row = 19
+			)
+
+			Payment_Date
+			(
+				type = Date
+				displayname = "Payment Date"
+				row = 20
+			)
+
+			Payment_Currency
+			(
+				type = SingleLine
+				displayname = "Payment Currency"
+				row = 21
+			)
+
+			Payment_Amount
+			(
+				type = Decimal
+				displayname = "Payment Amount"
+				row = 22
+			)
+
+			Dispute_Date
+			(
+				type = Date
+				displayname = "Dispute Date"
+				row = 23
+			)
+
+			Dispute_End_Date
+			(
+				type = Date
+				displayname = "Dispute End Date"
+				row = 24
+			)
+
+			Risk_Scoring
+			(
+				type = Number
+				displayname = "Risk Scoring"
+				row = 25
+			)
+
+			Shopper_Interaction
+			(
+				type = SingleLine
+				displayname = "Shopper Interaction"
+				row = 26
+			)
+
+			Dispute_PSP_Reference
+			(
+				type = SingleLine
+				displayname = "Dispute PSP Reference"
+				row = 27
+			)
+
+			Company_Account
+			(
+				type = SingleLine
+				displayname = "Company Account"
+				row = 28
+			)
+		}
+
+		form lm_followups
+		{
+			displayname = "LM Followups"
+
+			must have Incident_ID
+			(
+				type = Number
+				displayname = "Incident ID"
+				row = 1
+			)
+
+			Followup_Date
+			(
+				type = Date
+				displayname = "Followup Date"
+				row = 2
+			)
+
+			Followup_Notes
+			(
+				type = MultiLine
+				displayname = "Followup Notes"
+				row = 3
+			)
+
+			Followed_Up_By
+			(
+				type = SingleLine
+				displayname = "Followed Up By"
+				row = 4
+			)
+
+			Evidence_Gathered
+			(
+				type = Checkbox
+				displayname = "Evidence Gathered"
+				row = 5
+			)
+		}
+
+		form dispute_submissions
+		{
+			displayname = "Dispute Submissions"
+
+			must have Incident_ID
+			(
+				type = Number
+				displayname = "Incident ID"
+				row = 1
+			)
+
+			Submission_Date
+			(
+				type = Date
+				displayname = "Submission Date"
+				row = 2
+			)
+
+			Submitted_By
+			(
+				type = SingleLine
+				displayname = "Submitted By"
+				row = 3
+			)
+
+			Dispute_Reason_Text
+			(
+				type = MultiLine
+				displayname = "Dispute Reason"
+				row = 4
+			)
+
+			Evidence_Summary
+			(
+				type = MultiLine
+				displayname = "Evidence Summary"
+				row = 5
+			)
+
+			Expected_Response_Date
+			(
+				type = Date
+				displayname = "Expected Response Date"
+				row = 6
+			)
+		}
+
+		form merchant_responses
+		{
+			displayname = "Merchant Responses"
+
+			must have Dispute_ID
+			(
+				type = Number
+				displayname = "Dispute ID"
+				row = 1
+			)
+
+			Response_Date
+			(
+				type = Date
+				displayname = "Response Date"
+				row = 2
+			)
+
+			Response_Status
+			(
+				type = Dropdown
+				displayname = "Response Status"
+				choices = "Accepted,Rejected,Partial,Information Requested"
+				row = 3
+			)
+
+			Additional_Info
+			(
+				type = MultiLine
+				displayname = "Additional Info"
+				row = 4
+			)
+
+			Responded_By
+			(
+				type = SingleLine
+				displayname = "Responded By"
+				row = 5
+			)
+		}
+
+		form file_uploads
+		{
+			displayname = "File Uploads"
+
+			File_Name
+			(
+				type = SingleLine
+				displayname = "File Name"
+				row = 1
+			)
+
+			Platform
+			(
+				type = SingleLine
+				displayname = "Platform"
+				row = 2
+			)
+
+			Incident_ID
+			(
+				type = Number
+				displayname = "Incident ID"
+				row = 3
+			)
+
+			Processing_Status
+			(
+				type = Dropdown
+				displayname = "Processing Status"
+				choices = "Pending,Processing,Completed"
+				row = 4
+			)
+
+			Records_Found
+			(
+				type = Number
+				displayname = "Records Found"
+				row = 5
+			)
+
+			Records_Imported
+			(
+				type = Number
+				displayname = "Records Imported"
+				row = 6
+			)
+		}
+
+		form audit_trail
+		{
+			displayname = "Audit Trail"
+
+			Incident_ID
+			(
+				type = Number
+				displayname = "Incident ID"
+				row = 1
+			)
+
+			Action
+			(
+				type = SingleLine
+				displayname = "Action"
+				row = 2
+			)
+
+			Action_Date
+			(
+				type = DateTime
+				displayname = "Action Date"
+				row = 3
+			)
+
+			Performed_By
+			(
+				type = SingleLine
+				displayname = "Performed By"
+				row = 4
+			)
+
+			Notes
+			(
+				type = MultiLine
+				displayname = "Notes"
+				row = 5
+			)
+		}
+	}
+
+	// ============================================================
+	// REPORTS
+	// ============================================================
+
+	reports
+	{
+		list All_Chargebacks
+		{
+			form = chargeback_incidents
+			columns = "PSP_Reference,Platform,Merchant_Account,Status,Amount_USD,Currency_Original,Amount_Original,Incident_Date,Dispute_Deadline,Days_Remaining,Assigned_LM"
+		}
+
+		list Open_Chargebacks
+		{
+			form = chargeback_incidents
+			filter = "Status == \"Open\" || Status == \"Under Review\""
+			columns = "PSP_Reference,Platform,Merchant_Account,Amount_USD,Incident_Date,Days_Remaining,Assigned_LM"
+		}
+
+		list Expiring_Soon
+		{
+			form = chargeback_incidents
+			filter = "Days_Remaining <= 5 && Days_Remaining > 0 && (Status == \"Open\" || Status == \"Under Review\")"
+			columns = "PSP_Reference,Platform,Amount_USD,Days_Remaining,Assigned_LM,Dispute_Deadline"
+		}
+
+		list All_Disputes
+		{
+			form = dispute_submissions
+			columns = "Incident_ID,Submission_Date,Submitted_By,Dispute_Reason_Text,Expected_Response_Date"
+		}
+
+		list Audit_Log
+		{
+			form = audit_trail
+			columns = "Incident_ID,Action,Action_Date,Performed_By,Notes"
+		}
+
+		list Regional_Config
+		{
+			form = regional_config
+			columns = "Merchant_Account,Region,Default_Currency,Default_LM_Name,Default_LM_Email"
+		}
+
+		list Reason_Codes
+		{
+			form = dispute_reason_codes
+			columns = "Scheme,Code,Description,Category"
+		}
+
+		list File_Processing
+		{
+			form = file_uploads
+			columns = "File_Name,Platform,Processing_Status,Records_Found,Records_Imported"
+		}
+	}
+
+	// ============================================================
+	// WORKFLOWS — Form Events
+	// ============================================================
+
+	workflow
+	{
+		Chargeback_On_Success as "Chargeback Incident On Success"
+		{
+			form = chargeback_incidents
+			record event = on add
+			on success
+			custom deluge script
+			(
+				// Auto-assign lifestyle manager from regional config,
+				// calculate dispute deadline (30-day window),
+				// set initial status, create audit trail, notify LM
+
+				merchantAcct = ifnull(input.Merchant_Account, "");
+				regionRec = regional_config[Merchant_Account == merchantAcct];
+				assignedLM = ifnull(regionRec.Default_LM_Name, "Unassigned");
+				assignedEmail = ifnull(regionRec.Default_LM_Email, "");
+				defaultCurrency = ifnull(regionRec.Default_Currency, "USD");
+
+				input.Assigned_LM = assignedLM;
+
+				incidentDate = ifnull(input.Incident_Date, zoho.currentdate);
+				input.Dispute_Deadline = incidentDate.addDay(30);
+				input.Days_Remaining = daysBetween(zoho.currentdate, input.Dispute_Deadline);
+				input.Status = "Open";
+
+				if (ifnull(input.Currency_Original, "") == "")
+				{
+					input.Currency_Original = defaultCurrency;
+				}
+
+				row = insert into audit_trail
+				[
+					Incident_ID = input.ID
+					Action = "Chargeback Created"
+					Action_Date = zoho.currentdate
+					Performed_By = zoho.loginuser
+					Notes = "New chargeback recorded. Platform: " + ifnull(input.Platform, "N/A") + ", Amount: " + ifnull(input.Currency_Original, "") + " " + ifnull(input.Amount_Original, "0") + ". Assigned to " + assignedLM + ". Dispute deadline: " + input.Dispute_Deadline
+					Added_User = zoho.loginuser
+				];
+
+				if (assignedEmail != "")
+				{
+					pspRef = ifnull(input.PSP_Reference, "N/A");
+					platform = ifnull(input.Platform, "N/A");
+					amountStr = ifnull(input.Currency_Original, "") + " " + ifnull(input.Amount_Original, "0");
+					deadlineStr = input.Dispute_Deadline.toString("dd-MMM-yyyy");
+
+					sendmail
+					[
+						from : zoho.adminuserid
+						to : assignedEmail
+						subject : "New Chargeback Assigned - PSP " + pspRef + " (" + platform + ")"
+						message : "Dear " + assignedLM + ",\n\nA new chargeback has been assigned to you for evidence gathering.\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount: " + amountStr + "\nDispute Reason: " + ifnull(input.Dispute_Reason, "N/A") + "\nDispute Deadline: " + deadlineStr + "\nDays Remaining: " + input.Days_Remaining + "\n\nPlease gather supporting evidence and update the follow-up record as soon as possible.\n\nRegards,\nTen Chargeback Management"
+					];
+				}
+			)
+		}
+
+		Dispute_On_Success as "Dispute Submission On Success"
+		{
+			form = dispute_submissions
+			record event = on add
+			on success
+			custom deluge script
+			(
+				// Update linked chargeback status to "Disputed",
+				// create audit trail, notify credit controller
+
+				incidentID = ifnull(input.Incident_ID, 0);
+				incidentRec = chargeback_incidents[ID == incidentID];
+				pspRef = ifnull(incidentRec.PSP_Reference, "N/A");
+				platform = ifnull(incidentRec.Platform, "N/A");
+				amountUSD = ifnull(incidentRec.Amount_USD, "0");
+				assignedLM = ifnull(incidentRec.Assigned_LM, "N/A");
+
+				if (incidentRec != null)
+				{
+					incidentRec.Status = "Disputed";
+				}
+
+				if (ifnull(input.Expected_Response_Date, "") == "")
+				{
+					input.Expected_Response_Date = zoho.currentdate.addDay(45);
+				}
+
+				submittedBy = ifnull(input.Submitted_By, zoho.loginuser);
+
+				row = insert into audit_trail
+				[
+					Incident_ID = incidentID
+					Action = "Dispute Submitted"
+					Action_Date = zoho.currentdate
+					Performed_By = submittedBy
+					Notes = "Dispute submitted for PSP " + pspRef + ". Reason: " + ifnull(input.Dispute_Reason_Text, "N/A") + ". Evidence summary: " + ifnull(input.Evidence_Summary, "N/A")
+					Added_User = zoho.loginuser
+				];
+
+				sendmail
+				[
+					from : zoho.adminuserid
+					to : "creditcontrol@tengroup.com"
+					subject : "Dispute Submitted - PSP " + pspRef + " (" + platform + ")"
+					message : "A dispute has been submitted for the following chargeback:\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\nAssigned LM: " + assignedLM + "\nSubmitted By: " + submittedBy + "\nSubmission Date: " + ifnull(input.Submission_Date, zoho.currentdate) + "\n\nEvidence Summary:\n" + ifnull(input.Evidence_Summary, "No summary provided") + "\n\nDispute Reason:\n" + ifnull(input.Dispute_Reason_Text, "No reason provided") + "\n\nExpected Response Date: " + ifnull(input.Expected_Response_Date, "N/A") + "\n\nRegards,\nTen Chargeback Management"
+				];
+			)
+		}
+	}
+
+	// ============================================================
+	// SCHEDULES
+	// ============================================================
+
+	schedule
+	{
+		Auto_Alert_25_Days as "Auto Alert 25 Days"
+		{
+			form = chargeback_incidents
+			on load
+			(
+				// Alert on chargebacks approaching 30-day dispute deadline.
+				// 25-29 days: warning to assigned LM.
+				// >= 30 days: expire the chargeback, escalation email.
+
+				openIncidents = chargeback_incidents[Status == "Open" || Status == "Under Review"];
+
+				for each incident in openIncidents
+				{
+					incidentDate = ifnull(incident.Incident_Date, zoho.currentdate);
+					daysOld = daysBetween(incidentDate, zoho.currentdate);
+					pspRef = ifnull(incident.PSP_Reference, "N/A");
+					platform = ifnull(incident.Platform, "N/A");
+					amountUSD = ifnull(incident.Amount_USD, "0");
+					assignedLM = ifnull(incident.Assigned_LM, "N/A");
+					incidentID = incident.ID;
+
+					merchantAcct = ifnull(incident.Merchant_Account, "");
+					regionRec = regional_config[Merchant_Account == merchantAcct];
+					lmEmail = ifnull(regionRec.Default_LM_Email, "");
+
+					deadline = ifnull(incident.Dispute_Deadline, incidentDate.addDay(30));
+					daysRemaining = daysBetween(zoho.currentdate, deadline);
+					incident.Days_Remaining = daysRemaining;
+
+					if (daysOld >= 30)
+					{
+						incident.Status = "Expired";
+						incident.Days_Remaining = 0;
+
+						row = insert into audit_trail
+						[
+							Incident_ID = incidentID
+							Action = "Auto-Expired"
+							Action_Date = zoho.currentdate
+							Performed_By = "SYSTEM"
+							Notes = "Chargeback expired after 30 days without dispute. Days old: " + daysOld + ". PSP: " + pspRef
+							Added_User = zoho.adminuser
+						];
+
+						sendmail
+						[
+							from : zoho.adminuserid
+							to : "creditcontrol@tengroup.com"
+							subject : "EXPIRED - Chargeback " + pspRef + " past 30-day deadline"
+							message : "The following chargeback has expired without a dispute being filed:\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\nAssigned LM: " + assignedLM + "\nIncident Date: " + incidentDate + "\nDays Old: " + daysOld + "\n\nThis chargeback can no longer be disputed. Please review and update records accordingly.\n\nRegards,\nTen Chargeback Management (Automated)"
+						];
+
+						if (lmEmail != "")
+						{
+							sendmail
+							[
+								from : zoho.adminuserid
+								to : lmEmail
+								subject : "EXPIRED - Chargeback " + pspRef + " - No dispute filed"
+								message : "Dear " + assignedLM + ",\n\nChargeback " + pspRef + " has expired. The 30-day dispute window has closed.\n\nRegards,\nTen Chargeback Management (Automated)"
+							];
+						}
+					}
+					else if (daysOld >= 25)
+					{
+						row = insert into audit_trail
+						[
+							Incident_ID = incidentID
+							Action = "Deadline Warning Sent"
+							Action_Date = zoho.currentdate
+							Performed_By = "SYSTEM"
+							Notes = "Warning sent at " + daysOld + " days. Days remaining: " + daysRemaining + ". PSP: " + pspRef
+							Added_User = zoho.adminuser
+						];
+
+						if (lmEmail != "")
+						{
+							sendmail
+							[
+								from : zoho.adminuserid
+								to : lmEmail
+								subject : "URGENT - Chargeback " + pspRef + " deadline in " + daysRemaining + " days"
+								message : "Dear " + assignedLM + ",\n\nChargeback " + pspRef + " is approaching its dispute deadline.\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\nDays Remaining: " + daysRemaining + "\nDispute Deadline: " + ifnull(incident.Dispute_Deadline, "N/A") + "\n\nPlease ensure evidence is gathered and the dispute is submitted immediately.\n\nRegards,\nTen Chargeback Management (Automated)"
+							];
+						}
+
+						if (daysRemaining <= 3)
+						{
+							sendmail
+							[
+								from : zoho.adminuserid
+								to : "creditcontrol@tengroup.com"
+								subject : "CRITICAL - Chargeback " + pspRef + " expires in " + daysRemaining + " days"
+								message : "Chargeback " + pspRef + " has only " + daysRemaining + " days remaining.\n\nAssigned LM: " + assignedLM + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\n\nImmediate action required.\n\nRegards,\nTen Chargeback Management (Automated)"
+							];
+						}
+					}
+				}
+			)
+		}
+
+		Daily_File_Processing as "Daily File Processing"
+		{
+			form = file_uploads
+			on load
+			(
+				pendingFiles = file_uploads[Processing_Status == "Pending"];
+
+				for each fileRec in pendingFiles
+				{
+					fileID = fileRec.ID;
+					fileName = ifnull(fileRec.File_Name, "Unknown");
+					platform = ifnull(fileRec.Platform, "N/A");
+					incidentID = ifnull(fileRec.Incident_ID, 0);
+
+					fileRec.Processing_Status = "Processing";
+
+					row = insert into audit_trail
+					[
+						Incident_ID = incidentID
+						Action = "File Processing Started"
+						Action_Date = zoho.currentdate
+						Performed_By = "SYSTEM"
+						Notes = "Processing started for file: " + fileName + " (Platform: " + platform + ")"
+						Added_User = zoho.adminuser
+					];
+
+					recordsFound = ifnull(fileRec.Records_Found, 0);
+
+					if (recordsFound == 0)
+					{
+						fileRec.Processing_Status = "Completed";
+						fileRec.Records_Imported = 0;
+
+						row = insert into audit_trail
+						[
+							Incident_ID = incidentID
+							Action = "File Processing Completed"
+							Action_Date = zoho.currentdate
+							Performed_By = "SYSTEM"
+							Notes = "File completed with 0 records found: " + fileName + ". No data to import."
+							Added_User = zoho.adminuser
+						];
+					}
+					else
+					{
+						fileRec.Processing_Status = "Completed";
+						fileRec.Records_Imported = recordsFound;
+
+						row = insert into audit_trail
+						[
+							Incident_ID = incidentID
+							Action = "File Processing Completed"
+							Action_Date = zoho.currentdate
+							Performed_By = "SYSTEM"
+							Notes = "File processed successfully: " + fileName + ". Records found: " + recordsFound + ", Records imported: " + recordsFound + ". Platform: " + platform
+							Added_User = zoho.adminuser
+						];
+					}
+				}
+
+				processedCount = ifnull(pendingFiles.count(), 0);
+				if (processedCount > 0)
+				{
+					sendmail
+					[
+						from : zoho.adminuserid
+						to : "creditcontrol@tengroup.com"
+						subject : "Daily File Processing Complete - " + processedCount + " files processed"
+						message : "The daily file processing job has completed.\n\nFiles Processed: " + processedCount + "\nDate: " + zoho.currentdate + "\n\nPlease review any files with 0 records for potential issues.\n\nRegards,\nTen Chargeback Management (Automated)"
+					];
+				}
+			)
+		}
+
+		Currency_Conversion_Batch as "Currency Conversion Batch"
+		{
+			form = chargeback_incidents
+			on load
+			(
+				unconverted = chargeback_incidents[Amount_USD == null || Amount_USD == 0];
+
+				if (ifnull(unconverted.count(), 0) == 0)
+				{
+					return;
+				}
+
+				rateResponse = invokeUrl
+				[
+					url : "https://open.er-api.com/v6/latest/USD"
+					type : GET
+				];
+
+				rateJson = ifnull(rateResponse, Map());
+				rates = ifnull(rateJson.get("rates"), Map());
+				fetchResult = ifnull(rateJson.get("result"), "error");
+
+				if (fetchResult != "success")
+				{
+					row = insert into audit_trail
+					[
+						Incident_ID = 0
+						Action = "Currency Conversion Failed"
+						Action_Date = zoho.currentdate
+						Performed_By = "SYSTEM"
+						Notes = "Exchange rate API returned non-success result. Conversion batch aborted."
+						Added_User = zoho.adminuser
+					];
+					return;
+				}
+
+				convertedCount = 0;
+				errorCount = 0;
+
+				for each incident in unconverted
+				{
+					incidentID = incident.ID;
+					currency = ifnull(incident.Currency_Original, "");
+					amountOriginal = ifnull(incident.Amount_Original, 0);
+					pspRef = ifnull(incident.PSP_Reference, "N/A");
+
+					if (currency == "" || amountOriginal == 0)
+					{
+						errorCount = errorCount + 1;
+
+						row = insert into audit_trail
+						[
+							Incident_ID = incidentID
+							Action = "Currency Conversion Skipped"
+							Action_Date = zoho.currentdate
+							Performed_By = "SYSTEM"
+							Notes = "Skipped: missing currency or zero amount. Currency: " + currency + ", Amount: " + amountOriginal
+							Added_User = zoho.adminuser
+						];
+						continue;
+					}
+
+					if (currency == "USD")
+					{
+						incident.Amount_USD = amountOriginal;
+						incident.Exchange_Rate = 1;
+						convertedCount = convertedCount + 1;
+
+						row = insert into audit_trail
+						[
+							Incident_ID = incidentID
+							Action = "Currency Conversion Applied"
+							Action_Date = zoho.currentdate
+							Performed_By = "SYSTEM"
+							Notes = "USD record - no conversion needed. Amount: $" + amountOriginal
+							Added_User = zoho.adminuser
+						];
+						continue;
+					}
+
+					exchangeRate = ifnull(rates.get(currency), 0);
+
+					if (exchangeRate == 0)
+					{
+						errorCount = errorCount + 1;
+
+						row = insert into audit_trail
+						[
+							Incident_ID = incidentID
+							Action = "Currency Conversion Failed"
+							Action_Date = zoho.currentdate
+							Performed_By = "SYSTEM"
+							Notes = "No exchange rate found for currency: " + currency + ". PSP: " + pspRef
+							Added_User = zoho.adminuser
+						];
+						continue;
+					}
+
+					amountUSD = amountOriginal / exchangeRate;
+					incident.Amount_USD = amountUSD;
+					incident.Exchange_Rate = exchangeRate;
+					convertedCount = convertedCount + 1;
+
+					row = insert into audit_trail
+					[
+						Incident_ID = incidentID
+						Action = "Currency Conversion Applied"
+						Action_Date = zoho.currentdate
+						Performed_By = "SYSTEM"
+						Notes = "Converted " + currency + " " + amountOriginal + " to USD $" + amountUSD + " (rate: " + exchangeRate + ")"
+						Added_User = zoho.adminuser
+					];
+				}
+
+				sendmail
+				[
+					from : zoho.adminuserid
+					to : "creditcontrol@tengroup.com"
+					subject : "Currency Conversion Batch Complete - " + convertedCount + " converted, " + errorCount + " errors"
+					message : "The daily currency conversion batch has completed.\n\nRecords Converted: " + convertedCount + "\nRecords with Errors: " + errorCount + "\nDate: " + zoho.currentdate + "\n\nPlease review any error records in the audit trail.\n\nRegards,\nTen Chargeback Management (Automated)"
+				];
+			)
+		}
+
+		Data_Cleansing as "Data Cleansing"
+		{
+			form = chargeback_incidents
+			on load
+			(
+				cutoffDate = zoho.currentdate.subDay(7);
+				recentIncidents = chargeback_incidents[Incident_Date >= cutoffDate];
+
+				validRecordTypes = List();
+				validRecordTypes.add("Chargeback");
+				validRecordTypes.add("Second Chargeback");
+				validRecordTypes.add("Notification of Chargeback");
+				validRecordTypes.add("Request for Information");
+				validRecordTypes.add("Pre-Arbitration");
+				validRecordTypes.add("Fraud Alert");
+
+				validCurrencies = List();
+				validCurrencies.add("USD");
+				validCurrencies.add("EUR");
+				validCurrencies.add("GBP");
+				validCurrencies.add("CHF");
+				validCurrencies.add("JPY");
+				validCurrencies.add("AUD");
+				validCurrencies.add("CAD");
+				validCurrencies.add("SEK");
+				validCurrencies.add("NOK");
+				validCurrencies.add("DKK");
+				validCurrencies.add("SGD");
+				validCurrencies.add("HKD");
+				validCurrencies.add("ZAR");
+				validCurrencies.add("BRL");
+				validCurrencies.add("MXN");
+				validCurrencies.add("INR");
+				validCurrencies.add("AED");
+				validCurrencies.add("SAR");
+				validCurrencies.add("PLN");
+				validCurrencies.add("CZK");
+				validCurrencies.add("COP");
+
+				cleansedCount = 0;
+				flaggedCount = 0;
+
+				for each incident in recentIncidents
+				{
+					incidentID = incident.ID;
+					pspRef = ifnull(incident.PSP_Reference, "N/A");
+					issues = List();
+
+					rawType = ifnull(incident.Record_Type, "");
+					normalizedType = rawType.trim();
+					upperType = normalizedType.toUpperCase();
+
+					if (upperType == "CB" || upperType == "CHARGEBACK" || upperType == "CHARGE BACK" || upperType == "CHARGE-BACK")
+					{
+						normalizedType = "Chargeback";
+					}
+					else if (upperType == "2ND CHARGEBACK" || upperType == "SECOND CB" || upperType == "2ND CB")
+					{
+						normalizedType = "Second Chargeback";
+					}
+					else if (upperType == "NOC" || upperType == "NOTIFICATION" || upperType == "NOTIFICATION OF CB")
+					{
+						normalizedType = "Notification of Chargeback";
+					}
+					else if (upperType == "RFI" || upperType == "REQUEST FOR INFO" || upperType == "INFO REQUEST")
+					{
+						normalizedType = "Request for Information";
+					}
+					else if (upperType == "PRE-ARB" || upperType == "PREARBITRATION" || upperType == "PRE ARB")
+					{
+						normalizedType = "Pre-Arbitration";
+					}
+					else if (upperType == "FRAUD" || upperType == "FRAUD ALERT" || upperType == "FRAUD NOTIFICATION")
+					{
+						normalizedType = "Fraud Alert";
+					}
+
+					if (validRecordTypes.contains(normalizedType))
+					{
+						if (normalizedType != rawType)
+						{
+							incident.Record_Type = normalizedType;
+							cleansedCount = cleansedCount + 1;
+
+							row = insert into audit_trail
+							[
+								Incident_ID = incidentID
+								Action = "Data Cleansed"
+								Action_Date = zoho.currentdate
+								Performed_By = "SYSTEM"
+								Notes = "Record_Type normalized from '" + rawType + "' to '" + normalizedType + "'. PSP: " + pspRef
+								Added_User = zoho.adminuser
+							];
+						}
+					}
+					else if (rawType != "")
+					{
+						issues.add("Unknown Record_Type: " + rawType);
+					}
+					else
+					{
+						issues.add("Missing Record_Type");
+					}
+
+					currency = ifnull(incident.Currency_Original, "");
+					if (currency == "")
+					{
+						issues.add("Missing Currency_Original");
+					}
+					else if (!validCurrencies.contains(currency))
+					{
+						issues.add("Unknown currency code: " + currency);
+					}
+
+					amountOrig = ifnull(incident.Amount_Original, 0);
+					if (amountOrig <= 0)
+					{
+						issues.add("Amount_Original is zero or negative: " + amountOrig);
+					}
+
+					incidentDate = ifnull(incident.Incident_Date, zoho.currentdate);
+					if (daysBetween(zoho.currentdate, incidentDate) > 0)
+					{
+						issues.add("Incident_Date is in the future: " + incidentDate);
+					}
+
+					platformVal = ifnull(incident.Platform, "");
+					if (platformVal != "Adyen" && platformVal != "Ingenico" && platformVal != "Stripe" && platformVal != "")
+					{
+						issues.add("Unknown Platform: " + platformVal);
+					}
+
+					if (issues.size() > 0)
+					{
+						flaggedCount = flaggedCount + 1;
+						issueText = issues.toString(",");
+
+						row = insert into audit_trail
+						[
+							Incident_ID = incidentID
+							Action = "Data Quality Issue"
+							Action_Date = zoho.currentdate
+							Performed_By = "SYSTEM"
+							Notes = "Data quality issues found for PSP " + pspRef + ": " + issueText
+							Added_User = zoho.adminuser
+						];
+					}
+				}
+
+				totalProcessed = ifnull(recentIncidents.count(), 0);
+				if (flaggedCount > 0 || cleansedCount > 0)
+				{
+					sendmail
+					[
+						from : zoho.adminuserid
+						to : "creditcontrol@tengroup.com"
+						subject : "Data Cleansing Report - " + cleansedCount + " cleansed, " + flaggedCount + " flagged"
+						message : "Daily data cleansing has completed for records from the last 7 days.\n\nTotal Records Scanned: " + totalProcessed + "\nRecords Cleansed: " + cleansedCount + "\nRecords Flagged: " + flaggedCount + "\nDate: " + zoho.currentdate + "\n\nPlease review flagged records in the audit trail.\n\nRegards,\nTen Chargeback Management (Automated)"
+					];
+				}
+			)
+		}
+	}
+}
