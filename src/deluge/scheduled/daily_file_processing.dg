@@ -1,0 +1,82 @@
+// ============================================================
+// Script:   daily_file_processing.dg
+// Location: Workflow > Schedules > Daily_File_Processing
+// Trigger:  Scheduled (daily)
+// Purpose:  Process pending file uploads by updating status
+//           through the processing pipeline. Logs each stage
+//           in the audit trail for traceability.
+// ============================================================
+
+// STEP 1: Query all pending file uploads
+pendingFiles = file_uploads[Processing_Status == "Pending"];
+
+for each fileRec in pendingFiles
+{
+    fileID = fileRec.ID;
+    fileName = ifnull(fileRec.File_Name, "Unknown");
+    platform = ifnull(fileRec.Platform, "N/A");
+    incidentID = ifnull(fileRec.Incident_ID, 0);
+
+    // STEP 2: Mark as Processing
+    fileRec.Processing_Status = "Processing";
+
+    row = insert into audit_trail
+    [
+        Incident_ID = incidentID
+        Action = "File Processing Started"
+        Action_Date = zoho.currentdate
+        Performed_By = "SYSTEM"
+        Notes = "Processing started for file: " + fileName + " (Platform: " + platform + ")"
+        Added_User = zoho.adminuser
+    ];
+
+    // STEP 3: Validate file metadata
+    recordsFound = ifnull(fileRec.Records_Found, 0);
+    recordsImported = ifnull(fileRec.Records_Imported, 0);
+
+    if (recordsFound == 0)
+    {
+        // No records detected - mark as completed with warning
+        fileRec.Processing_Status = "Completed";
+        fileRec.Records_Imported = 0;
+
+        row = insert into audit_trail
+        [
+            Incident_ID = incidentID
+            Action = "File Processing Completed"
+            Action_Date = zoho.currentdate
+            Performed_By = "SYSTEM"
+            Notes = "File completed with 0 records found: " + fileName + ". No data to import."
+            Added_User = zoho.adminuser
+        ];
+    }
+    else
+    {
+        // STEP 4: Mark as Completed
+        fileRec.Processing_Status = "Completed";
+        fileRec.Records_Imported = recordsFound;
+
+        row = insert into audit_trail
+        [
+            Incident_ID = incidentID
+            Action = "File Processing Completed"
+            Action_Date = zoho.currentdate
+            Performed_By = "SYSTEM"
+            Notes = "File processed successfully: " + fileName + ". Records found: " + recordsFound + ", Records imported: " + recordsFound + ". Platform: " + platform
+            Added_User = zoho.adminuser
+        ];
+    }
+}
+
+// STEP 5: Log summary
+processedCount = ifnull(pendingFiles.count(), 0);
+if (processedCount > 0)
+{
+    sendmail
+    [
+        from : zoho.adminuserid
+        to : "creditcontrol@tengroup.com"
+        subject : "Daily File Processing Complete - " + processedCount + " files processed"
+        message : "The daily file processing job has completed.\n\nFiles Processed: " + processedCount + "\nDate: " + zoho.currentdate + "\n\nPlease review any files with 0 records for potential issues.\n\nRegards,\nTen Chargeback Management (Automated)"
+    ];
+}

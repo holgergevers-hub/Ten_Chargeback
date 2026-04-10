@@ -1,0 +1,59 @@
+# forgeds.yaml — Ten Chargeback Management
+# ForgeDS auto-discovers this file by walking up from cwd
+
+project:
+  name: "Ten Chargeback Management"
+  version: "0.1.0"
+
+lint:
+  threshold_fallback: "30"
+  dual_threshold_fallback: "5000.00"
+  demo_email_domains:
+    - "tengroup.com"
+    - "example.com"
+
+schema:
+  mandatory_zoho_fields:
+    - ["chargeback_incidents", "Platform"]
+    - ["chargeback_incidents", "Amount_USD"]
+    - ["chargeback_incidents", "Status"]
+    - ["dispute_submissions", "Incident_ID"]
+    - ["audit_trail", "Added_User"]
+
+  table_to_form:
+    Chargeback_Incidents: "chargeback_incidents"
+    LM_Followups: "lm_followups"
+    Dispute_Submissions: "dispute_submissions"
+    Merchant_Responses: "merchant_responses"
+    File_Uploads: "file_uploads"
+    Audit_Trail: "audit_trail"
+    Merchant_Platforms: "merchant_platforms"
+    Regional_Config: "regional_config"
+    Currency_Config: "currency_config"
+
+  fk_relationships:
+    - child: ["LM_Followups", "Incident_ID"]
+      parent: ["Chargeback_Incidents", "ID"]
+    - child: ["Dispute_Submissions", "Incident_ID"]
+      parent: ["Chargeback_Incidents", "ID"]
+    - child: ["Merchant_Responses", "Dispute_ID"]
+      parent: ["Dispute_Submissions", "ID"]
+    - child: ["File_Uploads", "Incident_ID"]
+      parent: ["Chargeback_Incidents", "ID"]
+    - child: ["Audit_Trail", "Incident_ID"]
+      parent: ["Chargeback_Incidents", "ID"]
+
+  upload_order:
+    - ["Merchant_Platforms", "merchant_platforms"]
+    - ["Regional_Config", "regional_config"]
+    - ["Currency_Config", "currency_config"]
+    - ["Chargeback_Incidents", "chargeback_incidents"]
+    - ["LM_Followups", "lm_followups"]
+    - ["Dispute_Submissions", "dispute_submissions"]
+    - ["Merchant_Responses", "merchant_responses"]
+    - ["File_Uploads", "file_uploads"]
+    - ["Audit_Trail", "audit_trail"]
+
+  exclude_fields: ["ID", "Added_User"]
+
+seed_data_dir: "config/seed-data"

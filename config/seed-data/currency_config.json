@@ -1,0 +1,13 @@
+[
+  {"Currency_Code": "USD", "Currency_Name": "US Dollar", "Exchange_Rate_Source": "base"},
+  {"Currency_Code": "EUR", "Currency_Name": "Euro", "Exchange_Rate_Source": "exchange_rates.json"},
+  {"Currency_Code": "GBP", "Currency_Name": "British Pound", "Exchange_Rate_Source": "exchange_rates.json"},
+  {"Currency_Code": "JPY", "Currency_Name": "Japanese Yen", "Exchange_Rate_Source": "exchange_rates.json"},
+  {"Currency_Code": "BRL", "Currency_Name": "Brazilian Real", "Exchange_Rate_Source": "manual"},
+  {"Currency_Code": "MXN", "Currency_Name": "Mexican Peso", "Exchange_Rate_Source": "manual"},
+  {"Currency_Code": "SGD", "Currency_Name": "Singapore Dollar", "Exchange_Rate_Source": "manual"},
+  {"Currency_Code": "CAD", "Currency_Name": "Canadian Dollar", "Exchange_Rate_Source": "manual"},
+  {"Currency_Code": "AUD", "Currency_Name": "Australian Dollar", "Exchange_Rate_Source": "manual"},
+  {"Currency_Code": "INR", "Currency_Name": "Indian Rupee", "Exchange_Rate_Source": "manual"},
+  {"Currency_Code": "COP", "Currency_Name": "Colombian Peso", "Exchange_Rate_Source": "manual"}
+]

@@ -1,0 +1,28 @@
+# Raw extracted chargeback data (large, rebuild from zip)
+data/raw/
+# Clean pipeline output (regenerated)
+data/clean/
+# Source zip (too large for git)
+*.zip
+# Zoho API credentials
+config/zoho-api.yaml
+# Generated databases
+*.db
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+# IDE
+.vscode/
+.idea/
+# OS
+.DS_Store
+Thumbs.db
+# Temp
+*.tmp
+*.bak
+~$*

@@ -1,0 +1,15 @@
+[
+  {"Scheme": "visa", "Code": "10.4", "Description": "Other Fraud-Card Absent Environment", "Category": "Fraud"},
+  {"Scheme": "visa", "Code": "10.5", "Description": "Visa Fraud Monitoring Program", "Category": "Fraud"},
+  {"Scheme": "visa", "Code": "13.1", "Description": "Merchandise/Services Not Received", "Category": "Consumer Dispute"},
+  {"Scheme": "visa", "Code": "13.2", "Description": "Cancelled Recurring Transaction", "Category": "Consumer Dispute"},
+  {"Scheme": "visa", "Code": "13.3", "Description": "Not as Described or Defective", "Category": "Consumer Dispute"},
+  {"Scheme": "mc", "Code": "4837", "Description": "No Cardholder Authorisation", "Category": "Fraud"},
+  {"Scheme": "mc", "Code": "4853", "Description": "Cardholder Dispute", "Category": "Consumer Dispute"},
+  {"Scheme": "mc", "Code": "4863", "Description": "Cardholder Does Not Recognise", "Category": "Fraud"},
+  {"Scheme": "mc", "Code": "4834", "Description": "Point-of-Interaction Error", "Category": "Processing Error"},
+  {"Scheme": "amex", "Code": "C02", "Description": "Credit Not Processed", "Category": "Consumer Dispute"},
+  {"Scheme": "amex", "Code": "C04", "Description": "Goods/Services Not Received", "Category": "Consumer Dispute"},
+  {"Scheme": "amex", "Code": "F10", "Description": "Missing Imprint", "Category": "Fraud"},
+  {"Scheme": "amex", "Code": "F29", "Description": "Card Not Present", "Category": "Fraud"}
+]

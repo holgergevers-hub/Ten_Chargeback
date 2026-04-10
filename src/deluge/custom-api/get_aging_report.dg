@@ -1,0 +1,120 @@
+// ============================================================
+// Script:   get_aging_report.dg
+// Location: Custom API > get_aging_report
+// Trigger:  Custom API call (GET)
+// Purpose:  Group open/active chargebacks by age bucket for
+//           aging analysis. Returns count and total USD per bucket.
+//           Buckets: 0-7, 8-14, 15-21, 22-25, 26-30, 30+
+// ============================================================
+
+// STEP 1: Query active chargebacks (not resolved/expired/won/lost)
+activeIncidents = chargeback_incidents[Status == "Open" || Status == "Under Review" || Status == "Disputed"];
+
+// STEP 2: Initialize bucket counters
+bucket_0_7_count = 0;
+bucket_0_7_usd = 0;
+bucket_8_14_count = 0;
+bucket_8_14_usd = 0;
+bucket_15_21_count = 0;
+bucket_15_21_usd = 0;
+bucket_22_25_count = 0;
+bucket_22_25_usd = 0;
+bucket_26_30_count = 0;
+bucket_26_30_usd = 0;
+bucket_over_30_count = 0;
+bucket_over_30_usd = 0;
+
+// STEP 3: Classify each incident into an age bucket
+for each incident in activeIncidents
+{
+    incidentDate = ifnull(incident.Incident_Date, zoho.currentdate);
+    daysOld = daysBetween(incidentDate, zoho.currentdate);
+    amountUSD = ifnull(incident.Amount_USD, 0);
+
+    if (daysOld > 30)
+    {
+        bucket_over_30_count = bucket_over_30_count + 1;
+        bucket_over_30_usd = bucket_over_30_usd + amountUSD;
+    }
+    else if (daysOld >= 26)
+    {
+        bucket_26_30_count = bucket_26_30_count + 1;
+        bucket_26_30_usd = bucket_26_30_usd + amountUSD;
+    }
+    else if (daysOld >= 22)
+    {
+        bucket_22_25_count = bucket_22_25_count + 1;
+        bucket_22_25_usd = bucket_22_25_usd + amountUSD;
+    }
+    else if (daysOld >= 15)
+    {
+        bucket_15_21_count = bucket_15_21_count + 1;
+        bucket_15_21_usd = bucket_15_21_usd + amountUSD;
+    }
+    else if (daysOld >= 8)
+    {
+        bucket_8_14_count = bucket_8_14_count + 1;
+        bucket_8_14_usd = bucket_8_14_usd + amountUSD;
+    }
+    else
+    {
+        bucket_0_7_count = bucket_0_7_count + 1;
+        bucket_0_7_usd = bucket_0_7_usd + amountUSD;
+    }
+}
+
+// STEP 4: Build response JSON
+totalActiveCount = bucket_0_7_count + bucket_8_14_count + bucket_15_21_count + bucket_22_25_count + bucket_26_30_count + bucket_over_30_count;
+totalActiveUSD = bucket_0_7_usd + bucket_8_14_usd + bucket_15_21_usd + bucket_22_25_usd + bucket_26_30_usd + bucket_over_30_usd;
+
+// Critical = 22+ days (at risk of missing deadline)
+criticalCount = bucket_22_25_count + bucket_26_30_count + bucket_over_30_count;
+criticalUSD = bucket_22_25_usd + bucket_26_30_usd + bucket_over_30_usd;
+
+buckets = List();
+
+bucket1 = Map();
+bucket1.put("label", "0-7 days");
+bucket1.put("count", bucket_0_7_count);
+bucket1.put("amount_usd", bucket_0_7_usd);
+buckets.add(bucket1);
+
+bucket2 = Map();
+bucket2.put("label", "8-14 days");
+bucket2.put("count", bucket_8_14_count);
+bucket2.put("amount_usd", bucket_8_14_usd);
+buckets.add(bucket2);
+
+bucket3 = Map();
+bucket3.put("label", "15-21 days");
+bucket3.put("count", bucket_15_21_count);
+bucket3.put("amount_usd", bucket_15_21_usd);
+buckets.add(bucket3);
+
+bucket4 = Map();
+bucket4.put("label", "22-25 days");
+bucket4.put("count", bucket_22_25_count);
+bucket4.put("amount_usd", bucket_22_25_usd);
+buckets.add(bucket4);
+
+bucket5 = Map();
+bucket5.put("label", "26-30 days");
+bucket5.put("count", bucket_26_30_count);
+bucket5.put("amount_usd", bucket_26_30_usd);
+buckets.add(bucket5);
+
+bucket6 = Map();
+bucket6.put("label", "30+ days");
+bucket6.put("count", bucket_over_30_count);
+bucket6.put("amount_usd", bucket_over_30_usd);
+buckets.add(bucket6);
+
+response = Map();
+response.put("total_active_count", totalActiveCount);
+response.put("total_active_amount_usd", totalActiveUSD);
+response.put("critical_count", criticalCount);
+response.put("critical_amount_usd", criticalUSD);
+response.put("buckets", buckets);
+response.put("generated_at", zoho.currentdate.toString("yyyy-MM-dd HH:mm:ss"));
+
+return response;

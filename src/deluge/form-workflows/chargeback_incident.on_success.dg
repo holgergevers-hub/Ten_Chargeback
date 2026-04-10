@@ -1,0 +1,62 @@
+// ============================================================
+// Script:   chargeback_incident.on_success.dg
+// Location: chargeback_incidents form > Workflow > On Success
+// Trigger:  After successful form submission
+// Purpose:  Auto-assign lifestyle manager from regional config,
+//           calculate dispute deadline (30-day window),
+//           set initial status, create audit trail, notify LM
+// ============================================================
+
+// STEP 1: Look up regional config for auto-assignment
+merchantAcct = ifnull(input.Merchant_Account, "");
+regionRec = regional_config[Merchant_Account == merchantAcct];
+assignedLM = ifnull(regionRec.Default_LM_Name, "Unassigned");
+assignedEmail = ifnull(regionRec.Default_LM_Email, "");
+defaultCurrency = ifnull(regionRec.Default_Currency, "USD");
+
+// STEP 2: Assign lifestyle manager
+input.Assigned_LM = assignedLM;
+
+// STEP 3: Calculate dispute deadline (Incident_Date + 30 days)
+incidentDate = ifnull(input.Incident_Date, zoho.currentdate);
+input.Dispute_Deadline = incidentDate.addDay(30);
+
+// STEP 4: Calculate days remaining
+input.Days_Remaining = daysBetween(zoho.currentdate, input.Dispute_Deadline);
+
+// STEP 5: Set initial status
+input.Status = "Open";
+
+// STEP 6: Default currency if blank
+if (ifnull(input.Currency_Original, "") == "")
+{
+    input.Currency_Original = defaultCurrency;
+}
+
+// STEP 7: Insert audit trail record
+row = insert into audit_trail
+[
+    Incident_ID = input.ID
+    Action = "Chargeback Created"
+    Action_Date = zoho.currentdate
+    Performed_By = zoho.loginuser
+    Notes = "New chargeback recorded. Platform: " + ifnull(input.Platform, "N/A") + ", Amount: " + ifnull(input.Currency_Original, "") + " " + ifnull(input.Amount_Original, "0") + ". Assigned to " + assignedLM + ". Dispute deadline: " + input.Dispute_Deadline
+    Added_User = zoho.loginuser
+];
+
+// STEP 8: Notify assigned lifestyle manager
+if (assignedEmail != "")
+{
+    pspRef = ifnull(input.PSP_Reference, "N/A");
+    platform = ifnull(input.Platform, "N/A");
+    amountStr = ifnull(input.Currency_Original, "") + " " + ifnull(input.Amount_Original, "0");
+    deadlineStr = input.Dispute_Deadline.toString("dd-MMM-yyyy");
+
+    sendmail
+    [
+        from : zoho.adminuserid
+        to : assignedEmail
+        subject : "New Chargeback Assigned - PSP " + pspRef + " (" + platform + ")"
+        message : "Dear " + assignedLM + ",\n\nA new chargeback has been assigned to you for evidence gathering.\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount: " + amountStr + "\nDispute Reason: " + ifnull(input.Dispute_Reason, "N/A") + "\nDispute Deadline: " + deadlineStr + "\nDays Remaining: " + input.Days_Remaining + "\n\nPlease gather supporting evidence and update the follow-up record as soon as possible.\n\nRegards,\nTen Chargeback Management"
+    ];
+}

@@ -1,0 +1,208 @@
+{
+  "total_usd": 303247.67,
+  "total_count": 324,
+  "monthly_trend": [
+    {
+      "month": "2024-01",
+      "count": 16,
+      "amount_usd": 44285.35
+    },
+    {
+      "month": "2024-02",
+      "count": 33,
+      "amount_usd": 73032.36
+    },
+    {
+      "month": "2024-03",
+      "count": 85,
+      "amount_usd": 52630.59
+    },
+    {
+      "month": "2024-04",
+      "count": 96,
+      "amount_usd": 11430.05
+    },
+    {
+      "month": "2024-05",
+      "count": 24,
+      "amount_usd": 10933.29
+    },
+    {
+      "month": "2024-06",
+      "count": 24,
+      "amount_usd": 20017.01
+    },
+    {
+      "month": "2024-07",
+      "count": 6,
+      "amount_usd": 11275.55
+    },
+    {
+      "month": "2024-10",
+      "count": 6,
+      "amount_usd": 22813.73
+    },
+    {
+      "month": "2024-11",
+      "count": 12,
+      "amount_usd": 43271.14
+    },
+    {
+      "month": "2024-12",
+      "count": 22,
+      "amount_usd": 13558.6
+    }
+  ],
+  "by_platform": [
+    {
+      "platform": "Adyen",
+      "count": 108,
+      "amount_usd": 76748.39
+    },
+    {
+      "platform": "Ingenico",
+      "count": 165,
+      "amount_usd": 33780.23
+    },
+    {
+      "platform": "Stripe",
+      "count": 51,
+      "amount_usd": 192719.05
+    }
+  ],
+  "by_record_type": [
+    {
+      "type": "Chargeback",
+      "count": 237,
+      "amount_usd": 226231.48
+    },
+    {
+      "type": "Fraud",
+      "count": 79,
+      "amount_usd": 75824.42
+    },
+    {
+      "type": "Reversed",
+      "count": 3,
+      "amount_usd": 746.85
+    },
+    {
+      "type": "Second Chargeback",
+      "count": 2,
+      "amount_usd": 311.75
+    },
+    {
+      "type": "Information Supplied",
+      "count": 3,
+      "amount_usd": 133.17
+    }
+  ],
+  "by_merchant": [
+    {
+      "merchant": "TenBR1",
+      "count": 48,
+      "amount_usd": 217684.81,
+      "platform": "Adyen"
+    },
+    {
+      "merchant": "TenUK1_USD",
+      "count": 221,
+      "amount_usd": 41720.03,
+      "platform": "Adyen"
+    },
+    {
+      "merchant": "TenUKMoto",
+      "count": 32,
+      "amount_usd": 16811.08,
+      "platform": "Adyen"
+    },
+    {
+      "merchant": "TenBR2MOTO",
+      "count": 5,
+      "amount_usd": 14892.81,
+      "platform": "Adyen"
+    },
+    {
+      "merchant": "TenCHMoto",
+      "count": 6,
+      "amount_usd": 10139.64,
+      "platform": "Adyen"
+    },
+    {
+      "merchant": "TenUSAMerMoto",
+      "count": 12,
+      "amount_usd": 1999.3,
+      "platform": "Adyen"
+    }
+  ],
+  "by_region": [
+    {
+      "region": "Brazil",
+      "count": 53,
+      "amount_usd": 232577.62
+    },
+    {
+      "region": "UK",
+      "count": 253,
+      "amount_usd": 58531.11
+    },
+    {
+      "region": "Switzerland",
+      "count": 6,
+      "amount_usd": 10139.64
+    },
+    {
+      "region": "US",
+      "count": 12,
+      "amount_usd": 1999.3
+    }
+  ],
+  "by_currency": [
+    {
+      "currency": "GBP",
+      "count": 74,
+      "amount_original": 104316.68,
+      "amount_usd": 132092.01
+    },
+    {
+      "currency": "EUR",
+      "count": 82,
+      "amount_original": 98576.16,
+      "amount_usd": 107300.31
+    },
+    {
+      "currency": "USD",
+      "count": 84,
+      "amount_original": 63130.3,
+      "amount_usd": 63130.3
+    },
+    {
+      "currency": "JPY",
+      "count": 84,
+      "amount_original": 108369.99,
+      "amount_usd": 725.05
+    }
+  ],
+  "by_category": [
+    {
+      "category": "Chargeback",
+      "count": 239,
+      "amount_usd": 226543.23
+    },
+    {
+      "category": "Fraud",
+      "count": 79,
+      "amount_usd": 75824.42
+    },
+    {
+      "category": "Recovered",
+      "count": 3,
+      "amount_usd": 746.85
+    },
+    {
+      "category": "Other",
+      "count": 3,
+      "amount_usd": 133.17
+    }
+  ]
+}

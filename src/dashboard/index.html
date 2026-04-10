@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ten Group — Chargeback Risk Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <header>
+        <h1>Ten Group — Chargeback Risk Dashboard</h1>
+        <p class="subtitle">CFO / COO Executive Summary &bull; Data Period: Jan 2024 &ndash; Dec 2024</p>
+    </header>
+
+    <section class="kpi-row" id="kpiRow"></section>
+
+    <section class="chart-grid">
+        <div class="chart-card wide">
+            <h3>Monthly Chargeback Trend</h3>
+            <canvas id="monthlyTrend"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>By Platform</h3>
+            <canvas id="byPlatform"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>By Category</h3>
+            <canvas id="byCategory"></canvas>
+        </div>
+    </section>
+
+    <section class="chart-grid">
+        <div class="chart-card">
+            <h3>By Region (USD)</h3>
+            <canvas id="byRegion"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>By Currency (Original)</h3>
+            <canvas id="byCurrency"></canvas>
+        </div>
+    </section>
+
+    <section class="table-section">
+        <h3>Top Merchants by Chargeback Amount (USD)</h3>
+        <table id="merchantTable">
+            <thead>
+                <tr>
+                    <th>Merchant Account</th>
+                    <th>Platform</th>
+                    <th>Count</th>
+                    <th>Amount (USD)</th>
+                    <th>% of Total</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
+    <section class="table-section">
+        <h3>Record Type Breakdown</h3>
+        <table id="typeTable">
+            <thead>
+                <tr>
+                    <th>Record Type</th>
+                    <th>Count</th>
+                    <th>Amount (USD)</th>
+                    <th>% of Total</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
+    <footer>
+        <p>Generated from merchant platform data (Adyen, Ingenico, Stripe) &bull; All amounts converted to USD</p>
+        <p>Data cleaning code: <a href="https://github.com/holgergevers-hub/Ten_Chargeback">github.com/holgergevers-hub/Ten_Chargeback</a></p>
+    </footer>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

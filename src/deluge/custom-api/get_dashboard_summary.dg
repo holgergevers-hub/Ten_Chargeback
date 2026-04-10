@@ -1,0 +1,129 @@
+// ============================================================
+// Script:   get_dashboard_summary.dg
+// Location: Custom API > get_dashboard_summary
+// Trigger:  Custom API call (GET)
+// Purpose:  Aggregate chargeback data for CFO/COO dashboard.
+//           Returns total USD amount, count by status,
+//           count by platform as JSON.
+// ============================================================
+
+// STEP 1: Aggregate totals by status
+openList = chargeback_incidents[Status == "Open"];
+underReviewList = chargeback_incidents[Status == "Under Review"];
+disputedList = chargeback_incidents[Status == "Disputed"];
+resolvedList = chargeback_incidents[Status == "Resolved"];
+expiredList = chargeback_incidents[Status == "Expired"];
+wonList = chargeback_incidents[Status == "Won"];
+lostList = chargeback_incidents[Status == "Lost"];
+
+openCount = ifnull(openList.count(), 0);
+underReviewCount = ifnull(underReviewList.count(), 0);
+disputedCount = ifnull(disputedList.count(), 0);
+resolvedCount = ifnull(resolvedList.count(), 0);
+expiredCount = ifnull(expiredList.count(), 0);
+wonCount = ifnull(wonList.count(), 0);
+lostCount = ifnull(lostList.count(), 0);
+
+totalCount = openCount + underReviewCount + disputedCount + resolvedCount + expiredCount + wonCount + lostCount;
+
+// STEP 2: Calculate total USD amounts by status
+openUSD = 0;
+for each rec in openList
+{
+    openUSD = openUSD + ifnull(rec.Amount_USD, 0);
+}
+
+underReviewUSD = 0;
+for each rec in underReviewList
+{
+    underReviewUSD = underReviewUSD + ifnull(rec.Amount_USD, 0);
+}
+
+disputedUSD = 0;
+for each rec in disputedList
+{
+    disputedUSD = disputedUSD + ifnull(rec.Amount_USD, 0);
+}
+
+resolvedUSD = 0;
+for each rec in resolvedList
+{
+    resolvedUSD = resolvedUSD + ifnull(rec.Amount_USD, 0);
+}
+
+expiredUSD = 0;
+for each rec in expiredList
+{
+    expiredUSD = expiredUSD + ifnull(rec.Amount_USD, 0);
+}
+
+wonUSD = 0;
+for each rec in wonList
+{
+    wonUSD = wonUSD + ifnull(rec.Amount_USD, 0);
+}
+
+lostUSD = 0;
+for each rec in lostList
+{
+    lostUSD = lostUSD + ifnull(rec.Amount_USD, 0);
+}
+
+totalUSD = openUSD + underReviewUSD + disputedUSD + resolvedUSD + expiredUSD + wonUSD + lostUSD;
+
+// STEP 3: Aggregate by platform
+adyenList = chargeback_incidents[Platform == "Adyen"];
+ingenicoList = chargeback_incidents[Platform == "Ingenico"];
+stripeList = chargeback_incidents[Platform == "Stripe"];
+
+adyenCount = ifnull(adyenList.count(), 0);
+ingenicoCount = ifnull(ingenicoList.count(), 0);
+stripeCount = ifnull(stripeList.count(), 0);
+
+adyenUSD = 0;
+for each rec in adyenList
+{
+    adyenUSD = adyenUSD + ifnull(rec.Amount_USD, 0);
+}
+
+ingenicoUSD = 0;
+for each rec in ingenicoList
+{
+    ingenicoUSD = ingenicoUSD + ifnull(rec.Amount_USD, 0);
+}
+
+stripeUSD = 0;
+for each rec in stripeList
+{
+    stripeUSD = stripeUSD + ifnull(rec.Amount_USD, 0);
+}
+
+// STEP 4: Build response JSON
+statusBreakdown = Map();
+statusBreakdown.put("Open", {"count": openCount, "amount_usd": openUSD});
+statusBreakdown.put("Under Review", {"count": underReviewCount, "amount_usd": underReviewUSD});
+statusBreakdown.put("Disputed", {"count": disputedCount, "amount_usd": disputedUSD});
+statusBreakdown.put("Resolved", {"count": resolvedCount, "amount_usd": resolvedUSD});
+statusBreakdown.put("Expired", {"count": expiredCount, "amount_usd": expiredUSD});
+statusBreakdown.put("Won", {"count": wonCount, "amount_usd": wonUSD});
+statusBreakdown.put("Lost", {"count": lostCount, "amount_usd": lostUSD});
+
+platformBreakdown = Map();
+platformBreakdown.put("Adyen", {"count": adyenCount, "amount_usd": adyenUSD});
+platformBreakdown.put("Ingenico", {"count": ingenicoCount, "amount_usd": ingenicoUSD});
+platformBreakdown.put("Stripe", {"count": stripeCount, "amount_usd": stripeUSD});
+
+// Active risk = Open + Under Review (not yet disputed)
+activeRiskCount = openCount + underReviewCount;
+activeRiskUSD = openUSD + underReviewUSD;
+
+response = Map();
+response.put("total_count", totalCount);
+response.put("total_amount_usd", totalUSD);
+response.put("active_risk_count", activeRiskCount);
+response.put("active_risk_amount_usd", activeRiskUSD);
+response.put("status_breakdown", statusBreakdown);
+response.put("platform_breakdown", platformBreakdown);
+response.put("generated_at", zoho.currentdate.toString("yyyy-MM-dd HH:mm:ss"));
+
+return response;

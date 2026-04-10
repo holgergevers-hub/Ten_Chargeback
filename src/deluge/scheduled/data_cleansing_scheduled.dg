@@ -1,0 +1,175 @@
+// ============================================================
+// Script:   data_cleansing_scheduled.dg
+// Location: Workflow > Schedules > Data_Cleansing_Scheduled
+// Trigger:  Scheduled (daily)
+// Purpose:  Cleanse and validate recent chargeback records.
+//           Normalize Record_Type values, validate currencies,
+//           flag data quality issues in the audit trail.
+// ============================================================
+
+// STEP 1: Query recent chargebacks (last 7 days)
+cutoffDate = zoho.currentdate.subDay(7);
+recentIncidents = chargeback_incidents[Incident_Date >= cutoffDate];
+
+// Known valid Record_Type values
+validRecordTypes = List();
+validRecordTypes.add("Chargeback");
+validRecordTypes.add("Second Chargeback");
+validRecordTypes.add("Notification of Chargeback");
+validRecordTypes.add("Request for Information");
+validRecordTypes.add("Pre-Arbitration");
+validRecordTypes.add("Fraud Alert");
+
+// Known valid ISO currency codes (common subset)
+validCurrencies = List();
+validCurrencies.add("USD");
+validCurrencies.add("EUR");
+validCurrencies.add("GBP");
+validCurrencies.add("CHF");
+validCurrencies.add("JPY");
+validCurrencies.add("AUD");
+validCurrencies.add("CAD");
+validCurrencies.add("SEK");
+validCurrencies.add("NOK");
+validCurrencies.add("DKK");
+validCurrencies.add("SGD");
+validCurrencies.add("HKD");
+validCurrencies.add("ZAR");
+validCurrencies.add("BRL");
+validCurrencies.add("MXN");
+validCurrencies.add("INR");
+validCurrencies.add("AED");
+validCurrencies.add("SAR");
+validCurrencies.add("PLN");
+validCurrencies.add("CZK");
+
+cleansedCount = 0;
+flaggedCount = 0;
+
+for each incident in recentIncidents
+{
+    incidentID = incident.ID;
+    pspRef = ifnull(incident.PSP_Reference, "N/A");
+    issues = List();
+
+    // STEP 2: Normalize Record_Type values
+    rawType = ifnull(incident.Record_Type, "");
+    normalizedType = rawType.trim();
+
+    // Map common variations to standard values
+    upperType = normalizedType.toUpperCase();
+    if (upperType == "CB" || upperType == "CHARGEBACK" || upperType == "CHARGE BACK" || upperType == "CHARGE-BACK")
+    {
+        normalizedType = "Chargeback";
+    }
+    else if (upperType == "2ND CHARGEBACK" || upperType == "SECOND CB" || upperType == "2ND CB")
+    {
+        normalizedType = "Second Chargeback";
+    }
+    else if (upperType == "NOC" || upperType == "NOTIFICATION" || upperType == "NOTIFICATION OF CB")
+    {
+        normalizedType = "Notification of Chargeback";
+    }
+    else if (upperType == "RFI" || upperType == "REQUEST FOR INFO" || upperType == "INFO REQUEST")
+    {
+        normalizedType = "Request for Information";
+    }
+    else if (upperType == "PRE-ARB" || upperType == "PREARBITRATION" || upperType == "PRE ARB")
+    {
+        normalizedType = "Pre-Arbitration";
+    }
+    else if (upperType == "FRAUD" || upperType == "FRAUD ALERT" || upperType == "FRAUD NOTIFICATION")
+    {
+        normalizedType = "Fraud Alert";
+    }
+
+    // Check if normalized value is valid
+    if (validRecordTypes.contains(normalizedType))
+    {
+        if (normalizedType != rawType)
+        {
+            incident.Record_Type = normalizedType;
+            cleansedCount = cleansedCount + 1;
+
+            row = insert into audit_trail
+            [
+                Incident_ID = incidentID
+                Action = "Data Cleansed"
+                Action_Date = zoho.currentdate
+                Performed_By = "SYSTEM"
+                Notes = "Record_Type normalized from '" + rawType + "' to '" + normalizedType + "'. PSP: " + pspRef
+                Added_User = zoho.adminuser
+            ];
+        }
+    }
+    else if (rawType != "")
+    {
+        issues.add("Unknown Record_Type: " + rawType);
+    }
+    else
+    {
+        issues.add("Missing Record_Type");
+    }
+
+    // STEP 3: Validate Currency_Original
+    currency = ifnull(incident.Currency_Original, "");
+    if (currency == "")
+    {
+        issues.add("Missing Currency_Original");
+    }
+    else if (!validCurrencies.contains(currency))
+    {
+        issues.add("Unknown currency code: " + currency);
+    }
+
+    // STEP 4: Validate Amount_Original is positive
+    amountOrig = ifnull(incident.Amount_Original, 0);
+    if (amountOrig <= 0)
+    {
+        issues.add("Amount_Original is zero or negative: " + amountOrig);
+    }
+
+    // STEP 5: Validate Incident_Date is not in the future
+    incidentDate = ifnull(incident.Incident_Date, zoho.currentdate);
+    if (daysBetween(zoho.currentdate, incidentDate) > 0)
+    {
+        issues.add("Incident_Date is in the future: " + incidentDate);
+    }
+
+    // STEP 6: Validate Platform is one of the known merchant platforms
+    platformVal = ifnull(incident.Platform, "");
+    if (platformVal != "Adyen" && platformVal != "Ingenico" && platformVal != "Stripe" && platformVal != "")
+    {
+        issues.add("Unknown Platform: " + platformVal);
+    }
+
+    // STEP 7: Flag records with data quality issues
+    if (issues.size() > 0)
+    {
+        flaggedCount = flaggedCount + 1;
+        issueText = issues.toString(",");
+
+        row = insert into audit_trail
+        [
+            Incident_ID = incidentID
+            Action = "Data Quality Issue"
+            Action_Date = zoho.currentdate
+            Performed_By = "SYSTEM"
+            Notes = "Data quality issues found for PSP " + pspRef + ": " + issueText
+            Added_User = zoho.adminuser
+        ];
+    }
+}
+
+// STEP 8: Summary notification if issues found
+totalProcessed = ifnull(recentIncidents.count(), 0);
+if (flaggedCount > 0 || cleansedCount > 0)
+{
+    sendmail
+    [
+        from : zoho.adminuserid
+        to : "creditcontrol@tengroup.com"
+        subject : "Data Cleansing Report - " + cleansedCount + " cleansed, " + flaggedCount + " flagged"
+        message : "Daily data cleansing has completed for records from the last 7 days.\n\nTotal Records Scanned: " + totalProcessed + "\nRecords Cleansed: " + cleansedCount + "\nRecords Flagged: " + flaggedCount + "\nDate: " + zoho.currentdate + "\n\nPlease review flagged records in the audit trail.\n\nRegards,\nTen Chargeback Management (Automated)"
+    ];
+}

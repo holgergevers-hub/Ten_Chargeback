@@ -1,0 +1,107 @@
+// ============================================================
+// Script:   auto_alert_25_days.dg
+// Location: Workflow > Schedules > Auto_Alert_25_Days
+// Trigger:  Scheduled (daily)
+// Purpose:  Alert on chargebacks approaching 30-day dispute deadline.
+//           25-29 days: warning to assigned LM.
+//           >= 30 days: expire the chargeback, escalation email.
+// ============================================================
+
+// STEP 1: Query all open or under-review chargebacks
+openIncidents = chargeback_incidents[Status == "Open" || Status == "Under Review"];
+
+for each incident in openIncidents
+{
+    incidentDate = ifnull(incident.Incident_Date, zoho.currentdate);
+    daysOld = daysBetween(incidentDate, zoho.currentdate);
+    pspRef = ifnull(incident.PSP_Reference, "N/A");
+    platform = ifnull(incident.Platform, "N/A");
+    amountUSD = ifnull(incident.Amount_USD, "0");
+    assignedLM = ifnull(incident.Assigned_LM, "N/A");
+    currentStatus = ifnull(incident.Status, "Open");
+    incidentID = incident.ID;
+
+    // Look up LM email from regional config
+    merchantAcct = ifnull(incident.Merchant_Account, "");
+    regionRec = regional_config[Merchant_Account == merchantAcct];
+    lmEmail = ifnull(regionRec.Default_LM_Email, "");
+
+    // Update days remaining
+    deadline = ifnull(incident.Dispute_Deadline, incidentDate.addDay(30));
+    daysRemaining = daysBetween(zoho.currentdate, deadline);
+    incident.Days_Remaining = daysRemaining;
+
+    if (daysOld >= 30)
+    {
+        // EXPIRED: past the dispute window
+        incident.Status = "Expired";
+        incident.Days_Remaining = 0;
+
+        row = insert into audit_trail
+        [
+            Incident_ID = incidentID
+            Action = "Auto-Expired"
+            Action_Date = zoho.currentdate
+            Performed_By = "SYSTEM"
+            Notes = "Chargeback expired after 30 days without dispute. Days old: " + daysOld + ". PSP: " + pspRef
+            Added_User = zoho.adminuser
+        ];
+
+        // Escalation email to credit control
+        sendmail
+        [
+            from : zoho.adminuserid
+            to : "creditcontrol@tengroup.com"
+            subject : "EXPIRED - Chargeback " + pspRef + " past 30-day deadline"
+            message : "The following chargeback has expired without a dispute being filed:\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\nAssigned LM: " + assignedLM + "\nIncident Date: " + incidentDate + "\nDays Old: " + daysOld + "\n\nThis chargeback can no longer be disputed. Please review and update records accordingly.\n\nRegards,\nTen Chargeback Management (Automated)"
+        ];
+
+        // Also notify the LM
+        if (lmEmail != "")
+        {
+            sendmail
+            [
+                from : zoho.adminuserid
+                to : lmEmail
+                subject : "EXPIRED - Chargeback " + pspRef + " - No dispute filed"
+                message : "Dear " + assignedLM + ",\n\nChargeback " + pspRef + " has expired. The 30-day dispute window has closed.\n\nRegards,\nTen Chargeback Management (Automated)"
+            ];
+        }
+    }
+    else if (daysOld >= 25)
+    {
+        // WARNING: approaching deadline
+        row = insert into audit_trail
+        [
+            Incident_ID = incidentID
+            Action = "Deadline Warning Sent"
+            Action_Date = zoho.currentdate
+            Performed_By = "SYSTEM"
+            Notes = "Warning sent at " + daysOld + " days. Days remaining: " + daysRemaining + ". PSP: " + pspRef
+            Added_User = zoho.adminuser
+        ];
+
+        if (lmEmail != "")
+        {
+            sendmail
+            [
+                from : zoho.adminuserid
+                to : lmEmail
+                subject : "URGENT - Chargeback " + pspRef + " deadline in " + daysRemaining + " days"
+                message : "Dear " + assignedLM + ",\n\nChargeback " + pspRef + " is approaching its dispute deadline.\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\nDays Remaining: " + daysRemaining + "\nDispute Deadline: " + ifnull(incident.Dispute_Deadline, "N/A") + "\n\nPlease ensure evidence is gathered and the dispute is submitted immediately.\n\nRegards,\nTen Chargeback Management (Automated)"
+            ];
+        }
+
+        // CC credit control on critical warnings (3 days or less)
+        if (daysRemaining <= 3)
+        {
+            sendmail
+            [
+                from : zoho.adminuserid
+                to : "creditcontrol@tengroup.com"
+                subject : "CRITICAL - Chargeback " + pspRef + " expires in " + daysRemaining + " days"
+                message : "Chargeback " + pspRef + " has only " + daysRemaining + " days remaining.\n\nAssigned LM: " + assignedLM + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\n\nImmediate action required.\n\nRegards,\nTen Chargeback Management (Automated)"
+            ];
+        }
+    }
+}

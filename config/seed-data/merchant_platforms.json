@@ -1,0 +1,5 @@
+[
+  {"Name": "Adyen", "Format": "CSV", "Delimiter": "comma", "Region": "EU", "Active": true},
+  {"Name": "Ingenico", "Format": "JSON", "Delimiter": null, "Region": "EU", "Active": true},
+  {"Name": "Stripe", "Format": "TSV", "Delimiter": "tab", "Region": "US", "Active": true}
+]

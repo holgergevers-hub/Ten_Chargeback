@@ -1,0 +1,76 @@
+# deluge-manifest.yaml — Script metadata for forgeds-scaffold
+scripts:
+  # --- Form Workflows ---
+  - name: chargeback_incident.on_success
+    location: "Chargeback_Incidents form > Workflow > On Success"
+    trigger: "After successful form submission"
+    purpose: "Auto-assign lifestyle manager, calculate dispute deadline, set status, audit trail"
+    form: chargeback_incidents
+    event: on_success
+    context: form-workflow
+    includes: [audit-trail, sendmail]
+
+  - name: dispute_submission.on_success
+    location: "Dispute_Submissions form > Workflow > On Success"
+    trigger: "After successful form submission"
+    purpose: "Link to incident, update incident status to Disputed, notify merchant team, audit trail"
+    form: dispute_submissions
+    event: on_success
+    context: form-workflow
+    includes: [audit-trail, sendmail]
+
+  # --- Scheduled ---
+  - name: auto_alert_25_days
+    location: "Workflow > Schedules > Auto_Alert_25_Days"
+    trigger: "Scheduled (daily at 06:00)"
+    purpose: "Alert when chargebacks are 25+ days old and undisputed — 5 days remain in 30-day window"
+    form: chargeback_incidents
+    event: scheduled
+    context: scheduled
+    includes: [audit-trail, sendmail]
+
+  - name: daily_file_processing
+    location: "Workflow > Schedules > Daily_File_Processing"
+    trigger: "Scheduled (daily at 02:00)"
+    purpose: "Process uploaded merchant statement files, parse records, create chargeback incidents"
+    form: chargeback_incidents
+    event: scheduled
+    context: scheduled
+    includes: [audit-trail]
+
+  - name: currency_conversion_batch
+    location: "Workflow > Schedules > Currency_Conversion_Batch"
+    trigger: "Scheduled (daily at 03:00)"
+    purpose: "Fetch exchange rates and recalculate USD amounts for records missing conversion"
+    form: chargeback_incidents
+    event: scheduled
+    context: scheduled
+    includes: [audit-trail]
+
+  - name: data_cleansing_scheduled
+    location: "Workflow > Schedules > Data_Cleansing"
+    trigger: "Scheduled (daily at 04:00)"
+    purpose: "Validate and cleanse newly imported records: normalize dates, currencies, record types"
+    form: chargeback_incidents
+    event: scheduled
+    context: scheduled
+    includes: [audit-trail]
+
+  # --- Custom APIs ---
+  - name: get_dashboard_summary
+    location: "Microservices > Custom API > Get_Dashboard_Summary"
+    trigger: "API call (REST/widget)"
+    purpose: "Return aggregated chargeback stats for CFO/COO dashboard"
+    form: null
+    event: api_execute
+    context: custom-api
+    includes: []
+
+  - name: get_aging_report
+    location: "Microservices > Custom API > Get_Aging_Report"
+    trigger: "API call (REST/widget)"
+    purpose: "Return chargebacks grouped by age bucket (0-7, 8-14, 15-21, 22-25, 26-30, 30+)"
+    form: null
+    event: api_execute
+    context: custom-api
+    includes: []

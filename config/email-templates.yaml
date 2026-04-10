@@ -1,0 +1,96 @@
+# email-templates.yaml — Sendmail template variables for chargeback workflows
+
+templates:
+  alert_25_days:
+    subject: "URGENT: Chargeback Dispute Deadline in {days_remaining} Days — {merchant_account}"
+    to: "{lm_email}"
+    from: "chargeback-alerts@tengroup.com"
+    message: |
+      Dear {lm_name},
+
+      Chargeback #{incident_id} for {merchant_account} is approaching the 30-day dispute deadline.
+
+      Amount: {amount_original} {currency_original} ({amount_usd} USD)
+      Incident Date: {incident_date}
+      Days Remaining: {days_remaining}
+      Dispute Reason: {dispute_reason}
+
+      Please gather evidence and submit a dispute before the deadline.
+
+      Regards,
+      Ten Chargeback Management System
+
+  auto_assign_lm:
+    subject: "New Chargeback Assigned — {merchant_account} ({amount_usd} USD)"
+    to: "{lm_email}"
+    from: "chargeback-alerts@tengroup.com"
+    message: |
+      Dear {lm_name},
+
+      A new chargeback has been assigned to you for review.
+
+      Incident ID: {incident_id}
+      Platform: {platform}
+      Merchant: {merchant_account}
+      Amount: {amount_original} {currency_original} ({amount_usd} USD)
+      Incident Date: {incident_date}
+      Dispute Deadline: {dispute_deadline}
+      Reason: {dispute_reason}
+
+      Please review and determine if this chargeback should be disputed.
+
+      Regards,
+      Ten Chargeback Management System
+
+  dispute_submitted:
+    subject: "Dispute Submitted — Chargeback #{incident_id} ({merchant_account})"
+    to: "{stakeholder_emails}"
+    from: "chargeback-alerts@tengroup.com"
+    message: |
+      A dispute has been submitted for Chargeback #{incident_id}.
+
+      Platform: {platform}
+      Merchant: {merchant_account}
+      Amount: {amount_usd} USD
+      Dispute Reason: {dispute_reason_text}
+      Expected Response Date: {expected_response_date}
+
+      The credit controller will follow up on any additional information requests.
+
+      Regards,
+      Ten Chargeback Management System
+
+  escalation_30_day_breach:
+    subject: "ESCALATION: 30-Day Dispute Window Expired — {merchant_account}"
+    to: "{escalation_emails}"
+    from: "chargeback-alerts@tengroup.com"
+    message: |
+      ESCALATION NOTICE
+
+      The 30-day dispute window has expired for Chargeback #{incident_id}.
+
+      Amount: {amount_usd} USD
+      Platform: {platform}
+      Merchant: {merchant_account}
+      Incident Date: {incident_date}
+      Status: {status}
+
+      This chargeback can no longer be disputed. The amount is unrecoverable.
+
+      Regards,
+      Ten Chargeback Management System
+
+  merchant_response_received:
+    subject: "Merchant Response — Chargeback #{incident_id}"
+    to: "{cc_email}"
+    from: "chargeback-alerts@tengroup.com"
+    message: |
+      A response has been received from the merchant for Chargeback #{incident_id}.
+
+      Status: {response_status}
+      Additional Info Requested: {additional_info}
+
+      Please review and take appropriate action.
+
+      Regards,
+      Ten Chargeback Management System

@@ -1,0 +1,133 @@
+// ============================================================
+// Script:   currency_conversion_batch.dg
+// Location: Workflow > Schedules > Currency_Conversion_Batch
+// Trigger:  Scheduled (daily)
+// Purpose:  Convert Amount_Original to Amount_USD for records
+//           missing USD values. Uses external exchange rate API.
+//           Rates are per-USD: Amount_USD = Amount_Original / rate.
+// ============================================================
+
+// STEP 1: Query chargebacks missing USD amounts
+unconverted = chargeback_incidents[Amount_USD == null || Amount_USD == 0];
+
+if (ifnull(unconverted.count(), 0) == 0)
+{
+    return;
+}
+
+// STEP 2: Fetch current exchange rates from API (USD base)
+rateResponse = invokeUrl
+[
+    url : "https://open.er-api.com/v6/latest/USD"
+    type : GET
+];
+
+rateJson = ifnull(rateResponse, Map());
+rates = ifnull(rateJson.get("rates"), Map());
+fetchResult = ifnull(rateJson.get("result"), "error");
+
+if (fetchResult != "success")
+{
+    // API call failed - log and exit
+    row = insert into audit_trail
+    [
+        Incident_ID = 0
+        Action = "Currency Conversion Failed"
+        Action_Date = zoho.currentdate
+        Performed_By = "SYSTEM"
+        Notes = "Exchange rate API returned non-success result. Conversion batch aborted."
+        Added_User = zoho.adminuser
+    ];
+    return;
+}
+
+// STEP 3: Process each unconverted record
+convertedCount = 0;
+errorCount = 0;
+
+for each incident in unconverted
+{
+    incidentID = incident.ID;
+    currency = ifnull(incident.Currency_Original, "");
+    amountOriginal = ifnull(incident.Amount_Original, 0);
+    pspRef = ifnull(incident.PSP_Reference, "N/A");
+
+    if (currency == "" || amountOriginal == 0)
+    {
+        errorCount = errorCount + 1;
+
+        row = insert into audit_trail
+        [
+            Incident_ID = incidentID
+            Action = "Currency Conversion Skipped"
+            Action_Date = zoho.currentdate
+            Performed_By = "SYSTEM"
+            Notes = "Skipped: missing currency or zero amount. Currency: " + currency + ", Amount: " + amountOriginal
+            Added_User = zoho.adminuser
+        ];
+        continue;
+    }
+
+    // USD needs no conversion
+    if (currency == "USD")
+    {
+        incident.Amount_USD = amountOriginal;
+        incident.Exchange_Rate = 1;
+        convertedCount = convertedCount + 1;
+
+        row = insert into audit_trail
+        [
+            Incident_ID = incidentID
+            Action = "Currency Conversion Applied"
+            Action_Date = zoho.currentdate
+            Performed_By = "SYSTEM"
+            Notes = "USD record - no conversion needed. Amount: $" + amountOriginal
+            Added_User = zoho.adminuser
+        ];
+        continue;
+    }
+
+    // Look up rate for this currency
+    exchangeRate = ifnull(rates.get(currency), 0);
+
+    if (exchangeRate == 0)
+    {
+        errorCount = errorCount + 1;
+
+        row = insert into audit_trail
+        [
+            Incident_ID = incidentID
+            Action = "Currency Conversion Failed"
+            Action_Date = zoho.currentdate
+            Performed_By = "SYSTEM"
+            Notes = "No exchange rate found for currency: " + currency + ". PSP: " + pspRef
+            Added_User = zoho.adminuser
+        ];
+        continue;
+    }
+
+    // STEP 4: Calculate USD amount (rates are per-USD, so divide)
+    amountUSD = amountOriginal / exchangeRate;
+    incident.Amount_USD = amountUSD;
+    incident.Exchange_Rate = exchangeRate;
+    convertedCount = convertedCount + 1;
+
+    row = insert into audit_trail
+    [
+        Incident_ID = incidentID
+        Action = "Currency Conversion Applied"
+        Action_Date = zoho.currentdate
+        Performed_By = "SYSTEM"
+        Notes = "Converted " + currency + " " + amountOriginal + " to USD $" + amountUSD + " (rate: " + exchangeRate + ")"
+        Added_User = zoho.adminuser
+    ];
+}
+
+// STEP 5: Summary notification
+sendmail
+[
+    from : zoho.adminuserid
+    to : "creditcontrol@tengroup.com"
+    subject : "Currency Conversion Batch Complete - " + convertedCount + " converted, " + errorCount + " errors"
+    message : "The daily currency conversion batch has completed.\n\nRecords Converted: " + convertedCount + "\nRecords with Errors: " + errorCount + "\nDate: " + zoho.currentdate + "\n\nPlease review any error records in the audit trail.\n\nRegards,\nTen Chargeback Management (Automated)"
+];
