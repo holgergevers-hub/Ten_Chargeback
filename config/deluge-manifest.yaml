@@ -7,6 +7,7 @@ scripts:
     purpose: "Auto-assign lifestyle manager, calculate dispute deadline, set status, audit trail"
     form: chargeback_incidents
     event: on_success
+    record_event: "on add"
     context: form-workflow
     includes: [audit-trail, sendmail]
 
@@ -16,6 +17,7 @@ scripts:
     purpose: "Link to incident, update incident status to Disputed, notify merchant team, audit trail"
     form: dispute_submissions
     event: on_success
+    record_event: "on add"
     context: form-workflow
     includes: [audit-trail, sendmail]
 

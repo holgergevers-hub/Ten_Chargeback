@@ -1,0 +1,309 @@
+# forms.yaml -- Form, field, and report definitions for .ds generation
+# Used by: forgeds-build-ds
+
+forms:
+  regional_config:
+    displayname: "Regional Config"
+    fields:
+      - name: Merchant_Account
+        type: SingleLine
+        displayname: "Merchant Account"
+        required: true
+      - name: Region
+        type: SingleLine
+        displayname: "Region"
+      - name: Default_Currency
+        type: SingleLine
+        displayname: "Default Currency"
+      - name: Default_LM_Name
+        type: SingleLine
+        displayname: "Default LM Name"
+      - name: Default_LM_Email
+        type: Email
+        displayname: "Default LM Email"
+
+  merchant_platforms:
+    displayname: "Merchant Platforms"
+    fields:
+      - name: Name
+        type: SingleLine
+        displayname: "Platform Name"
+        required: true
+      - name: Format
+        type: SingleLine
+        displayname: "File Format"
+      - name: Delimiter
+        type: SingleLine
+        displayname: "Delimiter"
+      - name: Region
+        type: SingleLine
+        displayname: "Region"
+      - name: Active
+        type: Checkbox
+        displayname: "Active"
+
+  currency_config:
+    displayname: "Currency Config"
+    fields:
+      - name: Currency_Code
+        type: SingleLine
+        displayname: "Currency Code"
+        required: true
+      - name: Currency_Name
+        type: SingleLine
+        displayname: "Currency Name"
+      - name: Exchange_Rate_Source
+        type: SingleLine
+        displayname: "Exchange Rate Source"
+
+  dispute_reason_codes:
+    displayname: "Dispute Reason Codes"
+    fields:
+      - name: Scheme
+        type: SingleLine
+        displayname: "Scheme"
+      - name: Code
+        type: SingleLine
+        displayname: "Reason Code"
+        required: true
+      - name: Description
+        type: SingleLine
+        displayname: "Description"
+      - name: Category
+        type: SingleLine
+        displayname: "Category"
+
+  chargeback_incidents:
+    displayname: "Chargeback Incidents"
+    fields:
+      - name: PSP_Reference
+        type: SingleLine
+        displayname: "PSP Reference"
+      - name: Platform
+        type: Dropdown
+        displayname: "Platform"
+        required: true
+        choices: "Adyen,Ingenico,Stripe"
+      - name: Merchant_Account
+        type: SingleLine
+        displayname: "Merchant Account"
+      - name: Incident_Date
+        type: Date
+        displayname: "Incident Date"
+      - name: Dispute_Deadline
+        type: Date
+        displayname: "Dispute Deadline"
+      - name: Days_Remaining
+        type: Number
+        displayname: "Days Remaining"
+      - name: Status
+        type: Dropdown
+        displayname: "Status"
+        required: true
+        choices: "Open,Under Review,Disputed,Resolved,Expired,Won,Lost"
+      - name: Record_Type
+        type: SingleLine
+        displayname: "Record Type"
+      - name: Currency_Original
+        type: SingleLine
+        displayname: "Currency (Original)"
+      - name: Amount_Original
+        type: Decimal
+        displayname: "Amount (Original)"
+      - name: Amount_USD
+        type: Decimal
+        displayname: "Amount (USD)"
+        required: true
+      - name: Exchange_Rate
+        type: Decimal
+        displayname: "Exchange Rate"
+      - name: Dispute_Reason
+        type: SingleLine
+        displayname: "Dispute Reason"
+      - name: Assigned_LM
+        type: SingleLine
+        displayname: "Assigned LM"
+      - name: Payment_Method
+        type: SingleLine
+        displayname: "Payment Method"
+      - name: CB_Scheme_Code
+        type: SingleLine
+        displayname: "CB Scheme Code"
+      - name: CB_Reason_Code
+        type: SingleLine
+        displayname: "CB Reason Code"
+      - name: Shopper_Country
+        type: SingleLine
+        displayname: "Shopper Country"
+      - name: Issuer_Country
+        type: SingleLine
+        displayname: "Issuer Country"
+      - name: Payment_Date
+        type: Date
+        displayname: "Payment Date"
+      - name: Payment_Currency
+        type: SingleLine
+        displayname: "Payment Currency"
+      - name: Payment_Amount
+        type: Decimal
+        displayname: "Payment Amount"
+      - name: Dispute_Date
+        type: Date
+        displayname: "Dispute Date"
+      - name: Dispute_End_Date
+        type: Date
+        displayname: "Dispute End Date"
+      - name: Risk_Scoring
+        type: Number
+        displayname: "Risk Scoring"
+      - name: Shopper_Interaction
+        type: SingleLine
+        displayname: "Shopper Interaction"
+      - name: Dispute_PSP_Reference
+        type: SingleLine
+        displayname: "Dispute PSP Reference"
+      - name: Company_Account
+        type: SingleLine
+        displayname: "Company Account"
+
+  lm_followups:
+    displayname: "LM Followups"
+    fields:
+      - name: Incident_ID
+        type: Number
+        displayname: "Incident ID"
+        required: true
+      - name: Followup_Date
+        type: Date
+        displayname: "Followup Date"
+      - name: Followup_Notes
+        type: MultiLine
+        displayname: "Followup Notes"
+      - name: Followed_Up_By
+        type: SingleLine
+        displayname: "Followed Up By"
+      - name: Evidence_Gathered
+        type: Checkbox
+        displayname: "Evidence Gathered"
+
+  dispute_submissions:
+    displayname: "Dispute Submissions"
+    fields:
+      - name: Incident_ID
+        type: Number
+        displayname: "Incident ID"
+        required: true
+      - name: Submission_Date
+        type: Date
+        displayname: "Submission Date"
+      - name: Submitted_By
+        type: SingleLine
+        displayname: "Submitted By"
+      - name: Dispute_Reason_Text
+        type: MultiLine
+        displayname: "Dispute Reason"
+      - name: Evidence_Summary
+        type: MultiLine
+        displayname: "Evidence Summary"
+      - name: Expected_Response_Date
+        type: Date
+        displayname: "Expected Response Date"
+
+  merchant_responses:
+    displayname: "Merchant Responses"
+    fields:
+      - name: Dispute_ID
+        type: Number
+        displayname: "Dispute ID"
+        required: true
+      - name: Response_Date
+        type: Date
+        displayname: "Response Date"
+      - name: Response_Status
+        type: Dropdown
+        displayname: "Response Status"
+        choices: "Accepted,Rejected,Partial,Information Requested"
+      - name: Additional_Info
+        type: MultiLine
+        displayname: "Additional Info"
+      - name: Responded_By
+        type: SingleLine
+        displayname: "Responded By"
+
+  file_uploads:
+    displayname: "File Uploads"
+    fields:
+      - name: File_Name
+        type: SingleLine
+        displayname: "File Name"
+      - name: Platform
+        type: SingleLine
+        displayname: "Platform"
+      - name: Incident_ID
+        type: Number
+        displayname: "Incident ID"
+      - name: Processing_Status
+        type: Dropdown
+        displayname: "Processing Status"
+        choices: "Pending,Processing,Completed"
+      - name: Records_Found
+        type: Number
+        displayname: "Records Found"
+      - name: Records_Imported
+        type: Number
+        displayname: "Records Imported"
+
+  audit_trail:
+    displayname: "Audit Trail"
+    fields:
+      - name: Incident_ID
+        type: Number
+        displayname: "Incident ID"
+      - name: Action
+        type: SingleLine
+        displayname: "Action"
+      - name: Action_Date
+        type: DateTime
+        displayname: "Action Date"
+      - name: Performed_By
+        type: SingleLine
+        displayname: "Performed By"
+      - name: Notes
+        type: MultiLine
+        displayname: "Notes"
+
+reports:
+  All_Chargebacks:
+    type: list
+    form: chargeback_incidents
+    columns: "PSP_Reference,Platform,Merchant_Account,Status,Amount_USD,Currency_Original,Amount_Original,Incident_Date,Dispute_Deadline,Days_Remaining,Assigned_LM"
+  Open_Chargebacks:
+    type: list
+    form: chargeback_incidents
+    columns: "PSP_Reference,Platform,Merchant_Account,Amount_USD,Incident_Date,Days_Remaining,Assigned_LM"
+    filter: 'Status == "Open" || Status == "Under Review"'
+  Expiring_Soon:
+    type: list
+    form: chargeback_incidents
+    columns: "PSP_Reference,Platform,Amount_USD,Days_Remaining,Assigned_LM,Dispute_Deadline"
+    filter: 'Days_Remaining <= 5 && Days_Remaining > 0 && (Status == "Open" || Status == "Under Review")'
+  All_Disputes:
+    type: list
+    form: dispute_submissions
+    columns: "Incident_ID,Submission_Date,Submitted_By,Dispute_Reason_Text,Expected_Response_Date"
+  Audit_Log:
+    type: list
+    form: audit_trail
+    columns: "Incident_ID,Action,Action_Date,Performed_By,Notes"
+  Regional_Config:
+    type: list
+    form: regional_config
+    columns: "Merchant_Account,Region,Default_Currency,Default_LM_Name,Default_LM_Email"
+  Reason_Codes:
+    type: list
+    form: dispute_reason_codes
+    columns: "Scheme,Code,Description,Category"
+  File_Processing:
+    type: list
+    form: file_uploads
+    columns: "File_Name,Platform,Processing_Status,Records_Found,Records_Imported"

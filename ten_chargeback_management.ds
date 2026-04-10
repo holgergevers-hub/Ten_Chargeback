@@ -1,14 +1,9 @@
-application Ten_Chargeback_Management
+application My_App
 {
-	displayname = "Ten Chargeback Management"
-
-	// ============================================================
-	// FORMS
-	// ============================================================
+	displayname = "My_App"
 
 	forms
 	{
-		// --- Lookup Tables (create first) ---
 
 		form regional_config
 		{
@@ -148,8 +143,6 @@ application Ten_Chargeback_Management
 				row = 4
 			)
 		}
-
-		// --- Core Forms ---
 
 		form chargeback_incidents
 		{
@@ -571,12 +564,9 @@ application Ten_Chargeback_Management
 		}
 	}
 
-	// ============================================================
-	// REPORTS
-	// ============================================================
-
 	reports
 	{
+
 		list All_Chargebacks
 		{
 			form = chargeback_incidents
@@ -586,14 +576,14 @@ application Ten_Chargeback_Management
 		list Open_Chargebacks
 		{
 			form = chargeback_incidents
-			filter = "Status == \"Open\" || Status == \"Under Review\""
+			filter = "Status == "Open" || Status == "Under Review""
 			columns = "PSP_Reference,Platform,Merchant_Account,Amount_USD,Incident_Date,Days_Remaining,Assigned_LM"
 		}
 
 		list Expiring_Soon
 		{
 			form = chargeback_incidents
-			filter = "Days_Remaining <= 5 && Days_Remaining > 0 && (Status == \"Open\" || Status == \"Under Review\")"
+			filter = "Days_Remaining <= 5 && Days_Remaining > 0 && (Status == "Open" || Status == "Under Review")"
 			columns = "PSP_Reference,Platform,Amount_USD,Days_Remaining,Assigned_LM,Dispute_Deadline"
 		}
 
@@ -628,41 +618,42 @@ application Ten_Chargeback_Management
 		}
 	}
 
-	// ============================================================
-	// WORKFLOWS — Form Events
-	// ============================================================
-
 	workflow
 	{
-		Chargeback_On_Success as "Chargeback Incident On Success"
+
+		Chargeback_Incident_On_Success as "Chargeback Incident On Success"
 		{
 			form = chargeback_incidents
 			record event = on add
 			on success
 			custom deluge script
 			(
-				// Auto-assign lifestyle manager from regional config,
-				// calculate dispute deadline (30-day window),
-				// set initial status, create audit trail, notify LM
-
 				merchantAcct = ifnull(input.Merchant_Account, "");
 				regionRec = regional_config[Merchant_Account == merchantAcct];
 				assignedLM = ifnull(regionRec.Default_LM_Name, "Unassigned");
 				assignedEmail = ifnull(regionRec.Default_LM_Email, "");
 				defaultCurrency = ifnull(regionRec.Default_Currency, "USD");
 
+				// STEP 2: Assign lifestyle manager
 				input.Assigned_LM = assignedLM;
 
+				// STEP 3: Calculate dispute deadline (Incident_Date + 30 days)
 				incidentDate = ifnull(input.Incident_Date, zoho.currentdate);
 				input.Dispute_Deadline = incidentDate.addDay(30);
+
+				// STEP 4: Calculate days remaining
 				input.Days_Remaining = daysBetween(zoho.currentdate, input.Dispute_Deadline);
+
+				// STEP 5: Set initial status
 				input.Status = "Open";
 
+				// STEP 6: Default currency if blank
 				if (ifnull(input.Currency_Original, "") == "")
 				{
 					input.Currency_Original = defaultCurrency;
 				}
 
+				// STEP 7: Insert audit trail record
 				row = insert into audit_trail
 				[
 					Incident_ID = input.ID
@@ -673,6 +664,7 @@ application Ten_Chargeback_Management
 					Added_User = zoho.loginuser
 				];
 
+				// STEP 8: Notify assigned lifestyle manager
 				if (assignedEmail != "")
 				{
 					pspRef = ifnull(input.PSP_Reference, "N/A");
@@ -691,16 +683,13 @@ application Ten_Chargeback_Management
 			)
 		}
 
-		Dispute_On_Success as "Dispute Submission On Success"
+		Dispute_Submission_On_Success as "Dispute Submission On Success"
 		{
 			form = dispute_submissions
 			record event = on add
 			on success
 			custom deluge script
 			(
-				// Update linked chargeback status to "Disputed",
-				// create audit trail, notify credit controller
-
 				incidentID = ifnull(input.Incident_ID, 0);
 				incidentRec = chargeback_incidents[ID == incidentID];
 				pspRef = ifnull(incidentRec.PSP_Reference, "N/A");
@@ -708,16 +697,19 @@ application Ten_Chargeback_Management
 				amountUSD = ifnull(incidentRec.Amount_USD, "0");
 				assignedLM = ifnull(incidentRec.Assigned_LM, "N/A");
 
+				// STEP 2: Update chargeback status to "Disputed"
 				if (incidentRec != null)
 				{
 					incidentRec.Status = "Disputed";
 				}
 
+				// STEP 3: Set expected response date if not provided (45 days from submission)
 				if (ifnull(input.Expected_Response_Date, "") == "")
 				{
 					input.Expected_Response_Date = zoho.currentdate.addDay(45);
 				}
 
+				// STEP 4: Insert audit trail record
 				submittedBy = ifnull(input.Submitted_By, zoho.loginuser);
 
 				row = insert into audit_trail
@@ -730,6 +722,7 @@ application Ten_Chargeback_Management
 					Added_User = zoho.loginuser
 				];
 
+				// STEP 5: Notify credit controller and stakeholders
 				sendmail
 				[
 					from : zoho.adminuserid
@@ -741,21 +734,14 @@ application Ten_Chargeback_Management
 		}
 	}
 
-	// ============================================================
-	// SCHEDULES
-	// ============================================================
-
 	schedule
 	{
+
 		Auto_Alert_25_Days as "Auto Alert 25 Days"
 		{
 			form = chargeback_incidents
 			on load
 			(
-				// Alert on chargebacks approaching 30-day dispute deadline.
-				// 25-29 days: warning to assigned LM.
-				// >= 30 days: expire the chargeback, escalation email.
-
 				openIncidents = chargeback_incidents[Status == "Open" || Status == "Under Review"];
 
 				for each incident in openIncidents
@@ -766,18 +752,22 @@ application Ten_Chargeback_Management
 					platform = ifnull(incident.Platform, "N/A");
 					amountUSD = ifnull(incident.Amount_USD, "0");
 					assignedLM = ifnull(incident.Assigned_LM, "N/A");
+					currentStatus = ifnull(incident.Status, "Open");
 					incidentID = incident.ID;
 
+					// Look up LM email from regional config
 					merchantAcct = ifnull(incident.Merchant_Account, "");
 					regionRec = regional_config[Merchant_Account == merchantAcct];
 					lmEmail = ifnull(regionRec.Default_LM_Email, "");
 
+					// Update days remaining
 					deadline = ifnull(incident.Dispute_Deadline, incidentDate.addDay(30));
 					daysRemaining = daysBetween(zoho.currentdate, deadline);
 					incident.Days_Remaining = daysRemaining;
 
 					if (daysOld >= 30)
 					{
+						// EXPIRED: past the dispute window
 						incident.Status = "Expired";
 						incident.Days_Remaining = 0;
 
@@ -791,6 +781,7 @@ application Ten_Chargeback_Management
 							Added_User = zoho.adminuser
 						];
 
+						// Escalation email to credit control
 						sendmail
 						[
 							from : zoho.adminuserid
@@ -799,6 +790,7 @@ application Ten_Chargeback_Management
 							message : "The following chargeback has expired without a dispute being filed:\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\nAssigned LM: " + assignedLM + "\nIncident Date: " + incidentDate + "\nDays Old: " + daysOld + "\n\nThis chargeback can no longer be disputed. Please review and update records accordingly.\n\nRegards,\nTen Chargeback Management (Automated)"
 						];
 
+						// Also notify the LM
 						if (lmEmail != "")
 						{
 							sendmail
@@ -812,6 +804,7 @@ application Ten_Chargeback_Management
 					}
 					else if (daysOld >= 25)
 					{
+						// WARNING: approaching deadline
 						row = insert into audit_trail
 						[
 							Incident_ID = incidentID
@@ -833,6 +826,7 @@ application Ten_Chargeback_Management
 							];
 						}
 
+						// CC credit control on critical warnings (3 days or less)
 						if (daysRemaining <= 3)
 						{
 							sendmail
@@ -850,7 +844,7 @@ application Ten_Chargeback_Management
 
 		Daily_File_Processing as "Daily File Processing"
 		{
-			form = file_uploads
+			form = chargeback_incidents
 			on load
 			(
 				pendingFiles = file_uploads[Processing_Status == "Pending"];
@@ -862,6 +856,7 @@ application Ten_Chargeback_Management
 					platform = ifnull(fileRec.Platform, "N/A");
 					incidentID = ifnull(fileRec.Incident_ID, 0);
 
+					// STEP 2: Mark as Processing
 					fileRec.Processing_Status = "Processing";
 
 					row = insert into audit_trail
@@ -874,10 +869,13 @@ application Ten_Chargeback_Management
 						Added_User = zoho.adminuser
 					];
 
+					// STEP 3: Validate file metadata
 					recordsFound = ifnull(fileRec.Records_Found, 0);
+					recordsImported = ifnull(fileRec.Records_Imported, 0);
 
 					if (recordsFound == 0)
 					{
+						// No records detected - mark as completed with warning
 						fileRec.Processing_Status = "Completed";
 						fileRec.Records_Imported = 0;
 
@@ -893,6 +891,7 @@ application Ten_Chargeback_Management
 					}
 					else
 					{
+						// STEP 4: Mark as Completed
 						fileRec.Processing_Status = "Completed";
 						fileRec.Records_Imported = recordsFound;
 
@@ -908,6 +907,7 @@ application Ten_Chargeback_Management
 					}
 				}
 
+				// STEP 5: Log summary
 				processedCount = ifnull(pendingFiles.count(), 0);
 				if (processedCount > 0)
 				{
@@ -934,6 +934,7 @@ application Ten_Chargeback_Management
 					return;
 				}
 
+				// STEP 2: Fetch current exchange rates from API (USD base)
 				rateResponse = invokeUrl
 				[
 					url : "https://open.er-api.com/v6/latest/USD"
@@ -946,6 +947,7 @@ application Ten_Chargeback_Management
 
 				if (fetchResult != "success")
 				{
+					// API call failed - log and exit
 					row = insert into audit_trail
 					[
 						Incident_ID = 0
@@ -958,6 +960,7 @@ application Ten_Chargeback_Management
 					return;
 				}
 
+				// STEP 3: Process each unconverted record
 				convertedCount = 0;
 				errorCount = 0;
 
@@ -984,6 +987,7 @@ application Ten_Chargeback_Management
 						continue;
 					}
 
+					// USD needs no conversion
 					if (currency == "USD")
 					{
 						incident.Amount_USD = amountOriginal;
@@ -1002,6 +1006,7 @@ application Ten_Chargeback_Management
 						continue;
 					}
 
+					// Look up rate for this currency
 					exchangeRate = ifnull(rates.get(currency), 0);
 
 					if (exchangeRate == 0)
@@ -1020,6 +1025,7 @@ application Ten_Chargeback_Management
 						continue;
 					}
 
+					// STEP 4: Calculate USD amount (rates are per-USD, so divide)
 					amountUSD = amountOriginal / exchangeRate;
 					incident.Amount_USD = amountUSD;
 					incident.Exchange_Rate = exchangeRate;
@@ -1036,6 +1042,7 @@ application Ten_Chargeback_Management
 					];
 				}
 
+				// STEP 5: Summary notification
 				sendmail
 				[
 					from : zoho.adminuserid
@@ -1046,7 +1053,7 @@ application Ten_Chargeback_Management
 			)
 		}
 
-		Data_Cleansing as "Data Cleansing"
+		Data_Cleansing_Scheduled as "Data Cleansing Scheduled"
 		{
 			form = chargeback_incidents
 			on load
@@ -1054,6 +1061,7 @@ application Ten_Chargeback_Management
 				cutoffDate = zoho.currentdate.subDay(7);
 				recentIncidents = chargeback_incidents[Incident_Date >= cutoffDate];
 
+				// Known valid Record_Type values
 				validRecordTypes = List();
 				validRecordTypes.add("Chargeback");
 				validRecordTypes.add("Second Chargeback");
@@ -1062,6 +1070,7 @@ application Ten_Chargeback_Management
 				validRecordTypes.add("Pre-Arbitration");
 				validRecordTypes.add("Fraud Alert");
 
+				// Known valid ISO currency codes (common subset)
 				validCurrencies = List();
 				validCurrencies.add("USD");
 				validCurrencies.add("EUR");
@@ -1083,7 +1092,6 @@ application Ten_Chargeback_Management
 				validCurrencies.add("SAR");
 				validCurrencies.add("PLN");
 				validCurrencies.add("CZK");
-				validCurrencies.add("COP");
 
 				cleansedCount = 0;
 				flaggedCount = 0;
@@ -1094,10 +1102,12 @@ application Ten_Chargeback_Management
 					pspRef = ifnull(incident.PSP_Reference, "N/A");
 					issues = List();
 
+					// STEP 2: Normalize Record_Type values
 					rawType = ifnull(incident.Record_Type, "");
 					normalizedType = rawType.trim();
-					upperType = normalizedType.toUpperCase();
 
+					// Map common variations to standard values
+					upperType = normalizedType.toUpperCase();
 					if (upperType == "CB" || upperType == "CHARGEBACK" || upperType == "CHARGE BACK" || upperType == "CHARGE-BACK")
 					{
 						normalizedType = "Chargeback";
@@ -1123,6 +1133,7 @@ application Ten_Chargeback_Management
 						normalizedType = "Fraud Alert";
 					}
 
+					// Check if normalized value is valid
 					if (validRecordTypes.contains(normalizedType))
 					{
 						if (normalizedType != rawType)
@@ -1150,6 +1161,7 @@ application Ten_Chargeback_Management
 						issues.add("Missing Record_Type");
 					}
 
+					// STEP 3: Validate Currency_Original
 					currency = ifnull(incident.Currency_Original, "");
 					if (currency == "")
 					{
@@ -1160,24 +1172,28 @@ application Ten_Chargeback_Management
 						issues.add("Unknown currency code: " + currency);
 					}
 
+					// STEP 4: Validate Amount_Original is positive
 					amountOrig = ifnull(incident.Amount_Original, 0);
 					if (amountOrig <= 0)
 					{
 						issues.add("Amount_Original is zero or negative: " + amountOrig);
 					}
 
+					// STEP 5: Validate Incident_Date is not in the future
 					incidentDate = ifnull(incident.Incident_Date, zoho.currentdate);
 					if (daysBetween(zoho.currentdate, incidentDate) > 0)
 					{
 						issues.add("Incident_Date is in the future: " + incidentDate);
 					}
 
+					// STEP 6: Validate Platform is one of the known merchant platforms
 					platformVal = ifnull(incident.Platform, "");
 					if (platformVal != "Adyen" && platformVal != "Ingenico" && platformVal != "Stripe" && platformVal != "")
 					{
 						issues.add("Unknown Platform: " + platformVal);
 					}
 
+					// STEP 7: Flag records with data quality issues
 					if (issues.size() > 0)
 					{
 						flaggedCount = flaggedCount + 1;
@@ -1195,6 +1211,7 @@ application Ten_Chargeback_Management
 					}
 				}
 
+				// STEP 8: Summary notification if issues found
 				totalProcessed = ifnull(recentIncidents.count(), 0);
 				if (flaggedCount > 0 || cleansedCount > 0)
 				{
