@@ -289,6 +289,37 @@ function renderTypeTable(data) {
     }
 }
 
+function exportToPdf() {
+    const btn = document.getElementById('exportPdf');
+    btn.disabled = true;
+    btn.textContent = 'Generating…';
+
+    const element = document.body;
+
+    const opt = {
+        margin: [10, 10, 10, 10],
+        filename: 'Ten_Group_Chargeback_Dashboard.pdf',
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#0f172a',
+            logging: false,
+        },
+        jsPDF: {
+            unit: 'mm',
+            format: 'a3',
+            orientation: 'landscape',
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+    };
+
+    html2pdf().set(opt).from(element).save().then(function () {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M8 10L5 7M8 10l3-3M2 12v2h12v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Export PDF';
+    });
+}
+
 async function init() {
     const data = await loadData();
     if (!data) {
