@@ -5,12 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ten Group — Chargeback Risk Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.2/dist/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
     <header>
-        <h1>Ten Group — Chargeback Risk Dashboard</h1>
-        <p class="subtitle">CFO / COO Executive Summary &bull; Data Period: Jan 2024 &ndash; Dec 2024</p>
+        <div class="header-row">
+            <div>
+                <h1>Ten Group — Chargeback Risk Dashboard</h1>
+                <p class="subtitle">CFO / COO Executive Summary &bull; Data Period: Jan 2024 &ndash; Dec 2024</p>
+            </div>
+            <button id="exportPdf" class="btn-export" onclick="exportToPdf()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 1v9M8 10L5 7M8 10l3-3M2 12v2h12v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Export PDF
+            </button>
+        </div>
     </header>
 
     <section class="kpi-row" id="kpiRow"></section>
