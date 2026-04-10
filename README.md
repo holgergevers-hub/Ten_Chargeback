@@ -29,7 +29,9 @@ This processes all merchant statement files and outputs:
 
 ### 2. View the Dashboard
 
-Open `src/dashboard/index.html` in a browser (serve via local HTTP server for fetch to work):
+[**Open the Dashboard**](https://htmlpreview.github.io/?https://github.com/holgergevers-hub/Ten_Chargeback/blob/main/src/dashboard/index.html)
+
+Or serve locally (required if dashboard fetches external data):
 
 ```bash
 cd src/dashboard
