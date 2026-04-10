@@ -10,6 +10,41 @@ Zoho Creator application for managing chargebacks across multiple merchant platf
 
 </div>
 
+[![Download Deluge Scripts](https://img.shields.io/badge/Download_Deluge_Scripts-1e293b?style=for-the-badge&logo=zoho&logoColor=22c55e&labelColor=1e293b)](https://github.com/holgergevers-hub/Ten_Chargeback/tree/main/src/deluge)
+
+</div>
+
+---
+
+## Zoho Creator Import Guide
+
+Copy each script into the corresponding location in Zoho Creator. No edits needed — scripts are ready to paste.
+
+### Form Workflows
+
+| Script | Paste Location | Trigger |
+|--------|---------------|---------|
+| [chargeback_incident.on_success.dg](src/deluge/form-workflows/chargeback_incident.on_success.dg) | Chargeback_Incidents form > Workflow > On Success | After form submit |
+| [dispute_submission.on_success.dg](src/deluge/form-workflows/dispute_submission.on_success.dg) | Dispute_Submissions form > Workflow > On Success | After form submit |
+
+### Scheduled Tasks
+
+| Script | Paste Location | Schedule |
+|--------|---------------|----------|
+| [auto_alert_25_days.dg](src/deluge/scheduled/auto_alert_25_days.dg) | Workflow > Schedules > Auto_Alert_25_Days | Daily 06:00 |
+| [daily_file_processing.dg](src/deluge/scheduled/daily_file_processing.dg) | Workflow > Schedules > Daily_File_Processing | Daily 02:00 |
+| [currency_conversion_batch.dg](src/deluge/scheduled/currency_conversion_batch.dg) | Workflow > Schedules > Currency_Conversion_Batch | Daily 03:00 |
+| [data_cleansing_scheduled.dg](src/deluge/scheduled/data_cleansing_scheduled.dg) | Workflow > Schedules > Data_Cleansing | Daily 04:00 |
+
+### Custom APIs
+
+| Script | Paste Location | Trigger |
+|--------|---------------|---------|
+| [get_dashboard_summary.dg](src/deluge/custom-api/get_dashboard_summary.dg) | Microservices > Custom API > Get_Dashboard_Summary | REST/widget call |
+| [get_aging_report.dg](src/deluge/custom-api/get_aging_report.dg) | Microservices > Custom API > Get_Aging_Report | REST/widget call |
+
+> **Setup order:** Create the forms (`chargeback_incidents`, `dispute_submissions`, `audit_trail`, `regional_config`, `file_uploads`) first, then add the workflows and schedules.
+
 ---
 
 ## Overview
