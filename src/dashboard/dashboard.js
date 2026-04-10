@@ -49,12 +49,15 @@ function el(tag, attrs, children) {
 }
 
 async function loadData() {
+    // Try fetching from file first (works with local HTTP server)
     for (const path of ['dashboard_data.json', '../../data/clean/dashboard_data.json']) {
         try {
             const resp = await fetch(path);
             if (resp.ok) return await resp.json();
         } catch (e) { /* continue */ }
     }
+    // Fall back to embedded data (works via htmlpreview, file://, etc.)
+    if (window.DASHBOARD_DATA) return window.DASHBOARD_DATA;
     console.error('Could not load dashboard_data.json');
     return null;
 }
