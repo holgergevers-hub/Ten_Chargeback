@@ -8,7 +8,7 @@ Zoho Creator application for managing chargebacks across multiple merchant platf
 
 **$303,247.67 USD** total exposure | **324** disputes | **3** platforms
 
-[![Download App Definition (.ds)](https://img.shields.io/badge/Download_.ds_File-22c55e?style=for-the-badge&logo=zoho&logoColor=white&labelColor=166534)](ten_chargeback_management.ds)
+[![Download App Definition (.ds)](https://img.shields.io/badge/Download_.ds_File-22c55e?style=for-the-badge&logo=zoho&logoColor=white&labelColor=166534)](https://raw.githubusercontent.com/holgergevers-hub/Ten_Chargeback/main/ten_chargeback_management.ds)
 
 </div>
 
