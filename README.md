@@ -10,17 +10,15 @@ Zoho Creator application for managing chargebacks across multiple merchant platf
 
 </div>
 
-[![Install to Zoho Creator](https://img.shields.io/badge/Install_to_Zoho_Creator-22c55e?style=for-the-badge&logo=zoho&logoColor=white&labelColor=166534)](src/deluge/setup/install_app.dg)
-
 </div>
 
 ---
 
-## Zoho Creator Setup (3 steps)
+## Zoho Creator Setup
 
-### Step 1: Create the forms
+### Step 1: Create the app and forms
 
-Create these 6 forms in your Zoho Creator app. See [FORM_SCHEMA.md](src/deluge/setup/FORM_SCHEMA.md) for all field names and types.
+Create a new Zoho Creator app, then add these 6 forms. See [FORM_SCHEMA.md](src/deluge/setup/FORM_SCHEMA.md) for all field names and types.
 
 | # | Form | Purpose |
 |---|------|---------|
@@ -31,40 +29,51 @@ Create these 6 forms in your Zoho Creator app. See [FORM_SCHEMA.md](src/deluge/s
 | 5 | `audit_trail` | System-wide activity log |
 | 6 | `file_uploads` | Merchant file import tracking |
 
-### Step 2: Run the install script
+### Step 2: Upload data
 
-1. Go to **Microservices > Custom Functions > New Function**
-2. Paste [install_app.dg](src/deluge/setup/install_app.dg) and **Execute**
-3. This seeds **38 merchant accounts** and **13 dispute reason codes**
+Run the ETL pipeline, then import the CSVs into your forms:
 
-### Step 3: Wire the workflows
+```bash
+python -m src.etl.pipeline \
+  --zip "path/to/Chargeback Records (2).zip" \
+  --rates data/exchange_rates.json \
+  --output data/clean/
+```
 
-Paste each script into its location. No edits needed — all scripts are ready to paste.
+| Upload this file | Into this form | Notes |
+|-----------------|---------------|-------|
+| `data/clean/chargeback_all.csv` | `chargeback_incidents` | Main records (324 rows) |
+| `config/seed-data/regional_config.json` | `regional_config` | 38 merchant accounts — update LM names/emails after import |
+| `config/seed-data/dispute_reason_codes.json` | `dispute_reason_codes` | 13 Visa/MC/Amex reason codes |
+
+> **How to import:** Open the form in Zoho Creator > click **Import Data** (top-right) > upload the CSV/JSON > map columns > Import.
+
+### Step 3: Add workflows
+
+Once the forms and data are in place, paste each Deluge script into its location. No edits needed.
 
 **Form Workflows**
 
 | Script | Paste Location | Trigger |
 |--------|---------------|---------|
-| [chargeback_incident.on_success.dg](src/deluge/form-workflows/chargeback_incident.on_success.dg) | Chargeback_Incidents form > Workflow > On Success | After form submit |
-| [dispute_submission.on_success.dg](src/deluge/form-workflows/dispute_submission.on_success.dg) | Dispute_Submissions form > Workflow > On Success | After form submit |
+| [chargeback_incident.on_success.dg](src/deluge/form-workflows/chargeback_incident.on_success.dg) | Chargeback_Incidents > Workflow > On Success | After form submit |
+| [dispute_submission.on_success.dg](src/deluge/form-workflows/dispute_submission.on_success.dg) | Dispute_Submissions > Workflow > On Success | After form submit |
 
-**Scheduled Tasks**
+**Scheduled Tasks** — Create under Workflow > Schedules
 
-| Script | Paste Location | Schedule |
-|--------|---------------|----------|
-| [auto_alert_25_days.dg](src/deluge/scheduled/auto_alert_25_days.dg) | Workflow > Schedules > Auto_Alert_25_Days | Daily 06:00 |
-| [daily_file_processing.dg](src/deluge/scheduled/daily_file_processing.dg) | Workflow > Schedules > Daily_File_Processing | Daily 02:00 |
-| [currency_conversion_batch.dg](src/deluge/scheduled/currency_conversion_batch.dg) | Workflow > Schedules > Currency_Conversion_Batch | Daily 03:00 |
-| [data_cleansing_scheduled.dg](src/deluge/scheduled/data_cleansing_scheduled.dg) | Workflow > Schedules > Data_Cleansing | Daily 04:00 |
+| Script | Schedule Name | Run At |
+|--------|--------------|--------|
+| [daily_file_processing.dg](src/deluge/scheduled/daily_file_processing.dg) | Daily_File_Processing | Daily 02:00 |
+| [currency_conversion_batch.dg](src/deluge/scheduled/currency_conversion_batch.dg) | Currency_Conversion_Batch | Daily 03:00 |
+| [data_cleansing_scheduled.dg](src/deluge/scheduled/data_cleansing_scheduled.dg) | Data_Cleansing | Daily 04:00 |
+| [auto_alert_25_days.dg](src/deluge/scheduled/auto_alert_25_days.dg) | Auto_Alert_25_Days | Daily 06:00 |
 
-**Custom APIs**
+**Custom APIs** — Create under Microservices > Custom API *(when ready)*
 
-| Script | Paste Location | Trigger |
-|--------|---------------|---------|
-| [get_dashboard_summary.dg](src/deluge/custom-api/get_dashboard_summary.dg) | Microservices > Custom API > Get_Dashboard_Summary | REST/widget call |
-| [get_aging_report.dg](src/deluge/custom-api/get_aging_report.dg) | Microservices > Custom API > Get_Aging_Report | REST/widget call |
-
-> **Setup order:** Create the forms (`chargeback_incidents`, `dispute_submissions`, `audit_trail`, `regional_config`, `file_uploads`) first, then add the workflows and schedules.
+| Script | API Name |
+|--------|----------|
+| [get_dashboard_summary.dg](src/deluge/custom-api/get_dashboard_summary.dg) | Get_Dashboard_Summary |
+| [get_aging_report.dg](src/deluge/custom-api/get_aging_report.dg) | Get_Aging_Report |
 
 ---
 
@@ -76,43 +85,6 @@ Ten Group's credit controllers manage chargebacks across 3 merchant platforms in
 - **Zoho Creator App** — Forms, workflows, and scheduled tasks for chargeback lifecycle management
 - **CFO/COO Dashboard** — Interactive risk dashboard showing total exposure, trends, and regional breakdown
 - **Process Documentation** — Current state mapping, pain point analysis, and future state model
-
-## Quick Start
-
-### 1. Run the ETL Pipeline
-
-```bash
-python -m src.etl.pipeline \
-  --zip "path/to/Chargeback Records (2).zip" \
-  --rates data/exchange_rates.json \
-  --output data/clean/
-```
-
-This processes all merchant statement files and outputs:
-- `chargeback_all.csv` — Clean, normalized records with USD conversion
-- `dashboard_data.json` — Aggregated data for the dashboard
-- `pipeline_summary.json` — Statistics and breakdown
-
-### 2. View the Dashboard
-
-[**Open the Dashboard**](https://holgergevers-hub.github.io/Ten_Chargeback/src/dashboard/index.html)
-
-Or serve locally (required if dashboard fetches external data):
-
-```bash
-cd src/dashboard
-python -m http.server 8080
-# Open http://localhost:8080
-```
-
-### 3. Deploy to Zoho Creator
-
-```bash
-pip install git+https://github.com/HolgerRGevers/ForgeDS.git
-forgeds-lint src/deluge/
-forgeds-validate data/clean/
-forgeds-upload --config config/zoho-api.yaml --csv-dir data/clean/
-```
 
 ## Data Pipeline
 
