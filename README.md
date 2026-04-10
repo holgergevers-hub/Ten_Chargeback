@@ -18,7 +18,7 @@ Zoho Creator application for managing chargebacks across multiple merchant platf
 
 ### Option A: Import the .ds file (recommended)
 
-1. Download [**ten_chargeback_management.ds**](ten_chargeback_management.ds) — contains all 9 forms, fields, workflows, and schedules in one file
+1. Download [**ten_chargeback_management.ds**](https://raw.githubusercontent.com/holgergevers-hub/Ten_Chargeback/main/ten_chargeback_management.ds) — contains all 9 forms, fields, workflows, and schedules in one file
 2. In Zoho Creator: **Settings > Import Application > Upload .ds file**
 3. Import the seed data:
 
