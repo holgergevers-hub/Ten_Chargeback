@@ -10,24 +10,45 @@ Zoho Creator application for managing chargebacks across multiple merchant platf
 
 </div>
 
-[![Download Deluge Scripts](https://img.shields.io/badge/Download_Deluge_Scripts-1e293b?style=for-the-badge&logo=zoho&logoColor=22c55e&labelColor=1e293b)](https://github.com/holgergevers-hub/Ten_Chargeback/tree/main/src/deluge)
+[![Install to Zoho Creator](https://img.shields.io/badge/Install_to_Zoho_Creator-22c55e?style=for-the-badge&logo=zoho&logoColor=white&labelColor=166534)](src/deluge/setup/install_app.dg)
 
 </div>
 
 ---
 
-## Zoho Creator Import Guide
+## Zoho Creator Setup (3 steps)
 
-Copy each script into the corresponding location in Zoho Creator. No edits needed — scripts are ready to paste.
+### Step 1: Create the forms
 
-### Form Workflows
+Create these 6 forms in your Zoho Creator app. See [FORM_SCHEMA.md](src/deluge/setup/FORM_SCHEMA.md) for all field names and types.
+
+| # | Form | Purpose |
+|---|------|---------|
+| 1 | `regional_config` | Merchant account lookup (region, currency, LM assignment) |
+| 2 | `dispute_reason_codes` | Visa/MC/Amex reason code reference |
+| 3 | `chargeback_incidents` | Main chargeback records |
+| 4 | `dispute_submissions` | Evidence submissions linked to incidents |
+| 5 | `audit_trail` | System-wide activity log |
+| 6 | `file_uploads` | Merchant file import tracking |
+
+### Step 2: Run the install script
+
+1. Go to **Microservices > Custom Functions > New Function**
+2. Paste [install_app.dg](src/deluge/setup/install_app.dg) and **Execute**
+3. This seeds **38 merchant accounts** and **13 dispute reason codes**
+
+### Step 3: Wire the workflows
+
+Paste each script into its location. No edits needed — all scripts are ready to paste.
+
+**Form Workflows**
 
 | Script | Paste Location | Trigger |
 |--------|---------------|---------|
 | [chargeback_incident.on_success.dg](src/deluge/form-workflows/chargeback_incident.on_success.dg) | Chargeback_Incidents form > Workflow > On Success | After form submit |
 | [dispute_submission.on_success.dg](src/deluge/form-workflows/dispute_submission.on_success.dg) | Dispute_Submissions form > Workflow > On Success | After form submit |
 
-### Scheduled Tasks
+**Scheduled Tasks**
 
 | Script | Paste Location | Schedule |
 |--------|---------------|----------|
@@ -36,7 +57,7 @@ Copy each script into the corresponding location in Zoho Creator. No edits neede
 | [currency_conversion_batch.dg](src/deluge/scheduled/currency_conversion_batch.dg) | Workflow > Schedules > Currency_Conversion_Batch | Daily 03:00 |
 | [data_cleansing_scheduled.dg](src/deluge/scheduled/data_cleansing_scheduled.dg) | Workflow > Schedules > Data_Cleansing | Daily 04:00 |
 
-### Custom APIs
+**Custom APIs**
 
 | Script | Paste Location | Trigger |
 |--------|---------------|---------|

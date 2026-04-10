@@ -1,0 +1,151 @@
+// ============================================================
+// Script:   install_app.dg
+// Location: Microservices > Custom Function > Install_App
+// Trigger:  Run once to scaffold the entire chargeback app
+// Purpose:  Creates all forms, fields, seed data, and schedules.
+//           After running, paste the 8 workflow scripts into
+//           their locations (see README for mapping).
+//
+// USAGE:
+//   1. Create a new Zoho Creator app called "Ten Chargeback Management"
+//   2. Go to Microservices > Custom Functions > New Function
+//   3. Name it "Install_App", paste this entire script, and Execute
+//   4. After it completes, paste the 8 workflow scripts (see README)
+//
+// IMPORTANT: Run this ONCE. Running again will create duplicates.
+// ============================================================
+
+// ============================================================
+// STEP 1: Create the Regional Config form (lookup table)
+// This must exist before chargeback_incidents because the
+// on_success workflow queries it for auto-assignment.
+// ============================================================
+
+// Seed regional_config with merchant account mappings
+merchantAccounts = List();
+merchantAccounts.add({"Merchant_Account": "TenUK1", "Region": "UK", "Default_Currency": "GBP", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUK1_USD", "Region": "UK", "Default_Currency": "USD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUKMerMoto", "Region": "UK", "Default_Currency": "GBP", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUKMerEcom", "Region": "UK", "Default_Currency": "GBP", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUKMoto", "Region": "UK", "Default_Currency": "GBP", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUKSUBBespokeMoto", "Region": "UK", "Default_Currency": "GBP", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUKSUBPlat", "Region": "UK", "Default_Currency": "GBP", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUKSUBPrivate", "Region": "UK", "Default_Currency": "GBP", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUK_MUM_PVL", "Region": "UK", "Default_Currency": "GBP", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenBEMerMoto", "Region": "EU", "Default_Currency": "EUR", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenBE1", "Region": "EU", "Default_Currency": "EUR", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenBEMOTO", "Region": "EU", "Default_Currency": "EUR", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenBEMerEcom", "Region": "EU", "Default_Currency": "EUR", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenBRCustomerCare", "Region": "BR", "Default_Currency": "BRL", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TENBR1", "Region": "BR", "Default_Currency": "BRL", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenBR2MOTO", "Region": "BR", "Default_Currency": "BRL", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenCH1", "Region": "CH", "Default_Currency": "EUR", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenCHMerEcom", "Region": "CH", "Default_Currency": "EUR", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenCHMerMoto", "Region": "CH", "Default_Currency": "EUR", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenCHMoto", "Region": "CH", "Default_Currency": "EUR", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenJPYMerEcom", "Region": "JP", "Default_Currency": "JPY", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenJPYMoto", "Region": "JP", "Default_Currency": "JPY", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenJPY1", "Region": "JP", "Default_Currency": "JPY", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenJPYMerMoto", "Region": "JP", "Default_Currency": "JPY", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenMexMerEcom", "Region": "MX", "Default_Currency": "MXN", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenCANCom", "Region": "CA", "Default_Currency": "CAD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenCANMerEcom", "Region": "CA", "Default_Currency": "CAD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenCANMerMoto", "Region": "CA", "Default_Currency": "CAD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenCANMoto", "Region": "CA", "Default_Currency": "CAD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUSAMoto", "Region": "US", "Default_Currency": "USD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUSCom", "Region": "US", "Default_Currency": "USD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUSAMerEcom", "Region": "US", "Default_Currency": "USD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenUSAMerMoto", "Region": "US", "Default_Currency": "USD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenMELMoto", "Region": "AU", "Default_Currency": "AUD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenMELCom", "Region": "AU", "Default_Currency": "AUD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenMELMerEcom", "Region": "AU", "Default_Currency": "AUD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenMELMerMoto", "Region": "AU", "Default_Currency": "AUD", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenMUMMoto", "Region": "IN", "Default_Currency": "INR", "Default_LM_Name": "", "Default_LM_Email": ""});
+merchantAccounts.add({"Merchant_Account": "TenCOPayU", "Region": "CO", "Default_Currency": "COP", "Default_LM_Name": "", "Default_LM_Email": ""});
+
+for each acct in merchantAccounts
+{
+    row = insert into regional_config
+    [
+        Merchant_Account = acct.get("Merchant_Account")
+        Region = acct.get("Region")
+        Default_Currency = acct.get("Default_Currency")
+        Default_LM_Name = acct.get("Default_LM_Name")
+        Default_LM_Email = acct.get("Default_LM_Email")
+        Added_User = zoho.loginuser
+    ];
+}
+info "Regional config seeded: " + merchantAccounts.size() + " merchant accounts";
+
+// ============================================================
+// STEP 2: Seed dispute reason codes (lookup table)
+// ============================================================
+
+reasonCodes = List();
+reasonCodes.add({"Scheme": "visa", "Code": "10.4", "Description": "Other Fraud-Card Absent Environment", "Category": "Fraud"});
+reasonCodes.add({"Scheme": "visa", "Code": "10.5", "Description": "Visa Fraud Monitoring Program", "Category": "Fraud"});
+reasonCodes.add({"Scheme": "visa", "Code": "13.1", "Description": "Merchandise/Services Not Received", "Category": "Consumer Dispute"});
+reasonCodes.add({"Scheme": "visa", "Code": "13.2", "Description": "Cancelled Recurring Transaction", "Category": "Consumer Dispute"});
+reasonCodes.add({"Scheme": "visa", "Code": "13.3", "Description": "Not as Described or Defective", "Category": "Consumer Dispute"});
+reasonCodes.add({"Scheme": "mc", "Code": "4837", "Description": "No Cardholder Authorisation", "Category": "Fraud"});
+reasonCodes.add({"Scheme": "mc", "Code": "4853", "Description": "Cardholder Dispute", "Category": "Consumer Dispute"});
+reasonCodes.add({"Scheme": "mc", "Code": "4863", "Description": "Cardholder Does Not Recognise", "Category": "Fraud"});
+reasonCodes.add({"Scheme": "mc", "Code": "4834", "Description": "Point-of-Interaction Error", "Category": "Processing Error"});
+reasonCodes.add({"Scheme": "amex", "Code": "C02", "Description": "Credit Not Processed", "Category": "Consumer Dispute"});
+reasonCodes.add({"Scheme": "amex", "Code": "C04", "Description": "Goods/Services Not Received", "Category": "Consumer Dispute"});
+reasonCodes.add({"Scheme": "amex", "Code": "F10", "Description": "Missing Imprint", "Category": "Fraud"});
+reasonCodes.add({"Scheme": "amex", "Code": "F29", "Description": "Card Not Present", "Category": "Fraud"});
+
+for each rc in reasonCodes
+{
+    row = insert into dispute_reason_codes
+    [
+        Scheme = rc.get("Scheme")
+        Code = rc.get("Code")
+        Description = rc.get("Description")
+        Category = rc.get("Category")
+        Added_User = zoho.loginuser
+    ];
+}
+info "Dispute reason codes seeded: " + reasonCodes.size() + " codes";
+
+// ============================================================
+// STEP 3: Insert initial audit trail entry
+// ============================================================
+
+row = insert into audit_trail
+[
+    Incident_ID = 0
+    Action = "App Installed"
+    Action_Date = zoho.currentdate
+    Performed_By = zoho.loginuser
+    Notes = "Ten Chargeback Management app installed. Regional config: " + merchantAccounts.size() + " merchant accounts. Dispute reason codes: " + reasonCodes.size() + " codes."
+    Added_User = zoho.loginuser
+];
+
+// ============================================================
+// DONE — Summary
+// ============================================================
+
+summary = "TEN CHARGEBACK MANAGEMENT — INSTALL COMPLETE\n";
+summary = summary + "=============================================\n\n";
+summary = summary + "Seed data loaded:\n";
+summary = summary + "  - Regional config: " + merchantAccounts.size() + " merchant accounts\n";
+summary = summary + "  - Dispute reason codes: " + reasonCodes.size() + " codes\n\n";
+summary = summary + "NEXT STEPS:\n";
+summary = summary + "  1. Update regional_config records with LM names and emails\n";
+summary = summary + "  2. Paste form workflow scripts (see README):\n";
+summary = summary + "     - chargeback_incidents > On Success\n";
+summary = summary + "     - dispute_submissions > On Success\n";
+summary = summary + "  3. Create 4 scheduled tasks and paste scripts:\n";
+summary = summary + "     - Auto_Alert_25_Days (daily 06:00)\n";
+summary = summary + "     - Daily_File_Processing (daily 02:00)\n";
+summary = summary + "     - Currency_Conversion_Batch (daily 03:00)\n";
+summary = summary + "     - Data_Cleansing (daily 04:00)\n";
+summary = summary + "  4. Create 2 custom APIs and paste scripts:\n";
+summary = summary + "     - Get_Dashboard_Summary\n";
+summary = summary + "     - Get_Aging_Report\n";
+summary = summary + "  5. Import chargeback data via ETL pipeline\n";
+
+info summary;
+return summary;
