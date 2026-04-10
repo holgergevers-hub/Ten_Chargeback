@@ -2,6 +2,16 @@
 
 Zoho Creator application for managing chargebacks across multiple merchant platforms (Adyen, Ingenico, Stripe). Built with [ForgeDS](https://github.com/HolgerRGevers/ForgeDS).
 
+<div align="center">
+
+[![View Dashboard](https://img.shields.io/badge/View_Dashboard-0f172a?style=for-the-badge&logo=chartdotjs&logoColor=3b82f6&labelColor=0f172a)](https://holgergevers-hub.github.io/Ten_Chargeback/src/dashboard/index.html)
+
+**$303,247.67 USD** total exposure | **324** disputes | **3** platforms
+
+</div>
+
+---
+
 ## Overview
 
 Ten Group's credit controllers manage chargebacks across 3 merchant platforms in different formats. This project provides:
