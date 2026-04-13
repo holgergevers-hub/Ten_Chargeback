@@ -18,7 +18,7 @@ Zoho Creator application for managing chargebacks across multiple merchant platf
 
 ### Option A: Import the .ds file (Still under construction)
 
-1. Download [**ten_chargeback_management.ds**](https://github.com/holgergevers-hub/Ten_Chargeback/releases/download/v1.0.0/ten_chargeback_management.ds) — contains all 9 forms, fields, workflows, and schedules in one file
+1. Download [**ten_chargeback_management.ds**](https://github.com/holgergevers-hub/Ten_Chargeback/releases/download/v1.0.0/ten_chargeback_management.ds) — contains all 10 forms, fields, and reports in one file
 2. In Zoho Creator: **Settings > Import Application > Upload .ds file**
 3. Import the seed data:
 
@@ -50,9 +50,9 @@ See [FORM_SCHEMA.md](src/deluge/setup/FORM_SCHEMA.md) for field definitions, the
 
 | Component | Count | Details |
 |-----------|-------|---------|
-| Forms | 9 | chargeback_incidents, dispute_submissions, audit_trail, regional_config, dispute_reason_codes, merchant_platforms, currency_config, lm_followups, merchant_responses, file_uploads |
+| Forms | 10 | chargeback_incidents, dispute_submissions, audit_trail, regional_config, dispute_reason_codes, merchant_platforms, currency_config, lm_followups, merchant_responses, file_uploads |
 | Reports | 8 | All Chargebacks, Open Chargebacks, Expiring Soon, All Disputes, Audit Log, + 3 config views |
-| Workflows | 2 | Auto-assign LM on chargeback, update status on dispute |
+| Deluge Scripts | 9 | 2 form workflows, 2 custom APIs, 4 scheduled tasks, 1 install helper (in [`src/deluge/`](src/deluge/)) |
 | Schedules | 4 | 25-day alerts (06:00), file processing (02:00), currency conversion (03:00), data cleansing (04:00) |
 
 ---
