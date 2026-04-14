@@ -30,6 +30,7 @@ The entire ETL pipeline runs on Python stdlib only — zero external dependencie
 - [Data Pipeline](#data-pipeline)
   - [How Import Chargebacks Works](#how-import-chargebacks-works)
   - [Currency Conversion](#currency-conversion)
+  - [Future Improvement: Live Exchange Rates via API](#future-improvement-live-exchange-rates-via-api)
 - [Deploy to Zoho Creator](#deploy-to-zoho-creator)
   - [Option A: Build Manually](#option-a-build-manually)
   - [Option B: Import the .ds File](#option-b-import-the-ds-file-forgeds)
@@ -40,6 +41,7 @@ The entire ETL pipeline runs on Python stdlib only — zero external dependencie
   - [What's in the .ds File](#whats-in-the-ds-file)
 - [Requirements](#requirements)
 - [Accessibility and Tooltips](#accessibility-and-tooltips)
+- [Built With](#built-with)
 
 ---
 
@@ -54,30 +56,25 @@ Ten Group's credit controllers manage chargebacks across 3 merchant platforms in
 
 ### Structure and Data Flow
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  Merchant Platforms                                             │
-│  ┌──────────┐   ┌──────────┐   ┌──────────┐                    │
-│  │  Adyen    │   │ Ingenico │   │  Stripe  │                    │
-│  │  (CSV)    │   │  (JSON)  │   │  (Text)  │                    │
-│  └────┬─────┘   └────┬─────┘   └────┬─────┘                    │
-│       └───────────────┼──────────────┘                          │
-│                       ▼                                         │
-│              ┌────────────────┐                                  │
-│              │  ETL Pipeline  │  Python stdlib only              │
-│              └───────┬────────┘                                  │
-│                      ▼                                          │
-│       ┌──────────────────────────────┐                           │
-│       │  Unified CSV + Dashboard JSON │                          │
-│       └──────────────┬───────────────┘                           │
-│                      ▼                                          │
-│  ┌───────────────────────────────────────────┐                   │
-│  │          Zoho Creator Application          │                  │
-│  │  Forms ─ Workflows ─ Scheduled Tasks       │                  │
-│  │               ▼                            │                  │
-│  │     CFO/COO Risk Dashboard                 │                  │
-│  └───────────────────────────────────────────┘                   │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph Platforms["Merchant Platforms"]
+        A1["Adyen\n(CSV)"]
+        A2["Ingenico\n(JSON)"]
+        A3["Stripe\n(Text)"]
+    end
+
+    A1 --> ETL
+    A2 --> ETL
+    A3 --> ETL
+
+    ETL["ETL Pipeline\nPython stdlib only"] --> Output
+    Output["Unified CSV + Dashboard JSON"] --> Zoho
+
+    subgraph Zoho["Zoho Creator Application"]
+        Z1["Forms — Workflows — Scheduled Tasks"]
+        Z1 --> Z2["CFO/COO Risk Dashboard"]
+    end
 ```
 
 ---
@@ -151,6 +148,14 @@ The pipeline processed four currencies across the dataset:
 | JPY | Small subset | Amount / JPY rate → USD |
 
 322 of 324 records converted successfully. The 2 remaining records are flagged for manual review.
+
+### Future Improvement: Live Exchange Rates via API
+
+The current ETL pipeline uses a static `exchange_rates.json` file. A planned improvement replaces this with live API calls so conversion rates reflect the date of each transaction rather than a single snapshot.
+
+**Inside Zoho Creator (already scaffolded):** The scheduled task `currency_conversion_batch.dg` calls the [Open Exchange Rates API](https://open.er-api.com/v6/latest/USD) daily to convert any records missing a USD amount. This runs at 03:00 and handles new imports or records where the original conversion failed. The Deluge script is already in [`src/deluge/scheduled/`](src/deluge/scheduled/currency_conversion_batch.dg).
+
+**Outside Zoho (Python ETL):** The pipeline's `CurrencyConverter` class currently reads from a local JSON file. The next iteration will accept an `--api` flag that fetches rates from the same API at pipeline runtime, falling back to the local file if the API is unavailable. This keeps the zero-dependency principle intact — `urllib` is part of Python stdlib.
 
 ---
 
@@ -285,3 +290,23 @@ tests/                ETL unit tests
 ## Accessibility and Tooltips
 
 Form field tooltips and accessibility configuration are documented in [FORM_SCHEMA.md](src/deluge/setup/FORM_SCHEMA.md). Each field includes display name, type, and usage notes to guide tooltip content when configuring forms in Zoho Creator.
+
+---
+
+## Built With
+
+<div align="center">
+
+[![ForgeDS](https://img.shields.io/badge/ForgeDS-111827?style=for-the-badge&logo=github&logoColor=white&labelColor=030712)](https://github.com/HolgerRGevers/ForgeDS)
+[![Ten Chargeback](https://img.shields.io/badge/Ten_Chargeback-111827?style=for-the-badge&logo=github&logoColor=white&labelColor=030712)](https://github.com/holgergevers-hub/Ten_Chargeback)
+[![Claude Code](https://img.shields.io/badge/Claude_Code-d4a574?style=for-the-badge&logo=anthropic&logoColor=white&labelColor=b8916a)](https://claude.ai/code)
+
+</div>
+
+| Tool | Purpose |
+|------|---------|
+| [**ForgeDS**](https://github.com/HolgerRGevers/ForgeDS) | Zoho Creator application engine — linting, `.ds` file generation, Deluge conventions |
+| [**Claude Code**](https://claude.ai/code) | AI pair programming — ETL pipeline development, documentation, code review |
+| **Python 3.10+** | ETL pipeline runtime (stdlib only, zero external dependencies) |
+| [**Chart.js**](https://www.chartjs.org/) | CFO/COO dashboard visualizations (CDN, zero build step) |
+| **Zoho Creator** | Target platform — forms, workflows, scheduled tasks, custom APIs |
