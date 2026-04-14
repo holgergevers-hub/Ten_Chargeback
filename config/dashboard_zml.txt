@@ -1,1 +1,1011 @@
-<zml    \t\t\n\t\t\n\t\t\n\t\t\n\t\t\n>\n\t<layout>\n\t<row>\n\t<column\n   \t\t width='28%'\n   \t>\n\t<panel elementName='Panel 1'\n \n >\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '20px'\n\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n\t\tvAlign = 'middle'\n>\n\t<image  \n\t\tmarginLeft = '0px'\n\tmarginRight = '7px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = '#FFFFFF'\n\tbgColor = 'theme'\n\twidth = '50px'\n\theight = '50px'\n\ttype = 'icon'\n\tvalue = 'business-round-dollar'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\tpadding = '5px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\thAlign = 'left'\n>\n\t<pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmargin = '0px'\n\tpadding = '0px'\n\tcolor = 'theme'\n\tsize = '20px'\n\tbold = 'true' \n\ttype = 'Form Data'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\tcornerRadius = '2px'\n\n\n\tdisplayType = 'actual'\n\tdecimalPlaces = '2'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n    borderColor = '#5051F9'\n    borderWidth = '0px'\n\n\t  value = 'thisapp.chargeback_incidents.Amount_USD.sum'\n>\n</text>\n\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginLeft = '0px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '3px'\n\tcolor = '#44404C'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\n\n\n\n\t  value = 'Total Amount USD'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>\n</column><column\n   \t\t width='25%'\n   \t>\n\t<panel elementName='Panel 2'\n \n >\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '20px'\n\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n\t\tvAlign = 'middle'\n>\n\t<image  \n\t\tmarginLeft = '0px'\n\tmarginRight = '7px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = '#FFFFFF'\n\tbgColor = 'theme'\n\twidth = '50px'\n\theight = '50px'\n\ttype = 'icon'\n\tvalue = 'shopping-tag-sale'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\tpadding = '5px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\thAlign = 'left'\n>\n\t<pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmargin = '0px'\n\tpadding = '0px'\n\tcolor = 'theme'\n\tsize = '20px'\n\tbold = 'true' \n\ttype = 'Form Data'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\tcornerRadius = '2px'\n\n\n\tdisplayType = 'actual'\n\tdecimalPlaces = '2'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n    borderColor = '#5051F9'\n    borderWidth = '0px'\n\n\t  value = 'thisapp.chargeback_incidents.Amount_Original.sum'\n>\n</text>\n\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginLeft = '0px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '3px'\n\tcolor = '#44404C'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\n\n\n\n\t  value = 'Total Amount Original'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>\n</column><column\n   \t\t width='24%'\n   \t>\n\t<panel elementName='Panel 3'\n \n >\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '20px'\n\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n\t\tvAlign = 'middle'\n>\n\t<image  \n\t\tmarginLeft = '0px'\n\tmarginRight = '7px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = '#FFFFFF'\n\tbgColor = 'theme'\n\twidth = '50px'\n\theight = '50px'\n\ttype = 'icon'\n\tvalue = 'business-percentage-39'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\tpadding = '5px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\thAlign = 'left'\n>\n\t<pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmargin = '0px'\n\tpadding = '0px'\n\tcolor = 'theme'\n\tsize = '20px'\n\tbold = 'true' \n\ttype = 'Form Data'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\tcornerRadius = '2px'\n\n\n\tdisplayType = 'actual'\n\tdecimalPlaces = '2'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n    borderColor = '#5051F9'\n    borderWidth = '0px'\n\n\t  value = 'thisapp.chargeback_incidents.ID.count'\n>\n</text>\n\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginLeft = '0px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '3px'\n\tcolor = '#44404C'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\n\n\n\n\t  value = 'Total Incidents'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>\n</column><column\n   \t\t width='23%'\n   \t>\n\t<panel elementName='Panel 4'\n \n >\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '20px'\n\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n\t\tvAlign = 'middle'\n>\n\t<image  \n\t\tmarginLeft = '0px'\n\tmarginRight = '7px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = '#FFFFFF'\n\tbgColor = 'theme'\n\twidth = '50px'\n\theight = '50px'\n\ttype = 'icon'\n\tvalue = 'business-percentage-39'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\tpadding = '5px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\thAlign = 'left'\n>\n\t<pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmargin = '0px'\n\tpadding = '0px'\n\tcolor = 'theme'\n\tsize = '20px'\n\tbold = 'true' \n\ttype = 'Form Data'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\tcornerRadius = '2px'\n\n\n\tdisplayType = 'actual'\n\tdecimalPlaces = '2'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n    borderColor = '#5051F9'\n    borderWidth = '0px'\n\n\t  value = 'thisapp.audit_trail.ID.count'\n>\n</text>\n\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginLeft = '0px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '3px'\n\tcolor = '#44404C'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\n\n\n\n\t  value = 'Total Audit Entries'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>\n</column>\n</row><row>\n\t<column\n   \t\t width='40%'\n   \t>\n\t<chart \n\telementName='Chart 1'\n\n\t\n\ttitle = 'Amount Original vs USD'\n\t\n\ttype = 'Scatter'\n\txtitle = 'Total Amount'\n\tytitle = 'Tax Total'\n\tbgColor = '#FFFFFF'\n\ttheme = 'theme'\n\tlegendPos = 'none'\n\theightType = 'auto'\n\theightValue = '300px'\n\tappLinkName = 'thisapp'\n\tformLinkName = 'chargeback_incidents'\n\txfield = 'amount_original'\n\tyfields = 'value:amount_usd'\n\tgroupBy = 'platform'\n\t\tDelugeCriteria = 'Amount_Original is not null'\n/>\n\n</column><column\n   \t\t width='35%'\n   \t>\n\t<panel elementName='Grouped_Panel 1'\n \n >\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n>\n\t<pr \n\t\t\twidth='fill'\n\t\theight='50px'\n>\n\t<pc \n\t\tpadding = '0px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\twidth = '100%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginLeft = '20px'\n\tmarginRight = '20px' \n\tcolor = '#000000'\n\tsize = '16px'\n\ttype = 'Text'\n\n\n\n\n\n\n\n\t  value = 'Platform'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr><pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '17px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n    borderColor = '#444444'\n    borderWidth = '0px'\n\t\twidth = '50%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n    \tcornerRadius = '2px'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n\t\tvAlign = 'middle'\n>\n\t<image  \n\t\tmarginLeft = '0px'\n\tmarginRight = '7px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = 'theme'\n\tbgColor = '#F1F2F4'\n\twidth = '50px'\n\theight = '50px'\n\ttype = 'icon'\n\tvalue = 'ui-2-grid-50'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\tpadding = '5px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\thAlign = 'left'\n>\n\t<pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmargin = '0px'\n\tcolor = 'theme'\n\tsize = '20px'\n\tbold = 'true' \n\ttype = 'Form Data'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\tdisplayType = 'actual'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n\n\t\tcriteria = 'platform == &quot;Ingenico&quot;'\n\t  value = 'thisapp.chargeback_incidents.Platform.count'\n>\n</text>\n\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginLeft = '0px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '3px'\n\tcolor = '#44404C'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\n\n\n\n\t  value = 'Ingenico'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</pc><pc \n\t\tpaddingTop = '17px'\n\tpaddingLeft = '0px'\n\tpaddingRight = '17px'\n\tpaddingBottom = '17px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\twidth = '50%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n\t\tvAlign = 'middle'\n>\n\t<image  \n\t\tmarginLeft = '0px'\n\tmarginRight = '7px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = 'theme'\n\tbgColor = '#F1F2F4'\n\twidth = '50px'\n\theight = '50px'\n\ttype = 'icon'\n\tvalue = 'design-flip-horizontal'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\tpadding = '5px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\thAlign = 'left'\n>\n\t<pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmargin = '0px'\n\tcolor = 'theme'\n\tsize = '20px'\n\tbold = 'true' \n\ttype = 'Form Data'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\tdisplayType = 'actual'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n\n\t\tcriteria = 'platform == &quot;Stripe&quot;'\n\t  value = 'thisapp.chargeback_incidents.Platform.count'\n>\n</text>\n\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginLeft = '0px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '3px'\n\tcolor = '#44404C'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\n\n\n\n\t  value = 'Stripe'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr><pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '17px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n    borderColor = '#444444'\n    borderWidth = '0px'\n\t\twidth = '50%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n    \tcornerRadius = '2px'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n\t\tvAlign = 'middle'\n>\n\t<image  \n\t\tmarginLeft = '0px'\n\tmarginRight = '7px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = 'theme'\n\tbgColor = '#F1F2F4'\n\twidth = '50px'\n\theight = '50px'\n\ttype = 'icon'\n\tvalue = 'ui-2-grid-50'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\tpadding = '5px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\thAlign = 'left'\n>\n\t<pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmargin = '0px'\n\tcolor = 'theme'\n\tsize = '20px'\n\tbold = 'true' \n\ttype = 'Form Data'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\tdisplayType = 'actual'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n\n\t\tcriteria = 'platform == &quot;Adyen&quot;'\n\t  value = 'thisapp.chargeback_incidents.Platform.count'\n>\n</text>\n\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginLeft = '0px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '3px'\n\tcolor = '#44404C'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\n\n\n\n\t  value = 'Adyen'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</pc><pc \n\t\tpaddingTop = '17px'\n\tpaddingLeft = '0px'\n\tpaddingRight = '17px'\n\tpaddingBottom = '17px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\twidth = '50%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n\t\tvAlign = 'middle'\n>\n\t<image  \n\t\tmarginLeft = '0px'\n\tmarginRight = '7px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = 'theme'\n\tbgColor = '#F1F2F4'\n\twidth = '50px'\n\theight = '50px'\n\ttype = 'icon'\n\tvalue = 'travel-world'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\tpadding = '5px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\thAlign = 'left'\n>\n\t<pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmargin = '0px'\n\tcolor = 'theme'\n\tsize = '20px'\n\tbold = 'true' \n\ttype = 'Form Data'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\tdisplayType = 'actual'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n\n\t  value = 'thisapp.chargeback_incidents.Platform.count'\n>\n</text>\n\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginLeft = '0px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '3px'\n\tcolor = '#44404C'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\n\n\n\n\t  value = 'Total'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>\n</column><column\n   \t\t width='25%'\n   \t>\n\t<panel elementName='Panel_Button 1'\n \n >\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n>\n\t<pr \n\t\t\twidth='fill'\n\t\theight='50px'\n>\n\t<pc \n\t\tpadding = '0px'\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\t\twidth = '100%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginLeft = '20px'\n\tmarginRight = '20px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\tcolor = '#2D2D2D'\n\tsize = '16px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\n\n\n\n\n\n\t  value = 'Quick Links'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr><pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpaddingTop = '0px'\n\tpaddingLeft = '10px'\n\tpaddingRight = '10px'\n\tpaddingBottom = '10px'\n\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\tpadding = '5px'\n\n\t\thAlign = 'left'\n>\n\t<pr \n\t>\n\t<pc \n\t\n>\n\t<image  \n\t\tmarginLeft = '5px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = 'theme'\n\tbgColor = '#F1F2F4'\n\twidth = '40px'\n\theight = '40px'\n\ttype = 'icon'\n\tvalue = 'ui-2-square-add-08'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n\t\thAlign = 'left'\n>\n\t<text \n    action = 'OpenForm'\n\t\tcomponentLinkName = 'chargeback_incidents'\n\t\ttarget = 'new-window'\n\n\tmarginLeft = '12px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\tpadding = '0px'\n\tcolor = 'theme'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\tcornerRadius = '2px'\n\n\n\n\n\n    borderColor = '#5051F9'\n    borderWidth = '0px'\n\n\t  value = 'Add New Chargeback Incidents'\n>\n</text>\n\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\tpadding = '8px'\n\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t\n</pc>\n</pr>\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\n>\n\t<image  \n\t\tmarginLeft = '5px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = 'theme'\n\tbgColor = '#F1F2F4'\n\twidth = '40px'\n\theight = '40px'\n\ttype = 'icon'\n\tvalue = 'ui-2-square-add-08'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n\t\thAlign = 'left'\n>\n\t<text \n    action = 'OpenForm'\n\t\tcomponentLinkName = 'audit_trail'\n\t\ttarget = 'new-window'\n\n\tmarginLeft = '12px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\tpadding = '0px'\n\tcolor = 'theme'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\tcornerRadius = '2px'\n\n\n\n\n\n    borderColor = '#5051F9'\n    borderWidth = '0px'\n\n\t  value = 'Add New Audit Trail'\n>\n</text>\n\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\tpadding = '8px'\n\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t\n</pc>\n</pr>\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\n>\n\t<image  \n\t\tmarginLeft = '5px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = 'theme'\n\tbgColor = '#F1F2F4'\n\twidth = '40px'\n\theight = '40px'\n\ttype = 'icon'\n\tvalue = 'ui-2-square-add-08'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n\t\thAlign = 'left'\n>\n\t<text \n    action = 'OpenForm'\n\t\tcomponentLinkName = 'regional_config'\n\t\ttarget = 'new-window'\n\n\tmarginLeft = '12px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\tpadding = '0px'\n\tcolor = 'theme'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\tcornerRadius = '2px'\n\n\n\n\n\n    borderColor = '#5051F9'\n    borderWidth = '0px'\n\n\t  value = 'Add New Regional Config'\n>\n</text>\n\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\tpadding = '8px'\n\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t\n</pc>\n</pr>\n</pc>\n</pr><pr \n\t>\n\t<pc \n\t\n>\n\t<image  \n\t\tmarginLeft = '5px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\n\tcolor = 'theme'\n\tbgColor = '#F1F2F4'\n\twidth = '40px'\n\theight = '40px'\n\ttype = 'icon'\n\tvalue = 'ui-2-square-add-08'\n\tsize = '16px'\n\tcornerRadius = '10px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n\t\thAlign = 'left'\n>\n\t<text \n    action = 'OpenReport'\n\t\tcomponentLinkName = 'chargeback_incidents_Report'\n\t\ttarget = 'new-window'\n\n\tmarginLeft = '12px'\n\tmarginRight = '0px' \n\tmarginBottom = '0px'\n\tmarginTop = '0px'\n\tpadding = '0px'\n\tcolor = 'theme'\n\tsize = '15px'\n\ttype = 'Text'\n\n\tbgColor = 'transparent'\n        bgColorType = 'noFill'\n\tcornerRadius = '2px'\n\n\n\n\n\n    borderColor = '#5051F9'\n    borderWidth = '0px'\n\n\t  value = 'Show All Chargeback Incidents'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>\n</column>\n</row><row>\n\t<column\n   \t\t width='100%'\n   \t>\n\t<chart \n\telementName='Chart 2'\n\n\t\n\ttitle = 'Chargeback Amount Comparison'\n\t\n\ttype = 'Scatter'\n\txtitle = 'Amount Original'\n\tytitle = 'Amount USD'\n\tbgColor = '#FFFFFF'\n\ttheme = 'theme'\n\tlegendPos = 'none'\n\theightType = 'auto'\n\theightValue = '300px'\n\tappLinkName = 'thisapp'\n\tformLinkName = 'chargeback_incidents'\n\txfield = 'amount_original'\n\tyfields = 'value:amount_usd'\n\tgroupBy = 'platform'\n\t\tDelugeCriteria = 'Amount_Original is not null'\n/>\n\n</column>\n</row><row>\n\t<column\n   \t\t width='100%'\n   \t>\n\t<report \n\telementName='Report'\n\n\t\tappLinkName = 'thisapp'\n\t\tlinkName = 'chargeback_incidents_Report'\n\t\n\t\tiszreport = 'false'\n\theightType = 'auto'\n\theightValue = '700'\n\n/>\n</column>\n</row>\n</layout>\n</zml>
+<zml>
+<layout>
+<row>
+<column width='25%'>
+<panel elementName='KPI_Exposure'>
+<pr width='fill' height='fill'>
+<pc
+	padding = '20px'
+	bgColor = '#FFFFFF'
+	width = '100%'
+	hAlign = 'left'
+	vAlign = 'middle'
+>
+<pr width='auto' height='auto'>
+<pc vAlign = 'middle'>
+<image
+	marginLeft = '0px'
+	marginRight = '7px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = '#FFFFFF'
+	bgColor = '#3B82F6'
+	width = '52px'
+	height = '52px'
+	type = 'icon'
+	value = 'business-round-dollar'
+	size = '20px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc>
+<pr width='auto' height='auto'>
+<pc
+	padding = '5px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	hAlign = 'left'
+>
+<pr>
+<pc>
+<text
+	margin = '0px'
+	padding = '0px'
+	color = '#3B82F6'
+	size = '22px'
+	bold = 'true'
+	type = 'Form Data'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	cornerRadius = '2px'
+	displayType = 'actual'
+	decimalPlaces = '2'
+	thousandsSeperator = 'LOCALE'
+	decimalSeperator = 'DOT'
+	numberScale = 'none'
+	value = 'thisapp.chargeback_incidents.amount_usd.sum'
+>
+</text>
+</pc>
+</pr><pr>
+<pc>
+<text
+	marginLeft = '0px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '3px'
+	color = '#64748B'
+	size = '13px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	value = 'Total Chargeback Exposure'
+>
+</text>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</panel>
+</column><column width='25%'>
+<panel elementName='KPI_Open'>
+<pr width='fill' height='fill'>
+<pc
+	padding = '20px'
+	bgColor = '#FFFFFF'
+	width = '100%'
+	hAlign = 'left'
+	vAlign = 'middle'
+>
+<pr width='auto' height='auto'>
+<pc vAlign = 'middle'>
+<image
+	marginLeft = '0px'
+	marginRight = '7px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = '#FFFFFF'
+	bgColor = '#EF4444'
+	width = '52px'
+	height = '52px'
+	type = 'icon'
+	value = 'ui-1-alert-circle'
+	size = '20px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc>
+<pr width='auto' height='auto'>
+<pc
+	padding = '5px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	hAlign = 'left'
+>
+<pr>
+<pc>
+<text
+	margin = '0px'
+	padding = '0px'
+	color = '#EF4444'
+	size = '22px'
+	bold = 'true'
+	type = 'Form Data'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	cornerRadius = '2px'
+	displayType = 'actual'
+	thousandsSeperator = 'LOCALE'
+	decimalSeperator = 'DOT'
+	numberScale = 'none'
+	criteria = 'status == &quot;Open&quot; || status == &quot;Under Review&quot;'
+	value = 'thisapp.chargeback_incidents.ID.count'
+>
+</text>
+</pc>
+</pr><pr>
+<pc>
+<text
+	marginLeft = '0px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '3px'
+	color = '#64748B'
+	size = '13px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	value = 'Open / Under Review'
+>
+</text>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</panel>
+</column><column width='25%'>
+<panel elementName='KPI_Total'>
+<pr width='fill' height='fill'>
+<pc
+	padding = '20px'
+	bgColor = '#FFFFFF'
+	width = '100%'
+	hAlign = 'left'
+	vAlign = 'middle'
+>
+<pr width='auto' height='auto'>
+<pc vAlign = 'middle'>
+<image
+	marginLeft = '0px'
+	marginRight = '7px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = '#FFFFFF'
+	bgColor = '#F59E0B'
+	width = '52px'
+	height = '52px'
+	type = 'icon'
+	value = 'files-copy'
+	size = '20px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc>
+<pr width='auto' height='auto'>
+<pc
+	padding = '5px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	hAlign = 'left'
+>
+<pr>
+<pc>
+<text
+	margin = '0px'
+	padding = '0px'
+	color = '#F59E0B'
+	size = '22px'
+	bold = 'true'
+	type = 'Form Data'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	cornerRadius = '2px'
+	displayType = 'actual'
+	thousandsSeperator = 'LOCALE'
+	decimalSeperator = 'DOT'
+	numberScale = 'none'
+	value = 'thisapp.chargeback_incidents.ID.count'
+>
+</text>
+</pc>
+</pr><pr>
+<pc>
+<text
+	marginLeft = '0px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '3px'
+	color = '#64748B'
+	size = '13px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	value = 'Total Disputes'
+>
+</text>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</panel>
+</column><column width='25%'>
+<panel elementName='KPI_Expiring'>
+<pr width='fill' height='fill'>
+<pc
+	padding = '20px'
+	bgColor = '#FFFFFF'
+	width = '100%'
+	hAlign = 'left'
+	vAlign = 'middle'
+>
+<pr width='auto' height='auto'>
+<pc vAlign = 'middle'>
+<image
+	marginLeft = '0px'
+	marginRight = '7px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = '#FFFFFF'
+	bgColor = '#10B981'
+	width = '52px'
+	height = '52px'
+	type = 'icon'
+	value = 'ui-1-time-clock-circle'
+	size = '20px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc>
+<pr width='auto' height='auto'>
+<pc
+	padding = '5px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	hAlign = 'left'
+>
+<pr>
+<pc>
+<text
+	margin = '0px'
+	padding = '0px'
+	color = '#10B981'
+	size = '22px'
+	bold = 'true'
+	type = 'Form Data'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	cornerRadius = '2px'
+	displayType = 'actual'
+	thousandsSeperator = 'LOCALE'
+	decimalSeperator = 'DOT'
+	numberScale = 'none'
+	criteria = 'days_remaining &lt;= 5 &amp;&amp; days_remaining &gt; 0 &amp;&amp; (status == &quot;Open&quot; || status == &quot;Under Review&quot;)'
+	value = 'thisapp.chargeback_incidents.ID.count'
+>
+</text>
+</pc>
+</pr><pr>
+<pc>
+<text
+	marginLeft = '0px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '3px'
+	color = '#64748B'
+	size = '13px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	value = 'Expiring Soon (5 days)'
+>
+</text>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</panel>
+</column>
+</row><row>
+<column width='60%'>
+<chart
+	elementName='Chart_By_Platform'
+	title = 'Chargeback Amount by Platform (USD)'
+	titleSize = '15px'
+	type = 'Bar'
+	xtitle = 'Platform'
+	ytitle = 'Amount (USD)'
+	bgColor = '#FFFFFF'
+	theme = '#3B82F6'
+	legendPos = 'bottom'
+	heightType = 'auto'
+	heightValue = '350px'
+	appLinkName = 'thisapp'
+	formLinkName = 'chargeback_incidents'
+	xfield = 'platform'
+	yfields = 'sum:amount_usd'
+	groupBy = 'platform'
+	DelugeCriteria = 'platform is not null &amp;&amp; platform != &quot;&quot;'
+/>
+</column><column width='40%'>
+<chart
+	elementName='Chart_By_Status'
+	title = 'Disputes by Status'
+	titleSize = '15px'
+	type = 'Bar'
+	xtitle = 'Status'
+	ytitle = 'Count'
+	bgColor = '#FFFFFF'
+	theme = '#8B5CF6'
+	legendPos = 'none'
+	heightType = 'auto'
+	heightValue = '350px'
+	appLinkName = 'thisapp'
+	formLinkName = 'chargeback_incidents'
+	xfield = 'status'
+	yfields = 'count:ID'
+	groupBy = 'status'
+	DelugeCriteria = 'status is not null &amp;&amp; status != &quot;&quot;'
+/>
+</column>
+</row><row>
+<column width='50%'>
+<chart
+	elementName='Chart_By_Record_Type'
+	title = 'Amount by Record Type (USD)'
+	titleSize = '15px'
+	type = 'Bar'
+	xtitle = 'Record Type'
+	ytitle = 'Amount (USD)'
+	bgColor = '#FFFFFF'
+	theme = '#F59E0B'
+	legendPos = 'none'
+	heightType = 'auto'
+	heightValue = '350px'
+	appLinkName = 'thisapp'
+	formLinkName = 'chargeback_incidents'
+	xfield = 'record_type'
+	yfields = 'sum:amount_usd'
+	groupBy = 'record_type'
+	DelugeCriteria = 'record_type is not null &amp;&amp; record_type != &quot;&quot;'
+/>
+</column><column width='50%'>
+<chart
+	elementName='Chart_Scatter_Conversion'
+	title = 'Original Amount vs USD Conversion'
+	titleSize = '15px'
+	type = 'Scatter'
+	xtitle = 'Amount Original'
+	ytitle = 'Amount USD'
+	bgColor = '#FFFFFF'
+	theme = 'theme'
+	legendPos = 'bottom'
+	heightType = 'auto'
+	heightValue = '350px'
+	appLinkName = 'thisapp'
+	formLinkName = 'chargeback_incidents'
+	xfield = 'amount_original'
+	yfields = 'value:amount_usd'
+	groupBy = 'platform'
+	DelugeCriteria = 'amount_original is not null'
+/>
+</column>
+</row><row>
+<column width='60%'>
+<panel elementName='Platform_Breakdown'>
+<pr width='fill' height='fill'>
+<pc
+	bgColor = '#FFFFFF'
+	width = '100%'
+>
+<pr width='fill' height='50px'>
+<pc
+	padding = '0px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	width = '100%'
+	hAlign = 'left'
+	vAlign = 'middle'
+>
+<pr width='auto' height='auto'>
+<pc>
+<text
+	marginLeft = '20px'
+	marginRight = '20px'
+	color = '#1E293B'
+	size = '16px'
+	bold = 'true'
+	type = 'Text'
+	value = 'Platform Breakdown'
+>
+</text>
+</pc>
+</pr>
+</pc>
+</pr><pr width='fill' height='fill'>
+<pc
+	padding = '17px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	borderColor = '#E2E8F0'
+	borderWidth = '0px'
+	width = '33%'
+	hAlign = 'left'
+	vAlign = 'middle'
+	cornerRadius = '2px'
+>
+<pr width='auto' height='auto'>
+<pc vAlign = 'middle'>
+<image
+	marginLeft = '0px'
+	marginRight = '7px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = '#3B82F6'
+	bgColor = '#EFF6FF'
+	width = '50px'
+	height = '50px'
+	type = 'icon'
+	value = 'ui-2-grid-50'
+	size = '16px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc>
+<pr width='auto' height='auto'>
+<pc
+	padding = '5px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	hAlign = 'left'
+>
+<pr>
+<pc>
+<text
+	margin = '0px'
+	color = '#3B82F6'
+	size = '20px'
+	bold = 'true'
+	type = 'Form Data'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	displayType = 'actual'
+	decimalPlaces = '2'
+	thousandsSeperator = 'LOCALE'
+	decimalSeperator = 'DOT'
+	numberScale = 'none'
+	criteria = 'platform == &quot;Adyen&quot;'
+	value = 'thisapp.chargeback_incidents.amount_usd.sum'
+>
+</text>
+</pc>
+</pr><pr>
+<pc>
+<text
+	marginLeft = '0px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '3px'
+	color = '#64748B'
+	size = '13px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	value = 'Adyen'
+>
+</text>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc><pc
+	padding = '17px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	borderColor = '#E2E8F0'
+	borderWidth = '0px'
+	width = '33%'
+	hAlign = 'left'
+	vAlign = 'middle'
+	cornerRadius = '2px'
+>
+<pr width='auto' height='auto'>
+<pc vAlign = 'middle'>
+<image
+	marginLeft = '0px'
+	marginRight = '7px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = '#8B5CF6'
+	bgColor = '#F5F3FF'
+	width = '50px'
+	height = '50px'
+	type = 'icon'
+	value = 'design-flip-horizontal'
+	size = '16px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc>
+<pr width='auto' height='auto'>
+<pc
+	padding = '5px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	hAlign = 'left'
+>
+<pr>
+<pc>
+<text
+	margin = '0px'
+	color = '#8B5CF6'
+	size = '20px'
+	bold = 'true'
+	type = 'Form Data'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	displayType = 'actual'
+	decimalPlaces = '2'
+	thousandsSeperator = 'LOCALE'
+	decimalSeperator = 'DOT'
+	numberScale = 'none'
+	criteria = 'platform == &quot;Stripe&quot;'
+	value = 'thisapp.chargeback_incidents.amount_usd.sum'
+>
+</text>
+</pc>
+</pr><pr>
+<pc>
+<text
+	marginLeft = '0px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '3px'
+	color = '#64748B'
+	size = '13px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	value = 'Stripe'
+>
+</text>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc><pc
+	padding = '17px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	borderColor = '#E2E8F0'
+	borderWidth = '0px'
+	width = '34%'
+	hAlign = 'left'
+	vAlign = 'middle'
+	cornerRadius = '2px'
+>
+<pr width='auto' height='auto'>
+<pc vAlign = 'middle'>
+<image
+	marginLeft = '0px'
+	marginRight = '7px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = '#10B981'
+	bgColor = '#ECFDF5'
+	width = '50px'
+	height = '50px'
+	type = 'icon'
+	value = 'travel-world'
+	size = '16px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc>
+<pr width='auto' height='auto'>
+<pc
+	padding = '5px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	hAlign = 'left'
+>
+<pr>
+<pc>
+<text
+	margin = '0px'
+	color = '#10B981'
+	size = '20px'
+	bold = 'true'
+	type = 'Form Data'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	displayType = 'actual'
+	decimalPlaces = '2'
+	thousandsSeperator = 'LOCALE'
+	decimalSeperator = 'DOT'
+	numberScale = 'none'
+	criteria = 'platform == &quot;Ingenico&quot;'
+	value = 'thisapp.chargeback_incidents.amount_usd.sum'
+>
+</text>
+</pc>
+</pr><pr>
+<pc>
+<text
+	marginLeft = '0px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '3px'
+	color = '#64748B'
+	size = '13px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	value = 'Ingenico'
+>
+</text>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</panel>
+</column><column width='40%'>
+<panel elementName='Quick_Links'>
+<pr width='fill' height='fill'>
+<pc
+	bgColor = '#FFFFFF'
+	width = '100%'
+>
+<pr width='fill' height='50px'>
+<pc
+	padding = '0px'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	width = '100%'
+	hAlign = 'left'
+	vAlign = 'middle'
+>
+<pr width='auto' height='auto'>
+<pc>
+<text
+	marginLeft = '20px'
+	marginRight = '20px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = '#1E293B'
+	size = '16px'
+	bold = 'true'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	value = 'Quick Links'
+>
+</text>
+</pc>
+</pr>
+</pc>
+</pr><pr width='fill' height='fill'>
+<pc
+	paddingTop = '0px'
+	paddingLeft = '10px'
+	paddingRight = '10px'
+	paddingBottom = '10px'
+	bgColor = '#FFFFFF'
+	width = '100%'
+	hAlign = 'left'
+	vAlign = 'middle'
+>
+<pr width='auto' height='auto'>
+<pc
+	padding = '5px'
+	hAlign = 'left'
+>
+<pr>
+<pc>
+<image
+	marginLeft = '5px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = 'theme'
+	bgColor = '#EFF6FF'
+	width = '40px'
+	height = '40px'
+	type = 'icon'
+	value = 'ui-2-square-add-08'
+	size = '16px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc hAlign = 'left'>
+<text
+	action = 'OpenForm'
+	componentLinkName = 'chargeback_incidents'
+	target = 'new-window'
+	marginLeft = '12px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	padding = '0px'
+	color = 'theme'
+	size = '15px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	cornerRadius = '2px'
+	value = 'Add New Chargeback'
+>
+</text>
+</pc>
+</pr><pr>
+<pc padding = '8px'>
+<pr width='auto' height='auto'>
+<pc>
+</pc>
+</pr>
+</pc>
+</pr><pr>
+<pc>
+<image
+	marginLeft = '5px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = 'theme'
+	bgColor = '#EFF6FF'
+	width = '40px'
+	height = '40px'
+	type = 'icon'
+	value = 'travel-world'
+	size = '16px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc hAlign = 'left'>
+<text
+	action = 'OpenReport'
+	componentLinkName = 'All_Chargebacks'
+	target = 'new-window'
+	marginLeft = '12px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	padding = '0px'
+	color = 'theme'
+	size = '15px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	cornerRadius = '2px'
+	value = 'View All Chargebacks'
+>
+</text>
+</pc>
+</pr><pr>
+<pc padding = '8px'>
+<pr width='auto' height='auto'>
+<pc>
+</pc>
+</pr>
+</pc>
+</pr><pr>
+<pc>
+<image
+	marginLeft = '5px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = 'theme'
+	bgColor = '#FEF2F2'
+	width = '40px'
+	height = '40px'
+	type = 'icon'
+	value = 'ui-1-alert-circle'
+	size = '16px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc hAlign = 'left'>
+<text
+	action = 'OpenReport'
+	componentLinkName = 'Open_Chargebacks'
+	target = 'new-window'
+	marginLeft = '12px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	padding = '0px'
+	color = '#EF4444'
+	size = '15px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	cornerRadius = '2px'
+	value = 'View Open Chargebacks'
+>
+</text>
+</pc>
+</pr><pr>
+<pc padding = '8px'>
+<pr width='auto' height='auto'>
+<pc>
+</pc>
+</pr>
+</pc>
+</pr><pr>
+<pc>
+<image
+	marginLeft = '5px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = 'theme'
+	bgColor = '#FFFBEB'
+	width = '40px'
+	height = '40px'
+	type = 'icon'
+	value = 'ui-1-time-clock-circle'
+	size = '16px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc hAlign = 'left'>
+<text
+	action = 'OpenReport'
+	componentLinkName = 'Expiring_Soon'
+	target = 'new-window'
+	marginLeft = '12px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	padding = '0px'
+	color = '#F59E0B'
+	size = '15px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	cornerRadius = '2px'
+	value = 'View Expiring Soon'
+>
+</text>
+</pc>
+</pr><pr>
+<pc padding = '8px'>
+<pr width='auto' height='auto'>
+<pc>
+</pc>
+</pr>
+</pc>
+</pr><pr>
+<pc>
+<image
+	marginLeft = '5px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	color = 'theme'
+	bgColor = '#F0FDF4'
+	width = '40px'
+	height = '40px'
+	type = 'icon'
+	value = 'files-copy'
+	size = '16px'
+	cornerRadius = '10px'
+	iconType = 'outline'
+/>
+</pc><pc hAlign = 'left'>
+<text
+	action = 'OpenReport'
+	componentLinkName = 'Audit_Log'
+	target = 'new-window'
+	marginLeft = '12px'
+	marginRight = '0px'
+	marginBottom = '0px'
+	marginTop = '0px'
+	padding = '0px'
+	color = '#10B981'
+	size = '15px'
+	type = 'Text'
+	bgColor = 'transparent'
+	bgColorType = 'noFill'
+	cornerRadius = '2px'
+	value = 'View Audit Trail'
+>
+</text>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</pc>
+</pr>
+</panel>
+</column>
+</row><row>
+<column width='100%'>
+<chart
+	elementName='Chart_Amount_By_Merchant'
+	title = 'Top Merchants by Chargeback Amount (USD)'
+	titleSize = '15px'
+	type = 'Bar'
+	xtitle = 'Merchant Account'
+	ytitle = 'Amount (USD)'
+	bgColor = '#FFFFFF'
+	theme = '#3B82F6'
+	legendPos = 'bottom'
+	heightType = 'auto'
+	heightValue = '350px'
+	appLinkName = 'thisapp'
+	formLinkName = 'chargeback_incidents'
+	xfield = 'merchant_account'
+	yfields = 'sum:amount_usd'
+	groupBy = 'platform'
+	DelugeCriteria = 'merchant_account is not null &amp;&amp; merchant_account != &quot;&quot;'
+/>
+</column>
+</row><row>
+<column width='50%'>
+<report
+	elementName='Report_Open'
+	appLinkName = 'thisapp'
+	linkName = 'Open_Chargebacks'
+	iszreport = 'false'
+	zc_AddRec = 'false'
+	zc_EditRec = 'false'
+	zc_DelRec = 'false'
+	heightType = 'custom'
+	heightValue = '500'
+/>
+</column><column width='50%'>
+<report
+	elementName='Report_Expiring'
+	appLinkName = 'thisapp'
+	linkName = 'Expiring_Soon'
+	iszreport = 'false'
+	zc_AddRec = 'false'
+	zc_EditRec = 'false'
+	zc_DelRec = 'false'
+	heightType = 'custom'
+	heightValue = '500'
+/>
+</column>
+</row><row>
+<column width='100%'>
+<report
+	elementName='Report_All'
+	appLinkName = 'thisapp'
+	linkName = 'All_Chargebacks'
+	iszreport = 'false'
+	heightType = 'auto'
+	heightValue = '700'
+/>
+</column>
+</row>
+</layout>
+</zml>
