@@ -8,7 +8,7 @@
 // ============================================================
 
 // STEP 1: Query chargebacks missing USD amounts
-unconverted = chargeback_incidents[Amount_USD == null || Amount_USD == 0];
+unconverted = chargeback_incidents[amount_usd == null || amount_usd == 0];
 
 if (ifnull(unconverted.count(), 0) == 0)
 {
@@ -31,11 +31,11 @@ if (fetchResult != "success")
     // API call failed - log and exit
     row = insert into audit_trail
     [
-        Incident_ID = 0
-        Action = "Currency Conversion Failed"
-        Action_Date = zoho.currentdate
-        Performed_By = "SYSTEM"
-        Notes = "Exchange rate API returned non-success result. Conversion batch aborted."
+        incident_id = 0
+        action_1 = "Currency Conversion Failed"
+        action_date = zoho.currentdate
+        performed_by = "SYSTEM"
+        notes = "Exchange rate API returned non-success result. Conversion batch aborted."
         Added_User = zoho.adminuser
     ];
     return;
@@ -48,9 +48,9 @@ errorCount = 0;
 for each incident in unconverted
 {
     incidentID = incident.ID;
-    currency = ifnull(incident.Currency_Original, "");
-    amountOriginal = ifnull(incident.Amount_Original, 0);
-    pspRef = ifnull(incident.PSP_Reference, "N/A");
+    currency = ifnull(incident.currency_original, "");
+    amountOriginal = ifnull(incident.amount_original, 0);
+    pspRef = ifnull(incident.psp_reference, "N/A");
 
     if (currency == "" || amountOriginal == 0)
     {
@@ -58,11 +58,11 @@ for each incident in unconverted
 
         row = insert into audit_trail
         [
-            Incident_ID = incidentID
-            Action = "Currency Conversion Skipped"
-            Action_Date = zoho.currentdate
-            Performed_By = "SYSTEM"
-            Notes = "Skipped: missing currency or zero amount. Currency: " + currency + ", Amount: " + amountOriginal
+            incident_id = incidentID
+            action_1 = "Currency Conversion Skipped"
+            action_date = zoho.currentdate
+            performed_by = "SYSTEM"
+            notes = "Skipped: missing currency or zero amount. Currency: " + currency + ", Amount: " + amountOriginal
             Added_User = zoho.adminuser
         ];
         continue;
@@ -71,17 +71,17 @@ for each incident in unconverted
     // USD needs no conversion
     if (currency == "USD")
     {
-        incident.Amount_USD = amountOriginal;
+        incident.amount_usd = amountOriginal;
         incident.Exchange_Rate = 1;
         convertedCount = convertedCount + 1;
 
         row = insert into audit_trail
         [
-            Incident_ID = incidentID
-            Action = "Currency Conversion Applied"
-            Action_Date = zoho.currentdate
-            Performed_By = "SYSTEM"
-            Notes = "USD record - no conversion needed. Amount: $" + amountOriginal
+            incident_id = incidentID
+            action_1 = "Currency Conversion Applied"
+            action_date = zoho.currentdate
+            performed_by = "SYSTEM"
+            notes = "USD record - no conversion needed. Amount: $" + amountOriginal
             Added_User = zoho.adminuser
         ];
         continue;
@@ -96,11 +96,11 @@ for each incident in unconverted
 
         row = insert into audit_trail
         [
-            Incident_ID = incidentID
-            Action = "Currency Conversion Failed"
-            Action_Date = zoho.currentdate
-            Performed_By = "SYSTEM"
-            Notes = "No exchange rate found for currency: " + currency + ". PSP: " + pspRef
+            incident_id = incidentID
+            action_1 = "Currency Conversion Failed"
+            action_date = zoho.currentdate
+            performed_by = "SYSTEM"
+            notes = "No exchange rate found for currency: " + currency + ". PSP: " + pspRef
             Added_User = zoho.adminuser
         ];
         continue;
@@ -108,17 +108,17 @@ for each incident in unconverted
 
     // STEP 4: Calculate USD amount (rates are per-USD, so divide)
     amountUSD = amountOriginal / exchangeRate;
-    incident.Amount_USD = amountUSD;
+    incident.amount_usd = amountUSD;
     incident.Exchange_Rate = exchangeRate;
     convertedCount = convertedCount + 1;
 
     row = insert into audit_trail
     [
-        Incident_ID = incidentID
-        Action = "Currency Conversion Applied"
-        Action_Date = zoho.currentdate
-        Performed_By = "SYSTEM"
-        Notes = "Converted " + currency + " " + amountOriginal + " to USD $" + amountUSD + " (rate: " + exchangeRate + ")"
+        incident_id = incidentID
+        action_1 = "Currency Conversion Applied"
+        action_date = zoho.currentdate
+        performed_by = "SYSTEM"
+        notes = "Converted " + currency + " " + amountOriginal + " to USD $" + amountUSD + " (rate: " + exchangeRate + ")"
         Added_User = zoho.adminuser
     ];
 }
