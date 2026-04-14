@@ -8,55 +8,55 @@
 // ============================================================
 
 // STEP 1: Look up regional config for auto-assignment
-merchantAcct = ifnull(input.Merchant_Account, "");
-regionRec = regional_config[Merchant_Account == merchantAcct];
-assignedLM = ifnull(regionRec.Default_LM_Name, "Unassigned");
-assignedEmail = ifnull(regionRec.Default_LM_Email, "");
-defaultCurrency = ifnull(regionRec.Default_Currency, "USD");
+merchantAcct = ifnull(input.merchant_account, "");
+regionRec = regional_config[merchant_account == merchantAcct];
+assignedLM = ifnull(regionRec.default_lm_name, "Unassigned");
+assignedEmail = ifnull(regionRec.default_lm_email, "");
+defaultCurrency = ifnull(regionRec.default_currency, "USD");
 
 // STEP 2: Assign lifestyle manager
-input.Assigned_LM = assignedLM;
+input.assigned_lm = assignedLM;
 
 // STEP 3: Calculate dispute deadline (Incident_Date + 30 days)
-incidentDate = ifnull(input.Incident_Date, zoho.currentdate);
+incidentDate = ifnull(input.incident_date, zoho.currentdate);
 input.Dispute_Deadline = incidentDate.addDay(30);
 
 // STEP 4: Calculate days remaining
-input.Days_Remaining = daysBetween(zoho.currentdate, input.Dispute_Deadline);
+input.days_remaining = daysBetween(zoho.currentdate, input.Dispute_Deadline);
 
 // STEP 5: Set initial status
-input.Status = "Open";
+input.status = "Open";
 
 // STEP 6: Default currency if blank
-if (ifnull(input.Currency_Original, "") == "")
+if (ifnull(input.currency_original, "") == "")
 {
-    input.Currency_Original = defaultCurrency;
+    input.currency_original = defaultCurrency;
 }
 
 // STEP 7: Insert audit trail record
 row = insert into audit_trail
 [
-    Incident_ID = input.ID
-    Action = "Chargeback Created"
-    Action_Date = zoho.currentdate
-    Performed_By = zoho.loginuser
-    Notes = "New chargeback recorded. Platform: " + ifnull(input.Platform, "N/A") + ", Amount: " + ifnull(input.Currency_Original, "") + " " + ifnull(input.Amount_Original, "0") + ". Assigned to " + assignedLM + ". Dispute deadline: " + input.Dispute_Deadline
+    incident_id = input.ID
+    action_1 = "Chargeback Created"
+    action_date = zoho.currentdate
+    performed_by = zoho.loginuser
+    notes = "New chargeback recorded. Platform: " + ifnull(input.platform, "N/A") + ", Amount: " + ifnull(input.currency_original, "") + " " + ifnull(input.amount_original, "0") + ". Assigned to " + assignedLM + ". Dispute deadline: " + input.Dispute_Deadline
     Added_User = zoho.loginuser
 ];
 
 // STEP 8: Notify assigned lifestyle manager
 if (assignedEmail != "")
 {
-    pspRef = ifnull(input.PSP_Reference, "N/A");
-    platform = ifnull(input.Platform, "N/A");
-    amountStr = ifnull(input.Currency_Original, "") + " " + ifnull(input.Amount_Original, "0");
+    pspRef = ifnull(input.psp_reference, "N/A");
+    platformVal = ifnull(input.platform, "N/A");
+    amountStr = ifnull(input.currency_original, "") + " " + ifnull(input.amount_original, "0");
     deadlineStr = input.Dispute_Deadline.toString("dd-MMM-yyyy");
 
     sendmail
     [
         from : zoho.adminuserid
         to : assignedEmail
-        subject : "New Chargeback Assigned - PSP " + pspRef + " (" + platform + ")"
-        message : "Dear " + assignedLM + ",\n\nA new chargeback has been assigned to you for evidence gathering.\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount: " + amountStr + "\nDispute Reason: " + ifnull(input.Dispute_Reason, "N/A") + "\nDispute Deadline: " + deadlineStr + "\nDays Remaining: " + input.Days_Remaining + "\n\nPlease gather supporting evidence and update the follow-up record as soon as possible.\n\nRegards,\nTen Chargeback Management"
+        subject : "New Chargeback Assigned - PSP " + pspRef + " (" + platformVal + ")"
+        message : "Dear " + assignedLM + ",\n\nA new chargeback has been assigned to you for evidence gathering.\n\nPSP Reference: " + pspRef + "\nPlatform: " + platformVal + "\nAmount: " + amountStr + "\nDispute Reason: " + ifnull(input.Dispute_Reason, "N/A") + "\nDispute Deadline: " + deadlineStr + "\nDays Remaining: " + input.days_remaining + "\n\nPlease gather supporting evidence and update the follow-up record as soon as possible.\n\nRegards,\nTen Chargeback Management"
     ];
 }

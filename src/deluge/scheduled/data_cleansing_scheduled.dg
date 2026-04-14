@@ -9,7 +9,7 @@
 
 // STEP 1: Query recent chargebacks (last 7 days)
 cutoffDate = zoho.currentdate.subDay(7);
-recentIncidents = chargeback_incidents[Incident_Date >= cutoffDate];
+recentIncidents = chargeback_incidents[incident_date >= cutoffDate];
 
 // Known valid Record_Type values
 validRecordTypes = List();
@@ -49,7 +49,7 @@ flaggedCount = 0;
 for each incident in recentIncidents
 {
     incidentID = incident.ID;
-    pspRef = ifnull(incident.PSP_Reference, "N/A");
+    pspRef = ifnull(incident.psp_reference, "N/A");
     issues = List();
 
     // STEP 2: Normalize Record_Type values
@@ -93,11 +93,11 @@ for each incident in recentIncidents
 
             row = insert into audit_trail
             [
-                Incident_ID = incidentID
-                Action = "Data Cleansed"
-                Action_Date = zoho.currentdate
-                Performed_By = "SYSTEM"
-                Notes = "Record_Type normalized from '" + rawType + "' to '" + normalizedType + "'. PSP: " + pspRef
+                incident_id = incidentID
+                action_1 = "Data Cleansed"
+                action_date = zoho.currentdate
+                performed_by = "SYSTEM"
+                notes = "Record_Type normalized from '" + rawType + "' to '" + normalizedType + "'. PSP: " + pspRef
                 Added_User = zoho.adminuser
             ];
         }
@@ -112,35 +112,35 @@ for each incident in recentIncidents
     }
 
     // STEP 3: Validate Currency_Original
-    currency = ifnull(incident.Currency_Original, "");
+    currency = ifnull(incident.currency_original, "");
     if (currency == "")
     {
-        issues.add("Missing Currency_Original");
+        issues.add("Missing currency_original");
     }
     else if (!validCurrencies.contains(currency))
     {
         issues.add("Unknown currency code: " + currency);
     }
 
-    // STEP 4: Validate Amount_Original is positive
-    amountOrig = ifnull(incident.Amount_Original, 0);
+    // STEP 4: Validate amount_original is positive
+    amountOrig = ifnull(incident.amount_original, 0);
     if (amountOrig <= 0)
     {
-        issues.add("Amount_Original is zero or negative: " + amountOrig);
+        issues.add("amount_original is zero or negative: " + amountOrig);
     }
 
-    // STEP 5: Validate Incident_Date is not in the future
-    incidentDate = ifnull(incident.Incident_Date, zoho.currentdate);
+    // STEP 5: Validate incident_date is not in the future
+    incidentDate = ifnull(incident.incident_date, zoho.currentdate);
     if (daysBetween(zoho.currentdate, incidentDate) > 0)
     {
-        issues.add("Incident_Date is in the future: " + incidentDate);
+        issues.add("incident_date is in the future: " + incidentDate);
     }
 
-    // STEP 6: Validate Platform is one of the known merchant platforms
-    platformVal = ifnull(incident.Platform, "");
+    // STEP 6: Validate platform is one of the known merchant platforms
+    platformVal = ifnull(incident.platform, "");
     if (platformVal != "Adyen" && platformVal != "Ingenico" && platformVal != "Stripe" && platformVal != "")
     {
-        issues.add("Unknown Platform: " + platformVal);
+        issues.add("Unknown platform: " + platformVal);
     }
 
     // STEP 7: Flag records with data quality issues
@@ -151,11 +151,11 @@ for each incident in recentIncidents
 
         row = insert into audit_trail
         [
-            Incident_ID = incidentID
-            Action = "Data Quality Issue"
-            Action_Date = zoho.currentdate
-            Performed_By = "SYSTEM"
-            Notes = "Data quality issues found for PSP " + pspRef + ": " + issueText
+            incident_id = incidentID
+            action_1 = "Data Quality Issue"
+            action_date = zoho.currentdate
+            performed_by = "SYSTEM"
+            notes = "Data quality issues found for PSP " + pspRef + ": " + issueText
             Added_User = zoho.adminuser
         ];
     }

@@ -7,35 +7,35 @@
 // ============================================================
 
 // STEP 1: Look up the linked chargeback incident
-incidentID = ifnull(input.Incident_ID, 0);
+incidentID = ifnull(input.incident, 0);
 incidentRec = chargeback_incidents[ID == incidentID];
-pspRef = ifnull(incidentRec.PSP_Reference, "N/A");
-platform = ifnull(incidentRec.Platform, "N/A");
-amountUSD = ifnull(incidentRec.Amount_USD, "0");
-assignedLM = ifnull(incidentRec.Assigned_LM, "N/A");
+pspRef = ifnull(incidentRec.psp_reference, "N/A");
+platformVal = ifnull(incidentRec.platform, "N/A");
+amountUSD = ifnull(incidentRec.amount_usd, "0");
+assignedLM = ifnull(incidentRec.assigned_lm, "N/A");
 
 // STEP 2: Update chargeback status to "Disputed"
 if (incidentRec != null)
 {
-    incidentRec.Status = "Disputed";
+    incidentRec.status = "Disputed";
 }
 
 // STEP 3: Set expected response date if not provided (45 days from submission)
-if (ifnull(input.Expected_Response_Date, "") == "")
+if (ifnull(input.expected_response_date, "") == "")
 {
-    input.Expected_Response_Date = zoho.currentdate.addDay(45);
+    input.expected_response_date = zoho.currentdate.addDay(45);
 }
 
 // STEP 4: Insert audit trail record
-submittedBy = ifnull(input.Submitted_By, zoho.loginuser);
+submittedBy = ifnull(input.submitted_by, zoho.loginuser);
 
 row = insert into audit_trail
 [
-    Incident_ID = incidentID
-    Action = "Dispute Submitted"
-    Action_Date = zoho.currentdate
-    Performed_By = submittedBy
-    Notes = "Dispute submitted for PSP " + pspRef + ". Reason: " + ifnull(input.Dispute_Reason_Text, "N/A") + ". Evidence summary: " + ifnull(input.Evidence_Summary, "N/A")
+    incident_id = incidentID
+    action_1 = "Dispute Submitted"
+    action_date = zoho.currentdate
+    performed_by = submittedBy
+    notes = "Dispute submitted for PSP " + pspRef + ". Reason: " + ifnull(input.dispute_reason_text, "N/A") + ". Evidence summary: " + ifnull(input.evidence_summary, "N/A")
     Added_User = zoho.loginuser
 ];
 
@@ -44,6 +44,6 @@ sendmail
 [
     from : zoho.adminuserid
     to : "creditcontrol@tengroup.com"
-    subject : "Dispute Submitted - PSP " + pspRef + " (" + platform + ")"
-    message : "A dispute has been submitted for the following chargeback:\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\nAssigned LM: " + assignedLM + "\nSubmitted By: " + submittedBy + "\nSubmission Date: " + ifnull(input.Submission_Date, zoho.currentdate) + "\n\nEvidence Summary:\n" + ifnull(input.Evidence_Summary, "No summary provided") + "\n\nDispute Reason:\n" + ifnull(input.Dispute_Reason_Text, "No reason provided") + "\n\nExpected Response Date: " + ifnull(input.Expected_Response_Date, "N/A") + "\n\nRegards,\nTen Chargeback Management"
+    subject : "Dispute Submitted - PSP " + pspRef + " (" + platformVal + ")"
+    message : "A dispute has been submitted for the following chargeback:\n\nPSP Reference: " + pspRef + "\nPlatform: " + platformVal + "\nAmount (USD): $" + amountUSD + "\nAssigned LM: " + assignedLM + "\nSubmitted By: " + submittedBy + "\nSubmission Date: " + ifnull(input.submission_date, zoho.currentdate) + "\n\nEvidence Summary:\n" + ifnull(input.evidence_summary, "No summary provided") + "\n\nDispute Reason:\n" + ifnull(input.dispute_reason_text, "No reason provided") + "\n\nExpected Response Date: " + ifnull(input.expected_response_date, "N/A") + "\n\nRegards,\nTen Chargeback Management"
 ];

@@ -8,42 +8,42 @@
 // ============================================================
 
 // STEP 1: Query all open or under-review chargebacks
-openIncidents = chargeback_incidents[Status == "Open" || Status == "Under Review"];
+openIncidents = chargeback_incidents[status == "Open" || status == "Under Review"];
 
 for each incident in openIncidents
 {
-    incidentDate = ifnull(incident.Incident_Date, zoho.currentdate);
+    incidentDate = ifnull(incident.incident_date, zoho.currentdate);
     daysOld = daysBetween(incidentDate, zoho.currentdate);
-    pspRef = ifnull(incident.PSP_Reference, "N/A");
-    platform = ifnull(incident.Platform, "N/A");
-    amountUSD = ifnull(incident.Amount_USD, "0");
-    assignedLM = ifnull(incident.Assigned_LM, "N/A");
-    currentStatus = ifnull(incident.Status, "Open");
+    pspRef = ifnull(incident.psp_reference, "N/A");
+    platformVal = ifnull(incident.platform, "N/A");
+    amountUSD = ifnull(incident.amount_usd, "0");
+    assignedLM = ifnull(incident.assigned_lm, "N/A");
+    currentStatus = ifnull(incident.status, "Open");
     incidentID = incident.ID;
 
     // Look up LM email from regional config
-    merchantAcct = ifnull(incident.Merchant_Account, "");
-    regionRec = regional_config[Merchant_Account == merchantAcct];
-    lmEmail = ifnull(regionRec.Default_LM_Email, "");
+    merchantAcct = ifnull(incident.merchant_account, "");
+    regionRec = regional_config[merchant_account == merchantAcct];
+    lmEmail = ifnull(regionRec.default_lm_email, "");
 
     // Update days remaining
     deadline = ifnull(incident.Dispute_Deadline, incidentDate.addDay(30));
     daysRemaining = daysBetween(zoho.currentdate, deadline);
-    incident.Days_Remaining = daysRemaining;
+    incident.days_remaining = daysRemaining;
 
     if (daysOld >= 30)
     {
         // EXPIRED: past the dispute window
-        incident.Status = "Expired";
-        incident.Days_Remaining = 0;
+        incident.status = "Expired";
+        incident.days_remaining = 0;
 
         row = insert into audit_trail
         [
-            Incident_ID = incidentID
-            Action = "Auto-Expired"
-            Action_Date = zoho.currentdate
-            Performed_By = "SYSTEM"
-            Notes = "Chargeback expired after 30 days without dispute. Days old: " + daysOld + ". PSP: " + pspRef
+            incident_id = incidentID
+            action_1 = "Auto-Expired"
+            action_date = zoho.currentdate
+            performed_by = "SYSTEM"
+            notes = "Chargeback expired after 30 days without dispute. Days old: " + daysOld + ". PSP: " + pspRef
             Added_User = zoho.adminuser
         ];
 
@@ -53,7 +53,7 @@ for each incident in openIncidents
             from : zoho.adminuserid
             to : "creditcontrol@tengroup.com"
             subject : "EXPIRED - Chargeback " + pspRef + " past 30-day deadline"
-            message : "The following chargeback has expired without a dispute being filed:\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\nAssigned LM: " + assignedLM + "\nIncident Date: " + incidentDate + "\nDays Old: " + daysOld + "\n\nThis chargeback can no longer be disputed. Please review and update records accordingly.\n\nRegards,\nTen Chargeback Management (Automated)"
+            message : "The following chargeback has expired without a dispute being filed:\n\nPSP Reference: " + pspRef + "\nPlatform: " + platformVal + "\nAmount (USD): $" + amountUSD + "\nAssigned LM: " + assignedLM + "\nIncident Date: " + incidentDate + "\nDays Old: " + daysOld + "\n\nThis chargeback can no longer be disputed. Please review and update records accordingly.\n\nRegards,\nTen Chargeback Management (Automated)"
         ];
 
         // Also notify the LM
@@ -73,11 +73,11 @@ for each incident in openIncidents
         // WARNING: approaching deadline
         row = insert into audit_trail
         [
-            Incident_ID = incidentID
-            Action = "Deadline Warning Sent"
-            Action_Date = zoho.currentdate
-            Performed_By = "SYSTEM"
-            Notes = "Warning sent at " + daysOld + " days. Days remaining: " + daysRemaining + ". PSP: " + pspRef
+            incident_id = incidentID
+            action_1 = "Deadline Warning Sent"
+            action_date = zoho.currentdate
+            performed_by = "SYSTEM"
+            notes = "Warning sent at " + daysOld + " days. Days remaining: " + daysRemaining + ". PSP: " + pspRef
             Added_User = zoho.adminuser
         ];
 
@@ -88,7 +88,7 @@ for each incident in openIncidents
                 from : zoho.adminuserid
                 to : lmEmail
                 subject : "URGENT - Chargeback " + pspRef + " deadline in " + daysRemaining + " days"
-                message : "Dear " + assignedLM + ",\n\nChargeback " + pspRef + " is approaching its dispute deadline.\n\nPSP Reference: " + pspRef + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\nDays Remaining: " + daysRemaining + "\nDispute Deadline: " + ifnull(incident.Dispute_Deadline, "N/A") + "\n\nPlease ensure evidence is gathered and the dispute is submitted immediately.\n\nRegards,\nTen Chargeback Management (Automated)"
+                message : "Dear " + assignedLM + ",\n\nChargeback " + pspRef + " is approaching its dispute deadline.\n\nPSP Reference: " + pspRef + "\nPlatform: " + platformVal + "\nAmount (USD): $" + amountUSD + "\nDays Remaining: " + daysRemaining + "\nDispute Deadline: " + ifnull(incident.Dispute_Deadline, "N/A") + "\n\nPlease ensure evidence is gathered and the dispute is submitted immediately.\n\nRegards,\nTen Chargeback Management (Automated)"
             ];
         }
 
@@ -100,7 +100,7 @@ for each incident in openIncidents
                 from : zoho.adminuserid
                 to : "creditcontrol@tengroup.com"
                 subject : "CRITICAL - Chargeback " + pspRef + " expires in " + daysRemaining + " days"
-                message : "Chargeback " + pspRef + " has only " + daysRemaining + " days remaining.\n\nAssigned LM: " + assignedLM + "\nPlatform: " + platform + "\nAmount (USD): $" + amountUSD + "\n\nImmediate action required.\n\nRegards,\nTen Chargeback Management (Automated)"
+                message : "Chargeback " + pspRef + " has only " + daysRemaining + " days remaining.\n\nAssigned LM: " + assignedLM + "\nPlatform: " + platformVal + "\nAmount (USD): $" + amountUSD + "\n\nImmediate action required.\n\nRegards,\nTen Chargeback Management (Automated)"
             ];
         }
     }
