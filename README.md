@@ -293,6 +293,15 @@ Form field tooltips and accessibility configuration are documented in [FORM_SCHE
 
 ---
 
+## Skills Journey
+
+This repository is **Phase 3** of a development journey that began with a
+Zoho Creator assessment and grew into five repositories, a mathematical
+framework, and a C runtime. See the
+[full narrative](https://github.com/holgergevers-hub/Portfolio) for context.
+
+---
+
 ## Built With
 
 <div align="center">
